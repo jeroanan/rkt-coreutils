@@ -1,0 +1,32 @@
+#lang racket 
+
+(define show-hidden (make-parameter #f))
+(define hide-implied (make-parameter #f))
+
+(define (set-almost-all)
+  (begin
+    (show-hidden #t)
+    (hide-implied #t)))
+
+(command-line
+  #:once-each
+  [("-a" "--all") "do not ignore entries starting with ." (show-hidden #t)]
+  [("-A" "--almost-all") "do not list implied . and .." (set-almost-all)])
+
+(define (add-implied)
+  (if (not (hide-implied))
+    (list "." "..")
+    (list)))
+
+(define (filter-hidden dlist)
+  (define (weed-hidden f)
+    (not (string-prefix? (path->string f) ".")))
+
+  (if (not (show-hidden)) 
+    (filter (lambda (x) (weed-hidden x)) dlist)
+    (append (add-implied) dlist)))
+
+(let* ([dlist (filter-hidden (directory-list))])
+  (for ([f dlist])
+       (displayln f)))
+
