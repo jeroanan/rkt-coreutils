@@ -10,11 +10,12 @@
     (hide-implied #t)))
 
 (command-line
-  #:argv (current-command-line-arguments)
   #:once-each
   [("-a" "--all") "do not ignore entries starting with ." (show-hidden #t)]
   [("-A" "--almost-all") "do not list implied . and .." (set-almost-all)]
-  #:args dir (unless (empty? dir) (pwd (first dir))))
+  #:handlers
+  [(lambda (x) (display x)) (list "the x")]
+  [(lambda (x) (display x))])
 
 (define (add-implied)
   (if (not (hide-implied))
@@ -29,7 +30,7 @@
     (filter (lambda (x) (weed-hidden x)) dlist)
     (append (add-implied) dlist)))
 
-(let* ([dlist (filter-hidden (directory-list (pwd)))])
+(let* ([dlist (filter-hidden (directory-list))])
   (for ([f dlist])
        (displayln f)))
 
