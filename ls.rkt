@@ -1,6 +1,6 @@
 #lang racket 
 
-(require dynamic-ffi/unsafe)
+(require "stat.rkt")
 
 (define show-hidden (make-parameter #f))
 (define hide-implied (make-parameter #t))
@@ -34,17 +34,11 @@
   (define (weed-hidden f)
     (not (string-prefix? (path->string f) ".")))  
   (filter (lambda (x) (weed-hidden x)) es))
-  
-(define-inline-ffi c-stat #:compiler "clang"
-  "#include <sys/stat.h>\n"
-  "#include <sys/types.h>\n"
-  
-  "unsigned long inode_for_file(char* file_name) {\n"  
-  "  struct stat s;\n"
-  "  stat(file_name, &s);\n"
-  "  return s.st_ino;\n"
-  "}\n")
-(define (get-inode-for-print p) (if (print-inodes) (number->string (c-stat 'inode_for_file p)) #f))
+
+(define (get-inode-for-print inode)
+  (if (print-inodes)
+      (number->string (send inode get-inode))
+      #f))
 
 (define (process-entry-list es)
   (add-implied
@@ -54,7 +48,8 @@
 (define (format-entry path filename)
   (let* ([full-path (build-path path filename)] 
          [f-str (path->string full-path)]
-         [inode (get-inode-for-print full-path)]
+         [stat (new stat% [path path] [file-name filename])]
+         [inode (get-inode-for-print stat)]
          [outp-list (list inode f-str)]
          [outp-filtered (filter (λ (x) (not (false? x))) outp-list)]
          [outp-string (string-join outp-filtered " ")])
@@ -64,5 +59,3 @@
   (for ([f dlist])
     (let* ([full-path (build-path (pwd) f)])           
       (displayln (format-entry (pwd) f)))))
-
-      
