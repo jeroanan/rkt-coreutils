@@ -2,8 +2,8 @@ RACO=raco
 
 all: compiled/rkt-ls
 
-compiled/rkt-ls: ls.rkt stat.rkt 
-	$(RACO) exe -o compiled/rkt-ls ls.rkt
+compiled/rkt-ls: src/ls.rkt src/libc/stat.rkt 
+	$(RACO) exe -o compiled/rkt-ls src/ls.rkt
 
 clean:
 	rm -rf compiled

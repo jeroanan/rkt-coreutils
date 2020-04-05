@@ -1,6 +1,6 @@
 #lang racket 
 
-(require "stat.rkt")
+(require "libc/stat.rkt")
 
 (define show-hidden (make-parameter #f))
 (define hide-implied (make-parameter #t))
