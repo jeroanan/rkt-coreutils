@@ -64,3 +64,5 @@
     (define gecos (c-pwd 'get_gecos))
     (define dir (c-pwd 'get_dir))
     (define shell (c-pwd 'get_shell))))
+
+(provide getpwuid%)
