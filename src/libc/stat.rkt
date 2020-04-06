@@ -42,18 +42,19 @@
     (define/public (get-has-set-user-id-bit?) (eq? has-set-user-id-bit? 1))
     (define/public (get-has-set-group-id-bit?) (eq? has-set-group-id-bit? 1))
     (define/public (get-has-sticky-bit?) (eq? has-sticky-bit? 1))
-    (define/public (get-owner-has-rwx?) (eq? owner-has-rwx? 1))
-    (define/public (get-owner-has-r?) (eq? owner-has-r? 1))
-    (define/public (get-owner-has-w?) (eq? owner-has-w? 1))
-    (define/public (get-owner-has-x?) (eq? owner-has-x? 1))
-    (define/public (get-group-has-rwx?) (eq? group-has-rwx? 1))
-    (define/public (get-group-has-r?) (eq? group-has-r? 1))
-    (define/public (get-group-has-w?) (eq? group-has-w? 1))
-    (define/public (get-group-has-x?) (eq? group-has-x? 1))
-    (define/public (get-other-has-rwx?) (eq? other-has-rwx? 1))
-    (define/public (get-other-has-r?) (eq? other-has-r? 1))
-    (define/public (get-other-has-w?) (eq? other-has-w? 1))
-    (define/public (get-other-has-x?) (eq? other-has-x? 1))
+
+    (define/public (get-owner-has-rwx?) (eq? (bitwise-and mode s-irwxu) s-irwxu))
+    (define/public (get-owner-has-r?) (eq? (bitwise-and mode s-irusr) s-irusr))
+    (define/public (get-owner-has-w?) (eq? (bitwise-and mode s-iwusr) s-iwusr))
+    (define/public (get-owner-has-x?) (eq? (bitwise-and mode s-ixusr) s-ixusr))
+    (define/public (get-group-has-rwx?) (eq? (bitwise-and mode s-irwxg) s-irwxg))
+    (define/public (get-group-has-r?) (eq? (bitwise-and mode s-irgrp) s-irgrp))
+    (define/public (get-group-has-w?) (eq? (bitwise-and mode s-iwgrp) s-iwgrp))
+    (define/public (get-group-has-x?) (eq? (bitwise-and mode s-ixgrp) s-ixgrp))
+    (define/public (get-other-has-rwx?) (eq? (bitwise-and mode s-irwxo) s-irwxo))
+    (define/public (get-other-has-r?) (eq? (bitwise-and mode s-iroth) s-iroth))
+    (define/public (get-other-has-w?) (eq? (bitwise-and mode s-iwoth) s-iwoth))
+    (define/public (get-other-has-x?) (eq? (bitwise-and mode s-ixoth) s-ixoth))
     
     (define-inline-ffi c-stat #:compiler "clang"
       "#include <sys/stat.h>\n"
@@ -168,54 +169,6 @@
 
       "int has_sticky_bit(void) {\n"
       "  return ((s.st_mode) & S_ISVTX) == S_ISVTX;\n"
-      "}\n"
-
-      "int owner_has_rwx(void) {\n"
-      "  return ((s.st_mode) & S_IRWXU) == S_IRWXU;\n"
-      "}\n"
-
-      "int owner_has_r(void) {\n"
-      "  return ((s.st_mode) & S_IRUSR) == S_IRUSR;\n"
-      "}\n"
-
-      "int owner_has_w(void) {\n"
-      "  return ((s.st_mode) & S_IWUSR) == S_IWUSR;\n"
-      "}\n"
-
-      "int owner_has_x(void) {\n"
-      "  return ((s.st_mode) & S_IXUSR) == S_IXUSR;\n"
-      "}\n"
-
-      "int group_has_rwx(void) {\n"
-      "  return ((s.st_mode) & S_IRWXG) == S_IRWXG;\n"
-      "}\n"
-
-      "int group_has_r(void) {\n"
-      "  return ((s.st_mode) & S_IRGRP) == S_IRGRP;\n"
-      "}\n"
-
-      "int group_has_w(void) {\n"
-      "  return ((s.st_mode) & S_IWGRP) == S_IWGRP;\n"
-      "}\n"
-
-      "int group_has_x(void) {\n"
-      "  return ((s.st_mode) & S_IXGRP) == S_IXGRP;\n"
-      "}\n"
-
-      "int other_has_rwx(void) {\n"
-      "  return ((s.st_mode) & S_IRWXO) == S_IRWXO;\n"
-      "}\n"
-
-      "int other_has_r(void) {\n"
-      "  return ((s.st_mode) & S_IROTH) == S_IROTH;\n"
-      "}\n"
-
-      "int other_has_w(void) {\n"
-      "  return ((s.st_mode) & S_IWOTH) == S_IWOTH;\n"
-      "}\n"
-
-      "int other_has_x(void) {\n"
-      "  return ((s.st_mode) & S_IXOTH) == S_IXOTH;\n"
       "}\n")
 
     (c-stat 'stat_for_file full-path)
@@ -245,17 +198,23 @@
     (define has-set-user-id-bit? (c-stat 'has_set_user_id_bit))
     (define has-set-group-id-bit? (c-stat 'has_set_group_id_bit))
     (define has-sticky-bit? (c-stat 'has_sticky_bit))
-    (define owner-has-rwx? (c-stat 'owner_has_rwx))
-    (define owner-has-r? (c-stat 'owner_has_r))
-    (define owner-has-w? (c-stat 'owner_has_w))
-    (define owner-has-x? (c-stat 'owner_has_x))
-    (define group-has-rwx? (c-stat 'group_has_rwx))
-    (define group-has-r? (c-stat 'group_has_r))
-    (define group-has-w? (c-stat 'group_has_w))
-    (define group-has-x? (c-stat 'group_has_x))
-    (define other-has-rwx? (c-stat 'other_has_rwx))
-    (define other-has-r? (c-stat 'other_has_r))
-    (define other-has-w? (c-stat 'other_has_w))
-    (define other-has-x? (c-stat 'other_has_x))))
+
+    ;; mode mask definitions
+    (define s-irwxu #o00700)
+    (define s-irusr #o00400)
+    (define s-iwusr #o00200)
+    (define s-ixusr #o00100)
+
+    (define s-irwxg #o00070)
+    (define s-irgrp #o00040)
+    (define s-iwgrp #o00020)
+    (define s-ixgrp #o00010)
+
+    (define s-irwxo #o00007)
+    (define s-iroth #o00004)
+    (define s-iwoth #o00002)
+    (define s-ixoth #o00001)
+
+    (define/public (get-s-irusr) (c-stat 'get_s_irusr))))
 
 (provide stat%)
