@@ -39,9 +39,9 @@
     (define/public (get-is-fifo?) (eq? is-fifo? 1))
     (define/public (get-is-symbolic-link?) (eq? is-symbolic-link? 1))
     (define/public (get-is-socket?) (eq? is-socket? 1))
-    (define/public (get-has-set-user-id-bit?) (eq? has-set-user-id-bit? 1))
-    (define/public (get-has-set-group-id-bit?) (eq? has-set-group-id-bit? 1))
-    (define/public (get-has-sticky-bit?) (eq? has-sticky-bit? 1))
+    (define/public (get-has-set-user-id-bit?) (eq? (bitwise-and mode s-isuid) s-isuid))
+    (define/public (get-has-set-group-id-bit?) (eq? (bitwise-and mode s-isgid) s-isgid))
+    (define/public (get-has-sticky-bit?) (eq? (bitwise-and mode s-isvtx) s-isvtx))
 
     (define/public (get-owner-has-rwx?) (eq? (bitwise-and mode s-irwxu) s-irwxu))
     (define/public (get-owner-has-r?) (eq? (bitwise-and mode s-irusr) s-irusr))
@@ -153,22 +153,6 @@
 
       "int is_socket(void) {\n"
       "  return S_ISSOCK(s.st_mode);\n"
-      "}\n"
-      
-      "\n"
-      "// File mode fags\n"
-      "\n"
-
-      "int has_set_user_id_bit(void) {\n"
-      "  return ((s.st_mode) & S_ISUID) == S_ISUID;\n"
-      "}\n"
-
-      "int has_set_group_id_bit(void) {\n"
-      "  return ((s.st_mode) & S_ISGID) == S_ISGID;\n"
-      "}\n"
-
-      "int has_sticky_bit(void) {\n"
-      "  return ((s.st_mode) & S_ISVTX) == S_ISVTX;\n"
       "}\n")
 
     (c-stat 'stat_for_file full-path)
@@ -195,11 +179,11 @@
     (define is-symbolic-link? (c-stat 'is_symbolic_link))
     (define is-socket? (c-stat 'is_socket))
 
-    (define has-set-user-id-bit? (c-stat 'has_set_user_id_bit))
-    (define has-set-group-id-bit? (c-stat 'has_set_group_id_bit))
-    (define has-sticky-bit? (c-stat 'has_sticky_bit))
-
     ;; mode mask definitions
+    (define s-isuid #o04000)
+    (define s-isgid #o02000)
+    (define s-isvtx #o01000)
+    
     (define s-irwxu #o00700)
     (define s-irusr #o00400)
     (define s-iwusr #o00200)
@@ -213,8 +197,6 @@
     (define s-irwxo #o00007)
     (define s-iroth #o00004)
     (define s-iwoth #o00002)
-    (define s-ixoth #o00001)
-
-    (define/public (get-s-irusr) (c-stat 'get_s_irusr))))
+    (define s-ixoth #o00001)))
 
 (provide stat%)
