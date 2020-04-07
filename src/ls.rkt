@@ -52,9 +52,10 @@
 (define (when-long-mode x) (if (long-mode) x #f))
 
 (define (format-entry path filename)
-  (let* ([full-path (build-path path filename)] 
+  (let* ([filename-string (path->string filename)]
+         [full-path (build-path path filename)] 
          [f-str (path->string full-path)]
-         [stat (new stat% [path path] [file-name filename])]
+         [stat (new stat% [path path] [file-name (path->string filename)])]
          [user (new getpwuid% [uid (send stat get-uid)])]
          [group (new getgrgid% [gid (send stat get-gid)])]
          
@@ -62,12 +63,18 @@
          [owner-user (when-long-mode (send user get-username))]
          [owner-group (when-long-mode (send group get-name))]
          
-         [outp-list (list owner-user owner-group inode f-str)]
+         [outp-list (list owner-user owner-group inode filename-string)]
          [outp-filtered (filter (λ (x) (not (false? x))) outp-list)]
          [outp-string (string-join outp-filtered " ")])
   outp-string))
+
+(define (is-implied-path? p)
+  (or
+   (eq? p ".")
+   (eq? p "..")))
   
 (let* ([dlist (process-entry-list (directory-list (pwd)))])
   (for ([f dlist])
     (let* ([full-path (build-path (pwd) f)])           
-      (displayln (format-entry (pwd) f)))))
+      (displayln
+       (if (is-implied-path? f) f (format-entry (pwd) f))))))
