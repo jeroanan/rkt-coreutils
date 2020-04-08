@@ -1,4 +1,4 @@
-#lang racket 
+#lang racket
 
 (require "libc/stat.rkt"
          "libc/pwd.rkt"
@@ -56,6 +56,39 @@
     [(send stat get-is-directory?) "d"]
     [else "-"]))
 
+(define (get-human-readable-size byte-size unit-size unit-symbol)
+  (let* ([whole-things (floor (/ byte-size unit-size))]
+         [remainder (modulo byte-size unit-size)]
+         [remainder-decimal
+          (inexact->exact
+           (ceiling
+            (exact->inexact
+             (* 10 (/ remainder unit-size)))))]
+         [is-kilobytes? (eq? unit-size 1024)]
+         [omit-decimal? (or is-kilobytes? (eq? remainder-decimal 0))]
+         [whole-thing-string (number->string
+                              (if
+                               (and is-kilobytes? (> remainder-decimal 0))
+                               (+ whole-things 1)
+                               whole-things))]
+         [decimal-string (string-append "." (number->string remainder-decimal))]
+         [output (string-append
+                  whole-thing-string
+                  (if omit-decimal? "" decimal-string)
+                  unit-symbol)])
+    output))
+  
+(define (human-readable-byte-size byte-size)
+  (let* ([kilobyte 1024]
+         [megabyte (* kilobyte 1024)]
+         [gigabyte (* megabyte 1024)])
+    (cond
+      [(< byte-size kilobyte) (number->string byte-size)]
+      [(< byte-size megabyte) (get-human-readable-size byte-size kilobyte "K")]
+      [(and (>= byte-size megabyte) (< byte-size gigabyte))
+       (get-human-readable-size byte-size megabyte "M")] 
+      [else (get-human-readable-size byte-size gigabyte "G")])))
+
 (define-syntax-rule (get-permissions-mode name rwx r w x)
   (define (name stat)
     (if (send stat rwx)
@@ -89,8 +122,10 @@
          [mode-str (when-long-mode (λ () (get-mode-str stat)))]
          [owner-user (when-long-mode (λ () (send user get-username)))]
          [owner-group (when-long-mode (λ () (send group get-name)))]
+         [number-of-hardlinks (when-long-mode (λ () (number->string (send stat get-number-of-hardlinks))))]
+         [size (when-long-mode (λ () (human-readable-byte-size (send stat get-size))))]
          
-         [outp-list (list mode-str owner-user owner-group inode filename-string)]
+         [outp-list (list inode mode-str number-of-hardlinks owner-user owner-group size filename-string)]
          [outp-filtered (filter (λ (x) (not (false? x))) outp-list)]
          [outp-string (string-join outp-filtered " ")])
   outp-string))
