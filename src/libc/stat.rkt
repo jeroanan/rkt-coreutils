@@ -1,5 +1,5 @@
 #lang racket
-(require dynamic-ffi/unsafe)
+(require ffi/unsafe)
 
 (define stat%
   (class object%
@@ -15,171 +15,95 @@
           path
           (build-path path file-name)))
  
-    (define/public (get-stat)
-      (c-stat 'get_stat))
+    (define/public (get-stat) stat-buf)
 
-    (define/public (get-dev) dev)
-    (define/public (get-inode) inode)
-    (define/public (get-mode) mode)
-    (define/public (get-number-of-hardlinks) nlink)
-    (define/public (get-uid) uid)
-    (define/public (get-gid) gid)
-    (define/public (get-rdev) rdev)
-    (define/public (get-size) size)
-    (define/public (get-block-size) blksize)
-    (define/public (get-blocks) blocks)
-    (define/public (get-accessed-time) atime)
-    (define/public (get-modified-time) mtime)
-    (define/public (get-created-time) ctime)
+    (define/public (get-dev) (statstruct-dev stat-buf))
+    (define/public (get-inode) (statstruct-ino stat-buf))
+    (define/public (get-mode) (statstruct-mode stat-buf))
+    (define/public (get-number-of-hardlinks) (statstruct-nlink stat-buf))
+    (define/public (get-uid) (statstruct-uid stat-buf))
+    (define/public (get-gid) (statstruct-gid stat-buf))
+    (define/public (get-rdev) (statstruct-rdev stat-buf))
+    (define/public (get-size) (statstruct-size stat-buf))
+    (define/public (get-block-size) (statstruct-blksize))
+    (define/public (get-blocks) (statstruct-blocks stat-buf))
+    (define/public (get-accessed-time) (timespec-sec (statstruct-atim stat-buf)))
+    (define/public (get-modified-time) (timespec-sec (statstruct-mtim stat-buf)))
+    (define/public (get-created-time) (timespec-sec (statstruct-ctim stat-buf)))
 
-    (define/public (get-is-regular-file?) (eq? is-regular-file? 1))
-    (define/public (get-is-directory?) (eq? is-directory? 1))
-    (define/public (get-is-character-device?) (eq? is-character-device? 1))
-    (define/public (get-is-block-device?) (eq? is-block-device? 1))
-    (define/public (get-is-fifo?) (eq? is-fifo? 1))
-    (define/public (get-is-symbolic-link?) (eq? is-symbolic-link? 1))
-    (define/public (get-is-socket?) (eq? is-socket? 1))
-    (define/public (get-has-set-user-id-bit?) (eq? (bitwise-and mode s-isuid) s-isuid))
-    (define/public (get-has-set-group-id-bit?) (eq? (bitwise-and mode s-isgid) s-isgid))
-    (define/public (get-has-sticky-bit?) (eq? (bitwise-and mode s-isvtx) s-isvtx))
-
-    (define/public (get-owner-has-rwx?) (eq? (bitwise-and mode s-irwxu) s-irwxu))
-    (define/public (get-owner-has-r?) (eq? (bitwise-and mode s-irusr) s-irusr))
-    (define/public (get-owner-has-w?) (eq? (bitwise-and mode s-iwusr) s-iwusr))
-    (define/public (get-owner-has-x?) (eq? (bitwise-and mode s-ixusr) s-ixusr))
-    (define/public (get-group-has-rwx?) (eq? (bitwise-and mode s-irwxg) s-irwxg))
-    (define/public (get-group-has-r?) (eq? (bitwise-and mode s-irgrp) s-irgrp))
-    (define/public (get-group-has-w?) (eq? (bitwise-and mode s-iwgrp) s-iwgrp))
-    (define/public (get-group-has-x?) (eq? (bitwise-and mode s-ixgrp) s-ixgrp))
-    (define/public (get-other-has-rwx?) (eq? (bitwise-and mode s-irwxo) s-irwxo))
-    (define/public (get-other-has-r?) (eq? (bitwise-and mode s-iroth) s-iroth))
-    (define/public (get-other-has-w?) (eq? (bitwise-and mode s-iwoth) s-iwoth))
-    (define/public (get-other-has-x?) (eq? (bitwise-and mode s-ixoth) s-ixoth))
+    (define (has-file-type-flag? file-type-mask) (eq? (bitwise-and (get-mode) s-ifmt) file-type-mask))
     
-    (define-inline-ffi c-stat #:compiler "clang"
-      "#include <sys/stat.h>\n"
-      "#include <sys/types.h>\n"
+    (define/public (get-is-regular-file?) (has-file-type-flag? s-ifreg))
+    (define/public (get-is-directory?) (has-file-type-flag? s-ifdir))
+    (define/public (get-is-character-device?) (has-file-type-flag? s-ifchr))
+    (define/public (get-is-block-device?) (has-file-type-flag? s-ifblk))
+    (define/public (get-is-fifo?) (has-file-type-flag? s-ififo))
+    (define/public (get-is-symbolic-link?) (has-file-type-flag? s-iflnk))
+    (define/public (get-is-socket?) (has-file-type-flag? s-ifsock))
 
-      "struct stat s;\n"
+    (define (has-mode-flag? flag-mask) (eq? (bitwise-and (get-mode) flag-mask) flag-mask))
+    
+    (define/public (get-has-set-user-id-bit?) (has-mode-flag? s-isuid))
+    (define/public (get-has-set-group-id-bit?) (has-mode-flag? s-isgid))
+    (define/public (get-has-sticky-bit?) (has-mode-flag? s-isvtx))         
+    (define/public (get-owner-has-rwx?) (has-mode-flag? s-irwxu)) 
+    (define/public (get-owner-has-r?) (has-mode-flag? s-irusr))
+    (define/public (get-owner-has-w?) (has-mode-flag? s-iwusr))
+    (define/public (get-owner-has-x?) (has-mode-flag? s-ixusr))
+    (define/public (get-group-has-rwx?) (has-mode-flag? s-irwxg))
+    (define/public (get-group-has-r?) (has-mode-flag? s-irgrp))
+    (define/public (get-group-has-w?) (has-mode-flag? s-iwgrp))
+    (define/public (get-group-has-x?) (has-mode-flag? s-ixgrp))
+    (define/public (get-other-has-rwx?) (has-mode-flag? s-irwxo))
+    (define/public (get-other-has-r?) (has-mode-flag? s-iroth))
+    (define/public (get-other-has-w?) (has-mode-flag? s-iwoth))
+    (define/public (get-other-has-x?) (has-mode-flag? s-ixoth))
 
-      "struct stat stat_for_file(char* file_name) {\n"
-      "  stat(file_name, &s);\n"
-      "  return s;\n"
-      "}\n"
+    ;; basic idea of how to call stat using ffi from
+    ;; https://github.com/198d/provee/blob/master/provee/file.rkt
+    (define clib (ffi-lib #f))
+    (define-cstruct _timespec ([sec _long]
+                               [nsec _long]))
 
-      "struct stat get_stat(void) {\n"
-      "  return s;\n"
-      "}\n"
+    (define-cstruct _statstruct([dev _long]
+                                [ino _long]
+                                [nlink _long]
+                                [mode _uint]
+                                [uid _uint]
+                                [gid _uint]
+                                [__pad0 _int]
+                                [rdev _ulong]
+                                [size _long]
+                                [blksize _long]
+                                [blocks _long]
+                                [atim _timespec]
+                                [mtim _timespec]
+                                [ctim _timespec]
+                                [__glibc_reserved (_array _long 3)]))
 
-      "unsigned long get_dev(void) {\n"
-      "  return s.st_dev;\n"
-      "}\n"
-      
-      "unsigned long get_inode(void) {\n"      
-      "  return s.st_ino;\n"
-      "}\n"
+    (define stat (get-ffi-obj
+                  "__xstat" clib
+                  (_fun #:save-errno 'posix
+                        _int _string _statstruct-pointer -> _int)) )
+    
+    (define stat-buf (cast
+                      (malloc _statstruct)
+                      _pointer
+                      _statstruct-pointer))
+    
+    (define stat-result (stat 1 full-path stat-buf))
 
-      "unsigned int get_mode(void) {\n"
-      "  return s.st_mode;\n"
-      "}\n"
-
-      "unsigned int get_nlink(void) {\n"
-      "  return s.st_nlink;\n"
-      "}\n"
-
-      "unsigned int get_uid(void) {\n"
-      "  return s.st_uid;\n"
-      "}\n"
-
-      "unsigned int get_gid(void) {\n"
-      "  return s.st_gid;\n"
-      "}\n"
-
-      "unsigned long get_rdev(void) {\n"
-      "  return s.st_rdev;\n"
-      "}\n"
-
-      "unsigned long get_size(void) {\n"
-      "  return s.st_size;\n"
-      "}\n"
-
-      "unsigned int get_blksize(void) {\n"
-      "  return s.st_blksize;\n"
-      "}\n"
-
-      "unsigned long get_blocks(void) {\n"
-      "  return s.st_blocks;\n"
-      "}\n"
-
-      "long get_atime(void) {\n"
-      "  return s.st_atime;\n"
-      "}\n"
-
-      "long get_mtime(void) {\n"
-      "  return s.st_mtime;\n"
-      "}\n"
-
-      "long get_ctime(void) {\n"
-      "  return s.st_ctime;\n"
-      "}\n"
-      
-      "\n"
-      "// File type flags"
-      "\n"
-      
-      "int is_regular_file(void) {\n"
-      "  return S_ISREG(s.st_mode);\n"
-      "}\n"
-      
-      "int is_directory(void) {\n"
-      "  return S_ISDIR(s.st_mode);\n"
-      "}\n"
-
-      "int is_character_device(void) {\n"
-      " return S_ISCHR(s.st_mode);\n"
-      "}\n"
-
-      "int is_block_device(void) {\n"
-      " return S_ISBLK(s.st_mode);\n"
-      "}\n"
-
-      "int is_fifo(void) {\n"
-      "  return S_ISFIFO(s.st_mode);\n"
-      "}\n"
-
-      "int is_symbolic_link(void) {\n"
-      "  return S_ISLNK(s.st_mode);\n"
-      "}\n"
-
-      "int is_socket(void) {\n"
-      "  return S_ISSOCK(s.st_mode);\n"
-      "}\n")
-
-    (c-stat 'stat_for_file full-path)
-
-    (define dev (c-stat 'get_dev))
-    (define inode (c-stat 'get_inode))
-    (define mode (c-stat 'get_mode))
-    (define nlink (c-stat 'get_nlink))
-    (define uid (c-stat 'get_uid))
-    (define gid (c-stat 'get_gid))
-    (define rdev (c-stat 'get_rdev))
-    (define size (c-stat 'get_size))
-    (define blksize (c-stat 'get_blksize))
-    (define blocks (c-stat 'get_blocks))
-    (define atime (c-stat 'get_atime))
-    (define mtime (c-stat 'get_mtime))
-    (define ctime (c-stat 'get_ctime))
-
-    (define is-regular-file? (c-stat 'is_regular_file))
-    (define is-directory? (c-stat 'is_directory))
-    (define is-character-device? (c-stat 'is_character_device))
-    (define is-block-device? (c-stat 'is_block_device))
-    (define is-fifo? (c-stat 'is_fifo))
-    (define is-symbolic-link? (c-stat 'is_symbolic_link))
-    (define is-socket? (c-stat 'is_socket))
-
-    ;; mode mask definitions
+    ;; file type mask definitions
+    (define s-ifmt #o00170000)
+    (define s-ifsock #o0140000)
+    (define s-iflnk #o0120000)
+    (define s-ifreg #o0100000)
+    (define s-ifblk #o0060000)
+    (define s-ifdir #o0040000)
+    (define s-ifchr #o0020000)
+    (define s-ififo #o0010000)
+        
+    ;; mode mask definitions    
     (define s-isuid #o04000)
     (define s-isgid #o02000)
     (define s-isvtx #o01000)
