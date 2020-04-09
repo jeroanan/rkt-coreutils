@@ -1,5 +1,5 @@
 #lang racket
-(require dynamic-ffi/unsafe)
+(require ffi/unsafe)
 
 (define getpwuid%
   (class object%
@@ -9,60 +9,29 @@
 
     (define iuid uid)
 
-    (define/public (get-username) name)
-    (define/public (get-password) passwd)
-    (define/public (get-uid) u)
-    (define/public (get-gid) gid)
-    (define/public (get-gecos) gecos)
-    (define/public (get-home-dir) dir)
-    (define/public (get-shell) shell)
-        
-    (define-inline-ffi c-pwd #:compiler "clang"
-      "#include <sys/types.h>\n"
-      "#include <pwd.h>\n"
+    (define/public (get-username) (passwdstruct-name result))
+    (define/public (get-password) (passwdstruct-passwd result))
+    (define/public (get-uid) (passwdstruct-uid result))
+    (define/public (get-gid) (passwdstruct-gid result))
+    (define/public (get-gecos) (passwdstruct-gecos result))
+    (define/public (get-home-dir) (passwdstruct-dir result))
+    (define/public (get-shell) (passwdstruct-shell result))
 
-      "struct passwd p;\n"
+    (define clib (ffi-lib #f))
 
-      "void getpwuid_for_uid(int uid) {\n"
-      "  p = *getpwuid(uid);\n"
-      "}\n"
+    (define-cstruct _passwdstruct([name _string]
+                                  [passwd _string]
+                                  [uid _uint]
+                                  [gid _uint]
+                                  [gecos _string]
+                                  [dir _string]
+                                  [shell _string]))
 
-      "char* get_name(void) {\n"
-      "  return p.pw_name;\n"
-      "}\n"
+    (define getpwuid (get-ffi-obj
+                  "getpwuid" clib
+                  (_fun #:save-errno 'posix
+                         _int -> _passwdstruct-pointer)) )
 
-      "char* get_passwd(void) {\n"
-      "  return p.pw_passwd;\n"
-      "}\n"
-
-      "unsigned int get_uid(void) {\n"
-      "  return p.pw_uid;\n"
-      "}\n"
-
-      "unsigned int get_gid(void) {\n"
-      " return p.pw_gid;\n"
-      "}\n"
-
-      "char* get_gecos(void) {\n"
-      "  return p.pw_gecos;\n"
-      "}\n"
-
-      "char* get_dir(void) {\n"
-      "  return p.pw_dir;\n"
-      "}\n"
-
-      "char* get_shell(void) {\n"
-      "  return p.pw_shell;\n"
-      "}\n")
-
-    (c-pwd 'getpwuid_for_uid iuid)
-    
-    (define name (c-pwd 'get_name))
-    (define passwd (c-pwd 'get_passwd))
-    (define u (c-pwd 'get_uid))
-    (define gid (c-pwd 'get_gid))
-    (define gecos (c-pwd 'get_gecos))
-    (define dir (c-pwd 'get_dir))
-    (define shell (c-pwd 'get_shell))))
+    (define result (getpwuid iuid))))
 
 (provide getpwuid%)

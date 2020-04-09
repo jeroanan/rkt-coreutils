@@ -1,5 +1,5 @@
 #lang racket
-(require dynamic-ffi/unsafe)
+(require ffi/unsafe)
 
 (define getgrgid%
   (class object%
@@ -9,41 +9,23 @@
 
     (define igid gid)
 
-    (define/public (get-name) name)
-    (define/public (get-password) passwd)
-    (define/public (get-gid) the-gid)
-    (define/public (get-members) members)
+    (define/public (get-name) (grpstruct-name result))
+    (define/public (get-password) (grpstruct-passwd result))
+    (define/public (get-gid) (grpstruct-gid result))
+    (define/public (get-members) (grpstruct-members result))
+
+    (define clib (ffi-lib #f))
     
-    (define-inline-ffi c-grp #:compiler "clang"
-      "#include <sys/types.h>\n"
-      "#include <grp.h>\n"
+    (define-cstruct _grpstruct ([name _string]
+                                [passwd _string]
+                                [gid _uint]
+                                [members _string]))
+    
+    (define getgrgid (get-ffi-obj
+                      "getgrgid" clib
+                      (_fun #:save-errno 'posix
+                            _int -> _grpstruct-pointer)) )
 
-      "struct group g;\n"
-
-      "void get_group_for_group_id(int gid) {\n"
-      "  g = *getgrgid(gid);\n"
-      "}\n"
-
-      "char* get_gr_name(void) {\n"
-      "  return g.gr_name;\n"
-      "}\n"
-
-      "char* get_gr_passwd(void) {\n"
-      "  return g.gr_passwd;\n"
-      "}\n"
-
-      "unsigned int get_gid(void) {\n"
-      "  return g.gr_gid;\n"
-      "}\n"
-
-      "char** get_members(void) {\n"
-      "  return g.gr_mem;\n"
-      "}\n")
-
-    (c-grp 'get_group_for_group_id igid)
-    (define name (c-grp 'get_gr_name))
-    (define passwd (c-grp 'get_gr_passwd))
-    (define the-gid (c-grp 'get_gid))
-    (define members (c-grp 'get_members))))
-
+    (define result (getgrgid igid))))
+    
 (provide getgrgid%)
