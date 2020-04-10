@@ -3,7 +3,8 @@
 (require "libc/stat.rkt"
          "libc/pwd.rkt"
          "libc/grp.rkt"
-         "human-size.rkt")
+         "human-size.rkt"
+         "human-date.rkt")
 
 (define show-hidden (make-parameter #f))
 (define hide-implied (make-parameter #t))
@@ -77,6 +78,10 @@
         [other-mode (get-other-mode stat)])
   (string-append file-type owner-mode group-mode other-mode)))
 
+(define (human-readable-date)
+  
+  #f)
+
 (define (format-entry path filename)
   (let* ([filename-string (path->string filename)]
          [full-path (build-path path filename)] 
@@ -92,8 +97,9 @@
          [owner-group (when-long-mode (λ () (send group get-name)))]
          [number-of-hardlinks (when-long-mode (λ () (number->string (send stat get-number-of-hardlinks))))]
          [size (when-long-mode (λ () (human-readable-byte-size (send stat get-size))))]
+         [mtime (when-long-mode (λ () (unix-seconds->human-date (send stat get-modified-time))))]
          
-         [outp-list (list inode mode-str number-of-hardlinks owner-user owner-group size filename-string)]
+         [outp-list (list inode mode-str number-of-hardlinks owner-user owner-group size mtime filename-string)]
          [outp-filtered (filter (λ (x) (not (false? x))) outp-list)]
          [outp-string (string-join outp-filtered " ")])
   outp-string))
