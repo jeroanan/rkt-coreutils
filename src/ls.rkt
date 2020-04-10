@@ -78,10 +78,6 @@
         [other-mode (get-other-mode stat)])
   (string-append file-type owner-mode group-mode other-mode)))
 
-(define (human-readable-date)
-  
-  #f)
-
 (define (format-entry path filename)
   (let* ([filename-string (path->string filename)]
          [full-path (build-path path filename)] 
