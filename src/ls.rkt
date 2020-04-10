@@ -3,8 +3,8 @@
 (require "libc/stat.rkt"
          "libc/pwd.rkt"
          "libc/grp.rkt"
-         "human-size.rkt"
-         "human-date.rkt")
+         "util/human-size.rkt"
+         "util/human-date.rkt")
 
 (define show-hidden (make-parameter #f))
 (define hide-implied (make-parameter #t))
