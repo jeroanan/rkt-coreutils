@@ -68,6 +68,7 @@
                                  (list "File" the-file))
                                 (list ; Line 2
                                  (list "Size" (number->string (send s get-size)))
+                                 (list "Blocks" (number->string (send s get-blocks)))
                                  (list "IO Block" (number->string (send s get-block-size)))
                                  (list "" (get-file-type-string s)))
                                 (list ; Line 3
@@ -88,10 +89,12 @@
                                  (list "Birth" "-")))])
     (for ([line output-elements])
       (for ([element line])
-        (displayln element))
+        (let* ([key (first element)]
+               [value (second element)]
+               [seperator (if (eq? key "") "" ": ")])
+          (display (format "~a~a~a\t" key seperator value))))
       (displayln ""))))
           
-
 (let* ([path-parts (get-path-parts)]
        [the-path (first path-parts)]
        [the-file (path->string (second path-parts))])
