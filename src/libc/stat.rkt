@@ -25,7 +25,7 @@
     (define/public (get-gid) (statstruct-gid stat-buf))
     (define/public (get-rdev) (statstruct-rdev stat-buf))
     (define/public (get-size) (statstruct-size stat-buf))
-    (define/public (get-block-size) (statstruct-blksize))
+    (define/public (get-block-size) (statstruct-blksize stat-buf))
     (define/public (get-blocks) (statstruct-blocks stat-buf))
     (define/public (get-accessed-time) (timespec-sec (statstruct-atim stat-buf)))
     (define/public (get-modified-time) (timespec-sec (statstruct-mtim stat-buf)))
