@@ -1,16 +1,16 @@
-# Stat
+# true
 
 ## 1. Name
 
-**stat** - Display file status
+true - do nothing, successfully
 
 ## 2. Synopsis
 
-**stat** \[FILE\]
+**true** \[ignored command line arguments\]   **true** OPTION
 
 ## 3. Description
 
-Display file status
+Exit with a status code indicating success.
 
 ## 4. Parameters
 
