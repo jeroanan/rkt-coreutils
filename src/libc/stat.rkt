@@ -1,4 +1,21 @@
 #lang racket
+
+; Copyright 2020 David Wilson
+
+;This program is free software: you can redistribute it and/or modify
+;it under the terms of the GNU General Public License as published by
+;the Free Software Foundation, either version 3 of the License, or
+;(at your option) any later version.
+;
+;This program is distributed in the hope that it will be useful,
+;but WITHOUT ANY WARRANTY; without even the implied warranty of
+;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;GNU General Public License for more details.
+;
+;You should have received a copy of the GNU General Public License
+;along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+
 (require ffi/unsafe)
 
 (define stat%
@@ -59,8 +76,6 @@
     (define/public (get-other-has-w?) (has-mode-flag? s-iwoth))
     (define/public (get-other-has-x?) (has-mode-flag? s-ixoth))
 
-    ;; basic idea of how to call stat using ffi from
-    ;; https://github.com/198d/provee/blob/master/provee/file.rkt
     (define clib (ffi-lib #f))
     (define-cstruct _timespec ([sec _long]
                                [nsec _long]))
