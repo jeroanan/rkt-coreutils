@@ -32,8 +32,6 @@
           path
           (build-path path file-name)))
  
-    (define/public (get-stat) stat-buf)
-
     (define/public (get-dev) (statstruct-dev stat-buf))
     (define/public (get-inode) (statstruct-ino stat-buf))
     (define/public (get-mode) (statstruct-mode stat-buf))
@@ -138,4 +136,5 @@
     (define s-iwoth #o00002)
     (define s-ixoth #o00001)))
 
-(provide stat%)
+(define (stat? x) #t)
+(provide stat% stat?)

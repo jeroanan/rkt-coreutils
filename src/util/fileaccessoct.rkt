@@ -1,4 +1,4 @@
-#lang racket
+#lang typed/racket
 
 ; Copyright 2020 David Wilson
 
@@ -15,8 +15,22 @@
 ;You should have received a copy of the GNU General Public License
 ;along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+(require "../libc/stat.rkt")
+
+(define-type stat%
+  (Class 
+         [get-owner-has-r? (-> Boolean)]
+         [get-owner-has-w? (-> Boolean)]
+         [get-owner-has-x? (-> Boolean)]
+         [get-group-has-r? (-> Boolean)]
+         [get-group-has-w? (-> Boolean)]
+         [get-group-has-x? (-> Boolean)]
+         [get-other-has-r? (-> Boolean)]
+         [get-other-has-w? (-> Boolean)]
+         [get-other-has-x? (-> Boolean)]))
+         
 (define-syntax-rule (get-permission-oct name r w x)
-  (define (name stat)
+  (define (name [stat : (Instance stat%)])
     (let ([has-r (λ () (if (send stat r) 4 0))]
           [has-w (λ () (if (send stat w) 2 0))]
           [has-x (λ () (if (send stat x) 1 0))])
@@ -26,7 +40,7 @@
 (get-permission-oct get-group-permission-oct get-group-has-r? get-group-has-w? get-group-has-x?)
 (get-permission-oct get-other-permission-oct get-other-has-r? get-other-has-w? get-other-has-x?)
 
-(define (get-mode-oct-str stat)
+(define (get-mode-oct-str [stat : (Instance stat%)])
   (format "0~a~a~a"
           (get-owner-permission-oct stat)
           (get-group-permission-oct stat)
