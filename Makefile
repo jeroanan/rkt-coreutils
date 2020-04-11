@@ -22,13 +22,23 @@ compiled/rkt-stat: src/stat.rkt $(DLIBC)/stat.rkt $(DLIBC)/pwd.rkt $(DLIBC)/grp.
 compiled/rkt-head: src/head.rkt $(VERSIONFILE)
 	$(RACO) exe -o compiled/rkt-head src/head.rkt
 
-docs: docs/html/ls.html docs/html/echo.html
+docs: docs-html docs-md
+
+docs-html: docs/html/ls.html docs/html/echo.html
 
 docs/html/ls.html: scribbles/ls.scrbl $(AUTHSCRBL) $(CWSCRBL)
 	$(SCRIBBLE) --dest docs/html --html scribbles/ls.scrbl
 
 docs/html/echo.html: scribbles/echo.scrbl $(AUTHSCRBL) $(CWSCRBL)
 	$(SCRIBBLE) --dest docs/html --html scribbles/echo.scrbl
+
+docs-md: docs/md/ls.md docs/md/echo.md
+
+docs/md/ls.md: scribbles/ls.scrbl $(AUTHSCRBL) $(CWSCRBL)
+	$(SCRIBBLE) --dest docs/md --markdown scribbles/ls.scrbl
+
+docs/md/echo.md: scribbles/echo.scrbl $(AUTHSCRBL) $(CWSCRBL)
+	$(SCRIBBLE) --dest docs/md --markdown scribbles/echo.scrbl
 
 clean:
 	rm -rf compiled
