@@ -24,7 +24,7 @@ compiled/rkt-head: src/head.rkt $(VERSIONFILE)
 
 docs: docs-html docs-md
 
-docs-html: docs/html/ls.html docs/html/echo.html docs/html/stat.html
+docs-html: docs/html/ls.html docs/html/echo.html docs/html/stat.html docs/html/head.html
 
 docs/html/ls.html: scribbles/ls.scrbl $(AUTHSCRBL) $(CWSCRBL)
 	$(SCRIBBLE) --dest docs/html --html scribbles/ls.scrbl
@@ -35,7 +35,10 @@ docs/html/echo.html: scribbles/echo.scrbl $(AUTHSCRBL) $(CWSCRBL)
 docs/html/stat.html: scribbles/stat.scrbl $(AUTHSCRBL) $(CWSCRBL)
 	$(SCRIBBLE) --dest docs/html --html scribbles/stat.scrbl
 
-docs-md: docs/md/ls.md docs/md/echo.md docs/md/stat.md
+docs/html/head.html: scribbles/head.scrbl $(AUTHSCRBL) $(CWSCRBL)
+	$(SCRIBBLE) --dest docs/html --html scribbles/head.scrbl
+	
+docs-md: docs/md/ls.md docs/md/echo.md docs/md/stat.md docs/md/head.md
 
 docs/md/ls.md: scribbles/ls.scrbl $(AUTHSCRBL) $(CWSCRBL)
 	$(SCRIBBLE) --dest docs/md --markdown scribbles/ls.scrbl
@@ -45,6 +48,9 @@ docs/md/echo.md: scribbles/echo.scrbl $(AUTHSCRBL) $(CWSCRBL)
 
 docs/md/stat.md: scribbles/stat.scrbl $(AUTHSCRBL) $(CWSCRBL)
 	$(SCRIBBLE) --dest docs/md --markdown scribbles/stat.scrbl
+
+docs/md/head.md: scribbles/head.scrbl $(AUTHSCRBL) $(CWSCRBL)
+	$(SCRIBBLE) --dest docs/md --markdown scribbles/head.scrbl
 
 clean:
 	rm -rf compiled
