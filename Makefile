@@ -8,9 +8,9 @@ VERSIONFILE=src/util/version.rkt
 AUTHSCRBL=scribbles/author.scrbl
 CWSCRBL = scribbles/copyright.scrbl
 
-all: compiled/rkt-ls compiled/rkt-echo compiled/rkt-stat compiled/rkt-head compiled/rkt-true docs
+all: compiled/rkt-ls compiled/rkt-echo compiled/rkt-stat compiled/rkt-head compiled/rkt-true compiled/rkt-false docs
 
-compiled/rkt-ls: src/ls.rkt $(DUTIL)/human-size.rkt $(DUTIL)/human-date.rkt $(DUTIL)/fileaccessstr.rkt $(DLIBC)/stat.rkt $(DLIBC)/pwd.rkt $(DLIBC)/grp.rkt $(VERSIONFILE)
+compiled/rkt-ls: src/ls.rkt $(DUTIL)/human-size.rkt $(DUTIL)/human-date.rkt $(DUTIL)/fileaccessstr.rkt $(DLIBC)/stat.rkt $(DLIBC)/pwd.rkt $(DLIBC)/grp.rkt $(VERSIONFILE) 
 	$(RACO) exe -o compiled/rkt-ls src/ls.rkt
 
 compiled/rkt-echo: src/echo.rkt $(VERSIONFILE)
@@ -25,9 +25,12 @@ compiled/rkt-head: src/head.rkt $(VERSIONFILE)
 compiled/rkt-true: src/true.rkt $(VERSIONFILE)
 	$(RACO) exe -o compiled/rkt-true src/true.rkt
 
+compiled/rkt-false: src/false.rkt $(VERSIONFILE)
+	$(RACO) exe -o compiled/rkt-false src/false.rkt
+
 docs: docs-html docs-md
 
-docs-html: docs/html/ls.html docs/html/echo.html docs/html/stat.html docs/html/head.html docs/html/true.html
+docs-html: docs/html/ls.html docs/html/echo.html docs/html/stat.html docs/html/head.html docs/html/true.html docs/html/false.html
 
 docs/html/ls.html: scribbles/ls.scrbl $(AUTHSCRBL) $(CWSCRBL)
 	$(SCRIBBLE) --dest docs/html --html scribbles/ls.scrbl
@@ -44,7 +47,10 @@ docs/html/head.html: scribbles/head.scrbl $(AUTHSCRBL) $(CWSCRBL)
 docs/html/true.html: scribbles/true.scrbl $(AUTHSCRBL) $(CWSCRBL)
 	$(SCRIBBLE) --dest docs/html --html scribbles/true.scrbl
 	
-docs-md: docs/md/ls.md docs/md/echo.md docs/md/stat.md docs/md/head.md docs/md/true.md
+docs/html/false.html: scribbles/false.scrbl $(AUTHSCRBL) $(CWSCRBL)
+	$(SCRIBBLE) --dest docs/html --html scribbles/false.scrbl
+
+docs-md: docs/md/ls.md docs/md/echo.md docs/md/stat.md docs/md/head.md docs/md/true.md docs/md/false.md
 
 docs/md/ls.md: scribbles/ls.scrbl $(AUTHSCRBL) $(CWSCRBL)
 	$(SCRIBBLE) --dest docs/md --markdown scribbles/ls.scrbl
@@ -60,6 +66,9 @@ docs/md/head.md: scribbles/head.scrbl $(AUTHSCRBL) $(CWSCRBL)
 
 docs/md/true.md: scribbles/true.scrbl $(AUTHSCRBL) $(CWSCRBL)
 	$(SCRIBBLE) --dest docs/md --markdown scribbles/true.scrbl
+
+docs/md/false.md: scribbles/false.scrbl $(AUTHSCRBL) $(CWSCRBL)
+	$(SCRIBBLE) --dest docs/md --markdown scribbles/false.scrbl
 
 clean:
 	rm -rf compiled
