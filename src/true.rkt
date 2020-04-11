@@ -1,8 +1,8 @@
-#lang racket
+#lang typed/racket
 
 (require "util/version.rkt")
 
-(define args (make-parameter ""))
+(define args (make-parameter (list)))
 
 (command-line
   #:argv (current-command-line-arguments)
