@@ -15,6 +15,8 @@
 ;You should have received a copy of the GNU General Public License
 ;along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+(require "util/version.rkt")
+
 (define file-name (make-parameter ""))
 (define number-of-lines (make-parameter 10))
 
@@ -33,6 +35,7 @@
   #:argv (current-command-line-arguments)
   #:once-each
   [("-n" "--lines") nl "print the first NUM lines instead of the first 10" (set-number-of-lines nl)]
+  [("-v" "--version") "display version information and exit" (print-version-text-and-exit)]
   #:args filename (unless (empty? filename) (file-name (first filename))))
 
 (let ([f (open-input-file (file-name) #:mode 'text )])

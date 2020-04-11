@@ -20,7 +20,8 @@
          "libc/grp.rkt"
          "util/human-size.rkt"
          "util/human-date.rkt"
-         "util/fileaccessstr.rkt")
+         "util/fileaccessstr.rkt"
+         "util/version.rkt")
 
 (define show-hidden (make-parameter #f))
 (define hide-implied (make-parameter #t))
@@ -45,6 +46,7 @@
   [("-A" "--almost-all") "do not list implied . and .." (set-almost-all)]
   [("-i" "--inode") "print the index number of each file" (print-inodes #t)]
   [("-l") "use a long listing format" (long-mode #t)]
+  [("-v" "--version") "display version information and exit" (print-version-text-and-exit)]
   #:args dir (unless (empty? dir) (pwd (first dir))))
 
 (define (add-implied es)

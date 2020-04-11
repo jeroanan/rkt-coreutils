@@ -21,7 +21,8 @@
          "libc/pwd.rkt"
          "libc/grp.rkt"
          "util/fileaccessoct.rkt"
-         "util/fileaccessstr.rkt")
+         "util/fileaccessstr.rkt"
+         "util/version.rkt")
 
 (define the-file (make-parameter ""))
 
@@ -31,6 +32,7 @@
 (command-line
   #:argv (current-command-line-arguments)
   #:once-each
+  [("-v" "--version") "display version information and exit" (print-version-text-and-exit)]
   #:args filename (unless (empty? filename) (the-file (get-path (first filename)))))
 
 (define (get-path-parts)

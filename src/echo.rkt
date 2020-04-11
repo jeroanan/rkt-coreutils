@@ -15,11 +15,14 @@
 ;You should have received a copy of the GNU General Public License
 ;along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+(require "util/version.rkt")
+
 (define the-string (make-parameter ""))
 
 (command-line
   #:argv (current-command-line-arguments)
   #:once-each
+  [("-v" "--version") "display version information and exit" (print-version-text-and-exit)]
   #:args string (unless (empty? string) (the-string (first string))))
 
 (displayln (the-string))
