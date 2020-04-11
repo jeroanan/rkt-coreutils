@@ -4,7 +4,7 @@
 
 @section{Name}
 
-ls - list directory contents
+@bold{ls} - list directory contents
 
 @section{Synopsis}
 

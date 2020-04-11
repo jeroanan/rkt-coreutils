@@ -1,23 +1,19 @@
-# ls
+# Stat
 
 ## 1. Name
 
-**ls** - list directory contents
+**stat** - Display file status
 
 ## 2. Synopsis
 
-**ls** \[Option\]... \[DIRECTORY\]
+**stat** \[FILE\]
 
 ## 3. Description
 
-List information about the DIRECTORY \(the current directory by
-default\).
+Display file status
 
 ## 4. Parameters
 
-**-a, –all** – do not ignore entries starting with .   **-A,
-–almost-all** – do not list implied . and ..   **-i, –inode** – print
-the index number of each file   **-l** – use a long listing format
 **-v** – display version information and exit
 
 ## 5. Author
