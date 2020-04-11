@@ -1,4 +1,4 @@
-#lang racket/base
+#lang typed/racket
 
 ; Copyright 2020 David Wilson
 
@@ -15,7 +15,9 @@
 ;You should have received a copy of the GNU General Public License
 ;along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-(define (get-human-readable-size byte-size unit-size unit-symbol)
+(define (get-human-readable-size [byte-size : Positive-Integer]
+                                 [unit-size : Positive-Integer]
+                                 [unit-symbol : String])
   (let* ([whole-things (floor (/ byte-size unit-size))]
          [remainder (modulo byte-size unit-size)]
          [remainder-decimal
@@ -36,8 +38,8 @@
                   (if omit-decimal? "" decimal-string)
                   unit-symbol)])
     output))
-  
-(define (human-readable-byte-size byte-size)
+
+(define (human-readable-byte-size [byte-size : Positive-Integer])
   (let* ([kilobyte 1024]
          [megabyte (* kilobyte 1024)]
          [gigabyte (* megabyte 1024)])
