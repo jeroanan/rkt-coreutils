@@ -1,4 +1,4 @@
-#lang racket
+#lang typed/racket
 
 ; Copyright 2020 David Wilson
 
@@ -17,12 +17,16 @@
 
 (require "util/version.rkt")
 
-(define the-string (make-parameter ""))
+(define the-string (list ""))
+
+(define (set-the-string [s : (Pairof Any (Listof Any))])
+  (let ([#{strings : (Listof String)} (map (λ (x) (format "~a" x)) s)])
+    (set! the-string strings)))
 
 (command-line
   #:argv (current-command-line-arguments)
   #:once-each
   [("-v" "--version") "display version information and exit" (print-version-text-and-exit)]
-  #:args string (unless (empty? string) (the-string (first string))))
+  #:args strings (unless (empty? strings) (set-the-string strings)))
 
-(displayln (the-string))
+(displayln (string-join the-string " "))
