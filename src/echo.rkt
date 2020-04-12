@@ -17,11 +17,11 @@
 
 (require "util/version.rkt")
 
-(define the-string (list ""))
+(define the-string (make-parameter (list "")))
 
 (define (set-the-string [s : (Pairof Any (Listof Any))])
   (let ([#{strings : (Listof String)} (map (λ (x) (format "~a" x)) s)])
-    (set! the-string strings)))
+    (the-string strings)))
 
 (command-line
   #:argv (current-command-line-arguments)
@@ -29,4 +29,4 @@
   [("-v" "--version") "display version information and exit" (print-version-text-and-exit)]
   #:args strings (unless (empty? strings) (set-the-string strings)))
 
-(displayln (string-join the-string " "))
+(displayln (string-join (the-string) " "))

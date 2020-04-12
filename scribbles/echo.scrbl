@@ -7,11 +7,11 @@
 echo - display a line of text
 
 @section{Synopsis}
-@bold{echo} [STRING]
+@bold{echo} [STRING]...
 
 @section{Description}
 
-Echo echo the STRING to standard output.
+Echo the STRING(s) to standard output.
 
 @include-section["author.scrbl"]
 @include-section["copyright.scrbl"]
