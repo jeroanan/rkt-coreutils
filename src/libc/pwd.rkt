@@ -50,4 +50,7 @@
 
     (define result (getpwuid iuid))))
 
-(provide getpwuid%)
+(define (get-pwuid uid)
+  (new getpwuid% [uid uid]))  
+
+(provide getpwuid% get-pwuid)

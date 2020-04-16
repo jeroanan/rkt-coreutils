@@ -8,7 +8,7 @@
 
 @section{Synopsis}
 
-@bold{stat} [FILE]
+@bold{stat} [FILE]...
 
 @section{Description}
 

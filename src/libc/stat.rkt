@@ -137,4 +137,8 @@
     (define s-ixoth #o00001)))
 
 (define (stat? x) #t)
-(provide stat% stat?)
+
+(define (get-stat path file-name)
+  (new stat% [path path] [file-name file-name]))
+
+(provide stat% stat? get-stat)

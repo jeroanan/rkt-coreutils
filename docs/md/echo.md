@@ -6,11 +6,11 @@ echo - display a line of text
 
 ## 2. Synopsis
 
-**echo** \[STRING\]
+**echo** \[STRING\]...
 
 ## 3. Description
 
-Echo echo the STRING to standard output.
+Echo the STRING\(s\) to standard output.
 
 ## 4. Author
 

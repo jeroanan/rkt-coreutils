@@ -43,5 +43,8 @@
                             _int -> _grpstruct-pointer)) )
 
     (define result (getgrgid igid))))
-    
-(provide getgrgid%)
+
+(define (get-getgrgid gid)
+  (new getgrgid% [gid gid]))
+
+(provide getgrgid% get-getgrgid)
