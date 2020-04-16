@@ -19,7 +19,10 @@
 
 (require "util/fileaccessoct.rkt"
          "util/fileaccessstr.rkt"
-         "util/version.rkt")
+         "util/version.rkt"
+         "typedef/stat.rkt"
+         "typedef/getpwuid.rkt"
+         "typedef/getgrgid.rkt")
 
 (require/typed "libc/pwd.rkt"
                [get-pwuid (-> Number (Instance Getpwuid%))])
@@ -33,43 +36,6 @@
 (require/typed racket/date
                [date-display-format ( -> Symbol Void)]
                [date->string (-> date Boolean String)])
-
-(define-type Stat%
-  (Class 
-   [get-owner-has-rwx? (-> Boolean)]
-   [get-owner-has-r? (-> Boolean)]
-   [get-owner-has-w? (-> Boolean)]
-   [get-owner-has-x? (-> Boolean)]
-   [get-group-has-rwx? (-> Boolean)]
-   [get-group-has-r? (-> Boolean)]
-   [get-group-has-w? (-> Boolean)]
-   [get-group-has-x? (-> Boolean)]
-   [get-other-has-rwx? (-> Boolean)]
-   [get-other-has-r? (-> Boolean)]
-   [get-other-has-w? (-> Boolean)]
-   [get-other-has-x? (-> Boolean)]
-   [get-is-directory? (-> Boolean)]
-   [get-is-regular-file? (-> Boolean)]
-   [get-is-character-device? (-> Boolean)]
-   [get-dev (-> Number)]
-   [get-uid (-> Number)]
-   [get-gid (-> Number)]
-   [get-accessed-time (-> Integer)]
-   [get-modified-time (-> Integer)]
-   [get-created-time (-> Integer)]
-   [get-size (-> Number)]
-   [get-blocks (-> Number)]
-   [get-block-size (-> Number)]
-   [get-inode (-> Number)]
-   [get-number-of-hardlinks (-> Number)]))
-
-(define-type Getpwuid%
-  (Class
-   [get-username (-> String)]))
-
-(define-type Getgrgid%
-  (Class
-   [get-name (-> String)]))
 
 (define the-files (make-parameter (list "")))
 

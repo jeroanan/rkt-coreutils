@@ -15,29 +15,15 @@
 ;You should have received a copy of the GNU General Public License
 ;along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-(define-type stat%
-  (Class 
-   [get-owner-has-rwx? (-> Boolean)]
-   [get-owner-has-r? (-> Boolean)]
-   [get-owner-has-w? (-> Boolean)]
-   [get-owner-has-x? (-> Boolean)]
-   [get-group-has-rwx? (-> Boolean)]
-   [get-group-has-r? (-> Boolean)]
-   [get-group-has-w? (-> Boolean)]
-   [get-group-has-x? (-> Boolean)]
-   [get-other-has-rwx? (-> Boolean)]
-   [get-other-has-r? (-> Boolean)]
-   [get-other-has-w? (-> Boolean)]
-   [get-other-has-x? (-> Boolean)]
-   [get-is-directory? (-> Boolean)]))
+(require "../typedef/stat.rkt")
 
-(define (get-file-type-char [stat : (Instance stat%)])
+(define (get-file-type-char [stat : (Instance Stat%)])
   (cond
     [(send stat get-is-directory?) "d"]
     [else "-"]))
 
 (define-syntax-rule (get-permissions-mode name rwx r w x)
-  (define (name [stat : (Instance stat%)])
+  (define (name [stat : (Instance Stat%)])
     (if (send stat rwx)
         "rwx"
         (let ([r-flag (if (send stat r) "r" "-")]
@@ -49,7 +35,7 @@
 (get-permissions-mode get-group-mode get-group-has-rwx? get-group-has-r? get-group-has-w? get-group-has-x?)
 (get-permissions-mode get-other-mode get-other-has-rwx? get-other-has-r? get-other-has-w? get-other-has-x?)
 
-(define (get-mode-str [stat : (Instance stat%)])
+(define (get-mode-str [stat : (Instance Stat%)])
   (let ([file-type (get-file-type-char stat)]
         [owner-mode (get-owner-mode stat)]
         [group-mode (get-group-mode stat)]

@@ -6,7 +6,7 @@
 
 ## 2. Synopsis
 
-**stat** \[FILE\]
+**stat** \[FILE\]...
 
 ## 3. Description
 
