@@ -1,4 +1,4 @@
-#lang racket
+#lang typed/racket
 
 ; Copyright 2020 David Wilson
 
@@ -17,27 +17,39 @@
 
 (require "util/version.rkt")
 
-(define file-name (make-parameter ""))
+(define the-files (make-parameter (list "")))
+
+(: number-of-lines (Parameterof Integer))
 (define number-of-lines (make-parameter 10))
+
+(: get-number-of-lines (-> Integer))
+(define (get-number-of-lines)
+  (number-of-lines))
 
 (define (exit-with-error error-msg)
   (begin
     (displayln error-msg)
     (exit 1)))
 
-(define (set-number-of-lines nl)
-  (let ([i (string->number nl)])
+(define (set-number-of-lines [nl : String])
+  (let ([i (assert (string->number nl) exact-integer?)])
     (if (false? i)
         (exit-with-error (format "invalid number of lines: '~a'" nl))
         (number-of-lines i))))      
-                             
+
+(define (set-the-files [s : (Pairof Any (Listof Any))])
+  (let ([#{strings : (Listof String)} (map (λ (x) (format "~a" x)) s)])
+    (the-files strings)))
+
 (command-line
   #:argv (current-command-line-arguments)
   #:once-each
-  [("-n" "--lines") nl "print the first NUM lines instead of the first 10" (set-number-of-lines nl)]
+  [("-n" "--lines") nl "print the first NUM lines instead of the first 10" (set-number-of-lines (format "~a" nl))]
   [("-v" "--version") "display version information and exit" (print-version-text-and-exit)]
-  #:args filename (unless (empty? filename) (file-name (first filename))))
+  #:args filename (unless (empty? filename) (set-the-files filename)))
 
-(let ([f (open-input-file (file-name) #:mode 'text )])
-  (for ([i (number-of-lines)])
-        (displayln (read-line f))))
+(for ([file-name (the-files)])
+  (when (> (length (the-files)) 1) (displayln (format "==> ~a <==" file-name)))
+  (let ([f (open-input-file file-name #:mode 'text )])
+    (for ([i (get-number-of-lines)])
+      (displayln (read-line f)))))
