@@ -6,11 +6,11 @@
 
 ## 2. Synopsis
 
-**ls** \[Option\]... \[DIRECTORY\]
+**ls** \[Option\]... \[DIRECTORY\]...
 
 ## 3. Description
 
-List information about the DIRECTORY \(the current directory by
+List information about the DIRECTORYS \(the current directory by
 default\).
 
 ## 4. Parameters

@@ -15,8 +15,8 @@
 ;You should have received a copy of the GNU General Public License
 ;along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-(define (get-human-readable-size [byte-size : Positive-Integer]
-                                 [unit-size : Positive-Integer]
+(define (get-human-readable-size [byte-size : Integer]
+                                 [unit-size : Integer]
                                  [unit-symbol : String])
   (let* ([whole-things (floor (/ byte-size unit-size))]
          [remainder (modulo byte-size unit-size)]
@@ -39,7 +39,7 @@
                   unit-symbol)])
     output))
 
-(define (human-readable-byte-size [byte-size : Positive-Integer])
+(define (human-readable-byte-size [byte-size : Integer])
   (let* ([kilobyte 1024]
          [megabyte (* kilobyte 1024)]
          [gigabyte (* megabyte 1024)])

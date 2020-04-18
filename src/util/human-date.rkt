@@ -31,14 +31,14 @@
         "Dev"))
 
 (define (get-year-or-time
-         [year : Nonnegative-Integer]
+         [year : Integer]
          [time : String])
   (let ([current-date (seconds->date (current-seconds))])
     (if (> (date-year current-date) year)
         (number->string year)
         time)))
                         
-(define (unix-seconds->human-date [unix-seconds : Positive-Integer])
+(define (unix-seconds->human-date [unix-seconds : Integer])
   (let* ([the-date (seconds->date unix-seconds)]
          [year (date-year the-date)]
          [month (list-ref month-names (date-month the-date))]

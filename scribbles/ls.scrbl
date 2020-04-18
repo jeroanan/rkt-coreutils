@@ -8,11 +8,11 @@
 
 @section{Synopsis}
 
-@bold{ls} [Option]... [DIRECTORY]
+@bold{ls} [Option]... [DIRECTORY]...
 
 @section{Description}
 
-List information about the DIRECTORY (the current directory by default).
+List information about the DIRECTORYS (the current directory by default).
 
 @section{Parameters}
 @bold{-a, --all} -- do not ignore entries starting with .
