@@ -18,7 +18,7 @@ compiled/rkt-ls: src/ls.rkt $(DUTIL)/human-size.rkt $(DUTIL)/human-date.rkt $(DU
 compiled/rkt-echo: src/echo.rkt $(VERSIONFILE)
 	$(RACO) exe -o compiled/rkt-echo src/echo.rkt
 
-compiled/rkt-stat: src/stat.rkt $(DLIBC)/stat.rkt $(DLIBC)/pwd.rkt $(DLIBC)/grp.rkt $(DUTIL)/fileaccessstr.rkt $(DUTIL)/fileaccessoct.rkt  $(TYPEDEFS)/stat.rkt $(TYPEDEFS)/getpwuid.rkt $(TYPEDEFS)/getgrgid.rkt $(VERSIONFILE)
+compiled/rkt-stat: src/stat.rkt $(DLIBC)/stat.rkt $(DLIBC)/pwd.rkt $(DLIBC)/grp.rkt $(DUTIL)/fileaccessstr.rkt $(DUTIL)/fileaccessoct.rkt  $(TYPEDEFS)/stat.rkt $(TYPEDEFS)/getpwuid.rkt $(TYPEDEFS)/getgrgid.rkt $(REPL)/stat.rkt $(VERSIONFILE)
 	$(RACO) exe -o compiled/rkt-stat src/stat.rkt
 
 compiled/rkt-head: src/head.rkt $(REPL)/head.rkt $(VERSIONFILE)
