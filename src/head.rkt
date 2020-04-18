@@ -15,7 +15,8 @@
 ;You should have received a copy of the GNU General Public License
 ;along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-(require "util/version.rkt")
+(require "util/version.rkt"
+         "repl/head.rkt")
 
 (define the-files (make-parameter (list "")))
 
@@ -41,6 +42,9 @@
   (let ([#{strings : (Listof String)} (map (λ (x) (format "~a" x)) s)])
     (the-files strings)))
 
+(define (get-the-files)
+  (map (λ ([x : String]) (format "~a" x)) (the-files)))
+
 (command-line
   #:argv (current-command-line-arguments)
   #:once-each
@@ -48,8 +52,6 @@
   [("-v" "--version") "display version information and exit" (print-version-text-and-exit)]
   #:args filename (unless (empty? filename) (set-the-files filename)))
 
-(for ([file-name (the-files)])
-  (when (> (length (the-files)) 1) (displayln (format "==> ~a <==" file-name)))
-  (let ([f (open-input-file file-name #:mode 'text )])
-    (for ([i (get-number-of-lines)])
-      (displayln (read-line f)))))
+(let ([head (new head%)])
+  (send head set-number-of-lines (number-of-lines))
+  (send head execute (get-the-files)))
