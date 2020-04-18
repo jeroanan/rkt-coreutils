@@ -15,23 +15,8 @@
 ;You should have received a copy of the GNU General Public License
 ;along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-(require "libc/grp.rkt"
-         "typedef/stat.rkt"
-         "typedef/getpwuid.rkt"
-         "typedef/getgrgid.rkt"
-         "util/human-size.rkt"
-         "util/human-date.rkt"
-         "util/fileaccessstr.rkt"
+(require "repl/ls.rkt"
          "util/version.rkt")
-
-(require/typed "libc/pwd.rkt"
-               [get-pwuid (-> Number (Instance Getpwuid%))])
-
-(require/typed "libc/grp.rkt"
-               [get-getgrgid (-> Number (Instance Getgrgid%))])
-
-(require/typed "libc/stat.rkt"
-               [get-stat (-> String String (Instance Stat%))])
 
 (: show-hidden (Parameterof Boolean))
 (define show-hidden (make-parameter #f))
@@ -72,62 +57,10 @@
   [("-v" "--version") "display version information and exit" (print-version-text-and-exit)]
   #:args dir (unless (empty? dir) (set-the-pwds dir)))
 
-(define (add-implied [es : (Listof Path)])
-  (if (not (hide-implied))
-    (append (list "." "..") es)
-    es))
-
-(define (filter-hidden [es : (Listof Path)])  
-  (define (weed-hidden [f : Path])
-    (not (string-prefix? (path->string f) ".")))  
-  (filter (lambda ([x : Path]) (weed-hidden x)) es))
-
-(define (get-inode-for-print [inode : (Instance Stat%)])
-  (if (print-inodes)
-      (number->string (send inode get-inode))
-      #f))
-
-(define (process-entry-list [es : (Listof Path)])
-  (add-implied
-   (filter-hidden
-    es)))
-
-(define (when-long-mode [x : (-> String) ])
-  (if (long-mode) (x) #f))
-
-(define (format-entry [path : Path] [filename : Path])
-  (let* ([filename-string (path->string filename)]
-         [full-path (build-path path filename)] 
-         [f-str (path->string full-path)]
-         [stat (get-stat (path->string path) (path->string filename))]
-         [user (get-pwuid (send stat get-uid))]
-         [group (get-getgrgid (send stat get-gid))]
-         
-         [inode (get-inode-for-print stat)]
-
-         [mode-str (when-long-mode (λ () (get-mode-str stat)))]
-         [owner-user (when-long-mode (λ () (send user get-username)))]
-         [owner-group (when-long-mode (λ () (send group get-name)))]
-         [number-of-hardlinks (when-long-mode (λ () (number->string (send stat get-number-of-hardlinks))))]
-         [size (when-long-mode (λ () (human-readable-byte-size (assert (send stat get-size) exact-integer?))))]
-         [mtime (when-long-mode (λ () (unix-seconds->human-date (assert (send stat get-modified-time) exact-integer?))))]
-         
-         [outp-list (list inode mode-str number-of-hardlinks owner-user owner-group size mtime filename-string)]
-         [outp-filtered (map (λ (p) (format "~a" p)) (filter (λ (x) (not (false? x))) outp-list))]
-         [outp-string (string-join outp-filtered " ")])
-  outp-string))
-
-(define (is-implied-path? p)
-  (or
-   (eq? p ".")
-   (eq? p "..")))
-  
-(for ([p (pwds)])
-  (let* ([dlist (process-entry-list (directory-list p))])
-    (for ([f dlist])
-      (let* ([full-path (build-path p f)])           
-        (displayln
-         (if (is-implied-path? f)
-             f
-             (format-entry p (string->path (format "~a" f)))))))))
-  
+(let ([ls (new ls%)])
+  (send ls set-show-hidden (show-hidden))
+  (send ls set-hide-implied (hide-implied))
+  (send ls set-print-inodes (print-inodes))
+  (send ls set-long-mode (long-mode))
+  (send ls execute
+        (map (λ (x) (path->string x)) (pwds))))
