@@ -10,7 +10,7 @@ REPL=src/repl
 AUTHSCRBL=scribbles/author.scrbl
 CWSCRBL = scribbles/copyright.scrbl
 
-exe: compiled/rkt-ls compiled/rkt-echo compiled/rkt-stat compiled/rkt-head compiled/rkt-true compiled/rkt-false compiled/rkt-whoami compiled/rkt-cat docs
+exe: compiled/rkt-ls compiled/rkt-echo compiled/rkt-stat compiled/rkt-head compiled/rkt-true compiled/rkt-false compiled/rkt-whoami compiled/rkt-cat compiled/rkt-md5sum docs
 
 compiled/rkt-ls: src/ls.rkt $(DUTIL)/human-size.rkt $(DUTIL)/human-date.rkt $(DUTIL)/fileaccessstr.rkt $(DLIBC)/stat.rkt $(DLIBC)/pwd.rkt $(DLIBC)/grp.rkt $(TYPEDEFS)/stat.rkt $(TYPEDEFS)/getpwuid.rkt $(TYPEDEFS)/getgrgid.rkt $(VERSIONFILE) 
 	$(RACO) exe -o compiled/rkt-ls src/ls.rkt
@@ -36,9 +36,12 @@ compiled/rkt-whoami: src/whoami.rkt $(VERSIONFILE) $(REPL)/whoami.rkt $(DLIBC)/p
 compiled/rkt-cat: src/cat.rkt $(VERSIONFILE) $(REPL)/cat.rkt 
 	$(RACO) exe -o compiled/rkt-cat src/cat.rkt
 
+compiled/rkt-md5sum: src/md5sum.rkt $(VERSIONFILE) $(REPL)/md5sum.rkt 
+	$(RACO) exe -o compiled/rkt-md5sum src/md5sum.rkt
+	
 docs: docs-html docs-md
 
-docs-html: docs/html/ls.html docs/html/echo.html docs/html/stat.html docs/html/head.html docs/html/true.html docs/html/false.html docs/html/whoami.html docs/html/cat.html
+docs-html: docs/html/ls.html docs/html/echo.html docs/html/stat.html docs/html/head.html docs/html/true.html docs/html/false.html docs/html/whoami.html docs/html/cat.html docs/html/md5sum.html
 
 docs/html/ls.html: scribbles/ls.scrbl $(AUTHSCRBL) $(CWSCRBL)
 	$(SCRIBBLE) --dest docs/html --html scribbles/ls.scrbl
@@ -64,7 +67,10 @@ docs/html/whoami.html: scribbles/whoami.scrbl $(AUTHSCRBL) $(CWSCRBL)
 docs/html/cat.html: scribbles/cat.scrbl $(AUTHSCRBL) $(CWSCRBL)
 	$(SCRIBBLE) --dest docs/html --html scribbles/cat.scrbl
 
-docs-md: docs/md/ls.md docs/md/echo.md docs/md/stat.md docs/md/head.md docs/md/true.md docs/md/false.md docs/md/whoami.md docs/md/cat.md
+docs/html/md5sum.html: scribbles/md5sum.scrbl $(AUTHSCRBL) $(CWSCRBL)
+	$(SCRIBBLE) --dest docs/html --html scribbles/md5sum.scrbl
+
+docs-md: docs/md/ls.md docs/md/echo.md docs/md/stat.md docs/md/head.md docs/md/true.md docs/md/false.md docs/md/whoami.md docs/md/cat.md docs/md/md5sum.md
 
 docs/md/ls.md: scribbles/ls.scrbl $(AUTHSCRBL) $(CWSCRBL)
 	$(SCRIBBLE) --dest docs/md --markdown scribbles/ls.scrbl
@@ -89,6 +95,9 @@ docs/md/whoami.md: scribbles/whoami.scrbl $(AUTHSCRBL) $(CWSCRBL)
 
 docs/md/cat.md: scribbles/cat.scrbl $(AUTHSCRBL) $(CWSCRBL)
 	$(SCRIBBLE) --dest docs/md --markdown scribbles/cat.scrbl
+
+docs/md/md5sum.md: scribbles/md5sum.scrbl $(AUTHSCRBL) $(CWSCRBL)
+	$(SCRIBBLE) --dest docs/md --markdown scribbles/md5sum.scrbl
 
 clean:
 	rm -rf compiled
