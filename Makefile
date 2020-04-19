@@ -10,7 +10,7 @@ REPL=src/repl
 AUTHSCRBL=scribbles/author.scrbl
 CWSCRBL = scribbles/copyright.scrbl
 
-exe: compiled/rkt-ls compiled/rkt-echo compiled/rkt-stat compiled/rkt-head compiled/rkt-true compiled/rkt-false compiled/rkt-whoami docs
+exe: compiled/rkt-ls compiled/rkt-echo compiled/rkt-stat compiled/rkt-head compiled/rkt-true compiled/rkt-false compiled/rkt-whoami compiled/rkt-cat docs
 
 compiled/rkt-ls: src/ls.rkt $(DUTIL)/human-size.rkt $(DUTIL)/human-date.rkt $(DUTIL)/fileaccessstr.rkt $(DLIBC)/stat.rkt $(DLIBC)/pwd.rkt $(DLIBC)/grp.rkt $(TYPEDEFS)/stat.rkt $(TYPEDEFS)/getpwuid.rkt $(TYPEDEFS)/getgrgid.rkt $(VERSIONFILE) 
 	$(RACO) exe -o compiled/rkt-ls src/ls.rkt
@@ -33,9 +33,12 @@ compiled/rkt-false: src/false.rkt $(VERSIONFILE)
 compiled/rkt-whoami: src/whoami.rkt $(VERSIONFILE) $(REPL)/whoami.rkt $(DLIBC)/pwd.rkt $(DLIBC)/unistd.rkt $(TYPEDEFS)/getpwuid.rkt
 	$(RACO) exe -o compiled/rkt-whoami src/whoami.rkt
 
+compiled/rkt-cat: src/cat.rkt $(VERSIONFILE) $(REPL)/cat.rkt 
+	$(RACO) exe -o compiled/rkt-cat src/cat.rkt
+
 docs: docs-html docs-md
 
-docs-html: docs/html/ls.html docs/html/echo.html docs/html/stat.html docs/html/head.html docs/html/true.html docs/html/false.html docs/html/whoami.html
+docs-html: docs/html/ls.html docs/html/echo.html docs/html/stat.html docs/html/head.html docs/html/true.html docs/html/false.html docs/html/whoami.html docs/html/cat.html
 
 docs/html/ls.html: scribbles/ls.scrbl $(AUTHSCRBL) $(CWSCRBL)
 	$(SCRIBBLE) --dest docs/html --html scribbles/ls.scrbl
@@ -58,7 +61,10 @@ docs/html/false.html: scribbles/false.scrbl $(AUTHSCRBL) $(CWSCRBL)
 docs/html/whoami.html: scribbles/whoami.scrbl $(AUTHSCRBL) $(CWSCRBL)
 	$(SCRIBBLE) --dest docs/html --html scribbles/whoami.scrbl
 
-docs-md: docs/md/ls.md docs/md/echo.md docs/md/stat.md docs/md/head.md docs/md/true.md docs/md/false.md docs/md/whoami.md
+docs/html/cat.html: scribbles/cat.scrbl $(AUTHSCRBL) $(CWSCRBL)
+	$(SCRIBBLE) --dest docs/html --html scribbles/cat.scrbl
+
+docs-md: docs/md/ls.md docs/md/echo.md docs/md/stat.md docs/md/head.md docs/md/true.md docs/md/false.md docs/md/whoami.md docs/md/cat.md
 
 docs/md/ls.md: scribbles/ls.scrbl $(AUTHSCRBL) $(CWSCRBL)
 	$(SCRIBBLE) --dest docs/md --markdown scribbles/ls.scrbl
@@ -80,6 +86,9 @@ docs/md/false.md: scribbles/false.scrbl $(AUTHSCRBL) $(CWSCRBL)
 
 docs/md/whoami.md: scribbles/whoami.scrbl $(AUTHSCRBL) $(CWSCRBL)
 	$(SCRIBBLE) --dest docs/md --markdown scribbles/whoami.scrbl
+
+docs/md/cat.md: scribbles/cat.scrbl $(AUTHSCRBL) $(CWSCRBL)
+	$(SCRIBBLE) --dest docs/md --markdown scribbles/cat.scrbl
 
 clean:
 	rm -rf compiled
