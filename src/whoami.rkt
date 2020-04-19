@@ -1,4 +1,4 @@
-#lang racket
+#lang typed/racket
 
 ; Copyright 2020 David Wilson
 
@@ -14,16 +14,17 @@
 ;
 ;You should have received a copy of the GNU General Public License
 ;along with this program.  If not, see <https://www.gnu.org/licenses/>.
-(provide get-euid)
 
-(require ffi/unsafe)
+(require "repl/whoami.rkt"
+         "util/version.rkt")
 
-(define clib (ffi-lib #f))
+(define args (make-parameter (list)))
 
-(define _geteuid (get-ffi-obj
-                      "geteuid" clib
-                      (_fun -> _int)))
+(command-line
+  #:argv (current-command-line-arguments)
+  #:once-each
+  [("-v" "--version") "display version information and exit" (print-version-text-and-exit)]
+  #:args a (args a))
 
-(define (get-euid)
-  (_geteuid))
-
+(let ([whoami (new whoami%)])
+  (send whoami execute))
