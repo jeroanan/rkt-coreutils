@@ -33,10 +33,10 @@ compiled/rkt-false: src/false.rkt $(VERSIONFILE)
 compiled/rkt-whoami: src/whoami.rkt $(VERSIONFILE) $(REPL)/whoami.rkt $(DLIBC)/pwd.rkt $(DLIBC)/unistd.rkt $(TYPEDEFS)/getpwuid.rkt
 	$(RACO) exe -o compiled/rkt-whoami src/whoami.rkt
 
-compiled/rkt-cat: src/cat.rkt $(VERSIONFILE) $(REPL)/cat.rkt 
+compiled/rkt-cat: src/cat.rkt $(VERSIONFILE) $(REPL)/cat.rkt $(DUTIL)/programs.rkt
 	$(RACO) exe -o compiled/rkt-cat src/cat.rkt
 
-compiled/rkt-md5sum: src/md5sum.rkt $(VERSIONFILE) $(REPL)/md5sum.rkt 
+compiled/rkt-md5sum: src/md5sum.rkt $(VERSIONFILE) $(REPL)/md5sum.rkt $(DUTIL)/programs.rkt
 	$(RACO) exe -o compiled/rkt-md5sum src/md5sum.rkt
 	
 docs: docs-html docs-md

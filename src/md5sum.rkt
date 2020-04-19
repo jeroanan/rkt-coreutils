@@ -16,23 +16,6 @@
 ;along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 (require "repl/md5sum.rkt"
-         "util/version.rkt")
+         "util/programs.rkt")
 
-(define the-files (make-parameter (list "")))
-
-(define (set-the-files [s : (Pairof Any (Listof Any))])
-  (let ([#{strings : (Listof String)} (map (λ (x) (format "~a" x)) s)])
-    (the-files strings)))
-
-(define (get-the-files)
-  (map (λ ([x : String]) (format "~a" x)) (the-files)))
-
-(command-line
-  #:argv (current-command-line-arguments)
-  #:once-each
-  [("-v" "--version") "display version information and exit" (print-version-text-and-exit)]
-  #:args filename (unless (empty? filename) (set-the-files filename)))
-
-(let ([md5sum (new md5sum%)])
-      (send md5sum execute (get-the-files)))
-
+(simple-file-handler-program md5sum%)
