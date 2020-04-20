@@ -5,7 +5,6 @@
 (define-syntax-rule (sha-program description type-name sha-method)
   (begin
     (require/typed sha
-                   [sha1  (-> Bytes Bytes)]
                    [bytes->hex-string (-> Bytes String)])
     (define type-name
       (class object%

@@ -3,8 +3,7 @@
 (provide sha1sum%)
 
 (require/typed sha
-                   [sha1  (-> Bytes Bytes)]
-                   [bytes->hex-string (-> Bytes String)])
+                   [sha1  (-> Bytes Bytes)])
 
 (require "util/program/shaprogram.rkt")
 
