@@ -17,19 +17,18 @@
 
 (provide cat%)
 
+(require "util/util.rkt")
+
 (define cat%
   (class object%
     (super-new)
 
-    (define/public (help)
-      (let ([help-strings (list "Concatenate files and print on standard output."
-                                ""
-                                "Methods:"
-                                "(help) -- display this help message"
-                                "(execute FILES) -- concatenate and print FILES")])
-        (for ([hs help-strings])
-          (displayln hs))))
-
+    (help-function (list "Concatenate files and print on standard output."
+                         ""
+                         "Methods:"
+                         "(help) -- display this help message"
+                         "(execute FILES) -- concatenate and print FILES"))
+    
     (define/public (execute [files : (Listof String)])
 
       (: print-file-contents (-> Input-Port Void))
@@ -39,7 +38,6 @@
             (begin
               (displayln the-line)
               (print-file-contents file-port)))))
-             
              
       (for ([file-name files])
         (let ([f (open-input-file file-name #:mode 'text )])
