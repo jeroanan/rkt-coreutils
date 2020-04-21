@@ -11,7 +11,7 @@
                         ""
                         "Methods:"
                         "(help) -- display this help message"
-                        "(execute FILES) -- concatenate and print FILES"))
+                        "(execute FILES) -- number lines and print FILES"))
 
 (define counter 0)
 
