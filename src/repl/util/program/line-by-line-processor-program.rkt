@@ -25,7 +25,7 @@
 
         (: process-stdin (-> Void))
         (define (process-stdin)
-          (let* ([r (read)]
+          (let* ([r (read-line)]
                  [rs (~a r)])
             (when (not (eof-object? r))
               (displayln (line-function rs))
