@@ -4,6 +4,6 @@
 ; See COPYING for details
 
 (require "repl/cat.rkt"
-         "util/programs.rkt")
+         "util/simple-file-handler-program.rkt")
 
 (simple-file-handler-program cat%)

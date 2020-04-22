@@ -4,6 +4,6 @@
 ; See COPYING for licence
 
 (require "repl/sha224sum.rkt"
-         "util/programs.rkt")
+         "util/simple-file-handler-program.rkt")
 
 (simple-file-handler-program sha224sum%)

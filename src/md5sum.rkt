@@ -4,6 +4,6 @@
 ; see COPYING for licence
 
 (require "repl/md5sum.rkt"
-         "util/programs.rkt")
+         "util/simple-file-handler-program.rkt")
 
 (simple-file-handler-program md5sum%)
