@@ -7,8 +7,8 @@ VERSIONFILE=src/util/version.rkt
 TYPEDEFS=src/typedef
 REPL=src/repl
 
-AUTHSCRBL=scribbles/author.scrbl
-CWSCRBL = scribbles/copyright.scrbl
+AUTHSCRBL=scribblings/author.scrbl
+CWSCRBL = scribblings/copyright.scrbl
 
 exe: compiled/rkt-ls compiled/rkt-echo compiled/rkt-stat compiled/rkt-head compiled/rkt-true compiled/rkt-false compiled/rkt-whoami compiled/rkt-cat compiled/rkt-md5sum docs
 
@@ -43,61 +43,61 @@ docs: docs-html docs-md
 
 docs-html: docs/html/ls.html docs/html/echo.html docs/html/stat.html docs/html/head.html docs/html/true.html docs/html/false.html docs/html/whoami.html docs/html/cat.html docs/html/md5sum.html
 
-docs/html/ls.html: scribbles/ls.scrbl $(AUTHSCRBL) $(CWSCRBL)
-	$(SCRIBBLE) --dest docs/html --html scribbles/ls.scrbl
+docs/html/ls.html: scribblings/ls.scrbl $(AUTHSCRBL) $(CWSCRBL)
+	$(SCRIBBLE) --dest docs/html --html scribblings/ls.scrbl
 
-docs/html/echo.html: scribbles/echo.scrbl $(AUTHSCRBL) $(CWSCRBL)
-	$(SCRIBBLE) --dest docs/html --html scribbles/echo.scrbl
+docs/html/echo.html: scribblings/echo.scrbl $(AUTHSCRBL) $(CWSCRBL)
+	$(SCRIBBLE) --dest docs/html --html scribblings/echo.scrbl
 
-docs/html/stat.html: scribbles/stat.scrbl $(AUTHSCRBL) $(CWSCRBL)
-	$(SCRIBBLE) --dest docs/html --html scribbles/stat.scrbl
+docs/html/stat.html: scribblings/stat.scrbl $(AUTHSCRBL) $(CWSCRBL)
+	$(SCRIBBLE) --dest docs/html --html scribblings/stat.scrbl
 
-docs/html/head.html: scribbles/head.scrbl $(AUTHSCRBL) $(CWSCRBL)
-	$(SCRIBBLE) --dest docs/html --html scribbles/head.scrbl
+docs/html/head.html: scribblings/head.scrbl $(AUTHSCRBL) $(CWSCRBL)
+	$(SCRIBBLE) --dest docs/html --html scribblings/head.scrbl
 	
-docs/html/true.html: scribbles/true.scrbl $(AUTHSCRBL) $(CWSCRBL)
-	$(SCRIBBLE) --dest docs/html --html scribbles/true.scrbl
+docs/html/true.html: scribblings/true.scrbl $(AUTHSCRBL) $(CWSCRBL)
+	$(SCRIBBLE) --dest docs/html --html scribblings/true.scrbl
 	
-docs/html/false.html: scribbles/false.scrbl $(AUTHSCRBL) $(CWSCRBL)
-	$(SCRIBBLE) --dest docs/html --html scribbles/false.scrbl
+docs/html/false.html: scribblings/false.scrbl $(AUTHSCRBL) $(CWSCRBL)
+	$(SCRIBBLE) --dest docs/html --html scribblings/false.scrbl
 
-docs/html/whoami.html: scribbles/whoami.scrbl $(AUTHSCRBL) $(CWSCRBL)
-	$(SCRIBBLE) --dest docs/html --html scribbles/whoami.scrbl
+docs/html/whoami.html: scribblings/whoami.scrbl $(AUTHSCRBL) $(CWSCRBL)
+	$(SCRIBBLE) --dest docs/html --html scribblings/whoami.scrbl
 
-docs/html/cat.html: scribbles/cat.scrbl $(AUTHSCRBL) $(CWSCRBL)
-	$(SCRIBBLE) --dest docs/html --html scribbles/cat.scrbl
+docs/html/cat.html: scribblings/cat.scrbl $(AUTHSCRBL) $(CWSCRBL)
+	$(SCRIBBLE) --dest docs/html --html scribblings/cat.scrbl
 
-docs/html/md5sum.html: scribbles/md5sum.scrbl $(AUTHSCRBL) $(CWSCRBL)
-	$(SCRIBBLE) --dest docs/html --html scribbles/md5sum.scrbl
+docs/html/md5sum.html: scribblings/md5sum.scrbl $(AUTHSCRBL) $(CWSCRBL)
+	$(SCRIBBLE) --dest docs/html --html scribblings/md5sum.scrbl
 
 docs-md: docs/md/ls.md docs/md/echo.md docs/md/stat.md docs/md/head.md docs/md/true.md docs/md/false.md docs/md/whoami.md docs/md/cat.md docs/md/md5sum.md
 
-docs/md/ls.md: scribbles/ls.scrbl $(AUTHSCRBL) $(CWSCRBL)
-	$(SCRIBBLE) --dest docs/md --markdown scribbles/ls.scrbl
+docs/md/ls.md: scribblings/ls.scrbl $(AUTHSCRBL) $(CWSCRBL)
+	$(SCRIBBLE) --dest docs/md --markdown scribblings/ls.scrbl
 
-docs/md/echo.md: scribbles/echo.scrbl $(AUTHSCRBL) $(CWSCRBL)
-	$(SCRIBBLE) --dest docs/md --markdown scribbles/echo.scrbl
+docs/md/echo.md: scribblings/echo.scrbl $(AUTHSCRBL) $(CWSCRBL)
+	$(SCRIBBLE) --dest docs/md --markdown scribblings/echo.scrbl
 
-docs/md/stat.md: scribbles/stat.scrbl $(AUTHSCRBL) $(CWSCRBL)
-	$(SCRIBBLE) --dest docs/md --markdown scribbles/stat.scrbl
+docs/md/stat.md: scribblings/stat.scrbl $(AUTHSCRBL) $(CWSCRBL)
+	$(SCRIBBLE) --dest docs/md --markdown scribblings/stat.scrbl
 
-docs/md/head.md: scribbles/head.scrbl $(AUTHSCRBL) $(CWSCRBL)
-	$(SCRIBBLE) --dest docs/md --markdown scribbles/head.scrbl
+docs/md/head.md: scribblings/head.scrbl $(AUTHSCRBL) $(CWSCRBL)
+	$(SCRIBBLE) --dest docs/md --markdown scribblings/head.scrbl
 
-docs/md/true.md: scribbles/true.scrbl $(AUTHSCRBL) $(CWSCRBL)
-	$(SCRIBBLE) --dest docs/md --markdown scribbles/true.scrbl
+docs/md/true.md: scribblings/true.scrbl $(AUTHSCRBL) $(CWSCRBL)
+	$(SCRIBBLE) --dest docs/md --markdown scribblings/true.scrbl
 
-docs/md/false.md: scribbles/false.scrbl $(AUTHSCRBL) $(CWSCRBL)
-	$(SCRIBBLE) --dest docs/md --markdown scribbles/false.scrbl
+docs/md/false.md: scribblings/false.scrbl $(AUTHSCRBL) $(CWSCRBL)
+	$(SCRIBBLE) --dest docs/md --markdown scribblings/false.scrbl
 
-docs/md/whoami.md: scribbles/whoami.scrbl $(AUTHSCRBL) $(CWSCRBL)
-	$(SCRIBBLE) --dest docs/md --markdown scribbles/whoami.scrbl
+docs/md/whoami.md: scribblings/whoami.scrbl $(AUTHSCRBL) $(CWSCRBL)
+	$(SCRIBBLE) --dest docs/md --markdown scribblings/whoami.scrbl
 
-docs/md/cat.md: scribbles/cat.scrbl $(AUTHSCRBL) $(CWSCRBL)
-	$(SCRIBBLE) --dest docs/md --markdown scribbles/cat.scrbl
+docs/md/cat.md: scribblings/cat.scrbl $(AUTHSCRBL) $(CWSCRBL)
+	$(SCRIBBLE) --dest docs/md --markdown scribblings/cat.scrbl
 
-docs/md/md5sum.md: scribbles/md5sum.scrbl $(AUTHSCRBL) $(CWSCRBL)
-	$(SCRIBBLE) --dest docs/md --markdown scribbles/md5sum.scrbl
+docs/md/md5sum.md: scribblings/md5sum.scrbl $(AUTHSCRBL) $(CWSCRBL)
+	$(SCRIBBLE) --dest docs/md --markdown scribblings/md5sum.scrbl
 
 clean:
 	rm -rf compiled
