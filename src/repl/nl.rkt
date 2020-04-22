@@ -20,6 +20,7 @@
       x
       (begin
         (set! counter (add1 counter))
-        (format "~a ~a" counter x))))
+        (let ([line-number (~a counter #:width 6  #:align 'right)])
+          (format "~a\t~a" line-number x)))))
 
 (line-by-line-processor-program nl% help-text number-line)
