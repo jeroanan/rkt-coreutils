@@ -34,8 +34,19 @@
           (displayln hs))))
     
     (define/public (execute [files : (Listof String)])
+      (if (empty? files)
+          (process-stdin)
+          (process-files files)))      
+
+    (: process-files (-> (Listof String) Void))
+    (define/private (process-files files)
       (for ([f files])
         (let* ([ip (open-input-file f #:mode 'text)]
                [the-sum (md5 ip)])
           (displayln
-           (format "~a ~a" the-sum f)))))))
+           (format "~a ~a" the-sum f)))))
+    
+    (: process-stdin (-> Void))
+    (define/private (process-stdin)
+      (let ([the-sum (md5 (current-input-port))])
+        (displayln (format "~a -" the-sum))))))
