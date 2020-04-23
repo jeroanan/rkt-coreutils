@@ -22,8 +22,20 @@
                          "(execute FILES) -- display the first lines of FILES"))
         
     (define/public (execute [files : (Listof String)])
+      (if (empty? files) (handle-stdin) (handle-files files)))     
+
+    (: handle-files (-> (Listof String) Void))
+    (define/private (handle-files files)
       (for ([file-name files])
         (when (> (length files) 1) (displayln (format "==> ~a <==" file-name)))
         (let ([f (open-input-file file-name #:mode 'text )])
           (for ([i number-of-lines])
-            (displayln (read-line f))))))))
+            (displayln (read-line f))))))
+
+    (: handle-stdin (-> Void))
+    (define/private (handle-stdin)
+      (for ([i number-of-lines])
+        (let ([l (read-line)])
+          (if (eof-object? l)
+              (exit 0)
+              (displayln l)))))))
