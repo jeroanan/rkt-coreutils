@@ -10,94 +10,243 @@ REPL=src/repl
 AUTHSCRBL=scribblings/author.scrbl
 CWSCRBL = scribblings/copyright.scrbl
 
-exe: compiled/rkt-ls compiled/rkt-echo compiled/rkt-stat compiled/rkt-head compiled/rkt-true compiled/rkt-false compiled/rkt-whoami compiled/rkt-cat compiled/rkt-md5sum docs
+HDOCS=docs/html
+MDDOCS=docs/md
+SCRIBDIR=scribblings
 
-compiled/rkt-ls: src/ls.rkt $(DUTIL)/human-size.rkt $(DUTIL)/human-date.rkt $(DUTIL)/fileaccessstr.rkt $(DLIBC)/stat.rkt $(DLIBC)/pwd.rkt $(DLIBC)/grp.rkt $(TYPEDEFS)/stat.rkt $(TYPEDEFS)/getpwuid.rkt $(TYPEDEFS)/getgrgid.rkt $(VERSIONFILE) 
-	$(RACO) exe -o compiled/rkt-ls src/ls.rkt
+DOCDEPS=$(AUTHSCRBL) $(CWSCRBL)
 
-compiled/rkt-echo: src/echo.rkt $(VERSIONFILE)
-	$(RACO) exe -o compiled/rkt-echo src/echo.rkt
+all: exe docs
 
-compiled/rkt-stat: src/stat.rkt $(DLIBC)/stat.rkt $(DLIBC)/pwd.rkt $(DLIBC)/grp.rkt $(DUTIL)/fileaccessstr.rkt $(DUTIL)/fileaccessoct.rkt  $(TYPEDEFS)/stat.rkt $(TYPEDEFS)/getpwuid.rkt $(TYPEDEFS)/getgrgid.rkt $(REPL)/stat.rkt $(VERSIONFILE)
-	$(RACO) exe -o compiled/rkt-stat src/stat.rkt
+exe: \
+	compiled/rkt-cat \
+	compiled/rkt-echo \
+	compiled/rkt-false \
+	compiled/rkt-head \
+	compiled/rkt-ls \
+	compiled/rkt-md5sum \
+	compiled/rkt-stat \
+	compiled/rkt-true \
+	compiled/rkt-whoami \
 
-compiled/rkt-head: src/head.rkt $(REPL)/head.rkt $(VERSIONFILE)
-	$(RACO) exe -o compiled/rkt-head src/head.rkt
-
-compiled/rkt-true: src/true.rkt $(VERSIONFILE)
-	$(RACO) exe -o compiled/rkt-true src/true.rkt
-
-compiled/rkt-false: src/false.rkt $(VERSIONFILE)
-	$(RACO) exe -o compiled/rkt-false src/false.rkt
-
-compiled/rkt-whoami: src/whoami.rkt $(VERSIONFILE) $(REPL)/whoami.rkt $(DLIBC)/pwd.rkt $(DLIBC)/unistd.rkt $(TYPEDEFS)/getpwuid.rkt
-	$(RACO) exe -o compiled/rkt-whoami src/whoami.rkt
-
-compiled/rkt-cat: src/cat.rkt $(VERSIONFILE) $(REPL)/cat.rkt $(DUTIL)/programs.rkt
+compiled/rkt-cat: \
+	src/cat.rkt \
+	$(VERSIONFILE) \
+	$(REPL)/cat.rkt \
+	$(DUTIL)/simple-file-handler-program.rkt \
+	$(DUTIL)/version.rkt
+	
 	$(RACO) exe -o compiled/rkt-cat src/cat.rkt
 
-compiled/rkt-md5sum: src/md5sum.rkt $(VERSIONFILE) $(REPL)/md5sum.rkt $(DUTIL)/programs.rkt
+compiled/rkt-echo: \
+	src/echo.rkt \
+	$(VERSIONFILE)
+
+	$(RACO) exe -o compiled/rkt-echo src/echo.rkt
+
+compiled/rkt-false: \
+	src/false.rkt \
+	$(DUTIL)/truefalseprogram.rkt \
+	$(VERSIONFILE)
+
+	$(RACO) exe -o compiled/rkt-false src/false.rkt
+
+compiled/rkt-head: \
+	src/head.rkt \
+	$(REPL)/head.rkt \
+	$(DUTIL)/member.rkt \
+	$(REPL)/util/util.rkt \
+	$(REPL)/util/line-by-line-processor.rkt \
+	$(VERSIONFILE)
+
+	$(RACO) exe -o compiled/rkt-head src/head.rkt
+
+compiled/rkt-ls: \
+	src/ls.rkt \
+	$(DUTIL)/human-size.rkt \
+	$(DUTIL)/human-date.rkt \
+	$(DUTIL)/fileaccessstr.rkt \
+	$(DUTIL)/member.rkt \
+	$(DLIBC)/stat.rkt \
+	$(DLIBC)/pwd.rkt \
+	$(DLIBC)/grp.rkt \
+	$(TYPEDEFS)/stat.rkt \
+	$(TYPEDEFS)/getpwuid.rkt \
+	$(TYPEDEFS)/getgrgid.rkt \
+	$(VERSIONFILE) 
+
+	$(RACO) exe -o compiled/rkt-ls src/ls.rkt
+
+compiled/rkt-md5sum: \
+	src/md5sum.rkt \
+	$(VERSIONFILE) \
+	$(REPL)/md5sum.rkt \
+	$(DUTIL)/simple-file-handler-program.rkt
+
 	$(RACO) exe -o compiled/rkt-md5sum src/md5sum.rkt
+
+compiled/rkt-stat: \
+	src/stat.rkt \
+	$(DLIBC)/stat.rkt \
+	$(DLIBC)/pwd.rkt \
+	$(DLIBC)/grp.rkt \
+	$(DUTIL)/fileaccessstr.rkt \
+	$(DUTIL)/fileaccessoct.rkt  \
+	$(TYPEDEFS)/stat.rkt \
+	$(TYPEDEFS)/getpwuid.rkt \
+	$(TYPEDEFS)/getgrgid.rkt \
+	$(REPL)/stat.rkt \
+	$(VERSIONFILE)
+
+	$(RACO) exe -o compiled/rkt-stat src/stat.rkt
+
+compiled/rkt-true: \
+	src/true.rkt \
+	$(DUTIL)/truefalseprogram.rkt \
+	$(VERSIONFILE)
+
+	$(RACO) exe -o compiled/rkt-true src/true.rkt
+
+compiled/rkt-whoami: \
+	src/whoami.rkt \
+	$(VERSIONFILE) \
+	$(REPL)/whoami.rkt \
+	$(DLIBC)/pwd.rkt \
+	$(DLIBC)/unistd.rkt \
+	$(TYPEDEFS)/getpwuid.rkt
+
+	$(RACO) exe -o compiled/rkt-whoami src/whoami.rkt
 	
 docs: docs-html docs-md
 
-docs-html: docs/html/ls.html docs/html/echo.html docs/html/stat.html docs/html/head.html docs/html/true.html docs/html/false.html docs/html/whoami.html docs/html/cat.html docs/html/md5sum.html
+docs-html: \
+	$(HDOCS)/cat.html \
+	$(HDOCS)/echo.html \
+	$(HDOCS)/false.html \
+	$(HDOCS)/head.html \
+	$(HDOCS)/ls.html \
+	$(HDOCS)/md5sum.html \
+	$(HDOCS)/stat.html \
+	$(HDOCS)/true.html \
+	$(HDOCS)/whoami.html \
 
-docs/html/ls.html: scribblings/ls.scrbl $(AUTHSCRBL) $(CWSCRBL)
-	$(SCRIBBLE) --dest docs/html --html scribblings/ls.scrbl
+$(HDOCS)/cat.html: \
+	$(SCRIBDIR)/cat.scrbl \
+	$(DOCDEPS)
 
-docs/html/echo.html: scribblings/echo.scrbl $(AUTHSCRBL) $(CWSCRBL)
-	$(SCRIBBLE) --dest docs/html --html scribblings/echo.scrbl
+	$(SCRIBBLE) --dest $(HDOCS) --html $(SCRIBDIR)/cat.scrbl
 
-docs/html/stat.html: scribblings/stat.scrbl $(AUTHSCRBL) $(CWSCRBL)
-	$(SCRIBBLE) --dest docs/html --html scribblings/stat.scrbl
+$(HDOCS)/echo.html: \
+	$(SCRIBDIR)/echo.scrbl \
+	$(DOCDEPS)
 
-docs/html/head.html: scribblings/head.scrbl $(AUTHSCRBL) $(CWSCRBL)
-	$(SCRIBBLE) --dest docs/html --html scribblings/head.scrbl
+	$(SCRIBBLE) --dest $(HDOCS) --html $(SCRIBDIR)/echo.scrbl
+
+$(HDOCS)/false.html: \
+	$(SCRIBDIR)/false.scrbl \
+	$(DOCDEPS) 
+
+	$(SCRIBBLE) --dest $(HDOCS) --html $(SCRIBDIR)/false.scrbl
+
+$(HDOCS)/head.html: \
+	$(SCRIBDIR)/head.scrbl \
+	$(DOCDEPS) 
+	$(SCRIBBLE) --dest $(HDOCS) --html $(SCRIBDIR)/head.scrbl
+
+$(HDOCS)/ls.html: \
+	$(SCRIBDIR)/ls.scrbl \
+	$(DOCDEPS)
+
+	$(SCRIBBLE) --dest $(HDOCS) --html $(SCRIBDIR)/ls.scrbl
+
+
+$(HDOCS)/md5sum.html: \
+	$(SCRIBDIR)/md5sum.scrbl \
+	$(DOCDEPS) 
+
+	$(SCRIBBLE) --dest $(HDOCS) --html $(SCRIBDIR)/md5sum.scrbl
+
+$(HDOCS)/stat.html: \
+	$(SCRIBDIR)/stat.scrbl \
+	$(DOCDEPS) 
+
+	$(SCRIBBLE) --dest $(HDOCS) --html $(SCRIBDIR)/stat.scrbl
 	
-docs/html/true.html: scribblings/true.scrbl $(AUTHSCRBL) $(CWSCRBL)
-	$(SCRIBBLE) --dest docs/html --html scribblings/true.scrbl
-	
-docs/html/false.html: scribblings/false.scrbl $(AUTHSCRBL) $(CWSCRBL)
-	$(SCRIBBLE) --dest docs/html --html scribblings/false.scrbl
+$(HDOCS)/true.html: \
+	$(SCRIBDIR)/true.scrbl \
+	$(DOCDEPS) 
 
-docs/html/whoami.html: scribblings/whoami.scrbl $(AUTHSCRBL) $(CWSCRBL)
-	$(SCRIBBLE) --dest docs/html --html scribblings/whoami.scrbl
+	$(SCRIBBLE) --dest $(HDOCS) --html $(SCRIBDIR)/true.scrbl
 
-docs/html/cat.html: scribblings/cat.scrbl $(AUTHSCRBL) $(CWSCRBL)
-	$(SCRIBBLE) --dest docs/html --html scribblings/cat.scrbl
+$(HDOCS)/whoami.html: \
+	$(SCRIBDIR)/whoami.scrbl \
+	$(DOCDEPS) 
 
-docs/html/md5sum.html: scribblings/md5sum.scrbl $(AUTHSCRBL) $(CWSCRBL)
-	$(SCRIBBLE) --dest docs/html --html scribblings/md5sum.scrbl
+	$(SCRIBBLE) --dest $(HDOCS) --html $(SCRIBDIR)/whoami.scrbl
 
-docs-md: docs/md/ls.md docs/md/echo.md docs/md/stat.md docs/md/head.md docs/md/true.md docs/md/false.md docs/md/whoami.md docs/md/cat.md docs/md/md5sum.md
+docs-md: \
+	$(MDDOCS)/cat.md \
+	$(MDDOCS)/echo.md \
+	$(MDDOCS)/false.md \
+	$(MDDOCS)/head.md \
+	$(MDDOCS)/ls.md \
+	$(MDDOCS)/md5sum.md \
+	$(MDDOCS)/stat.md \
+	$(MDDOCS)/true.md \
+	$(MDDOCS)/whoami.md 
 
-docs/md/ls.md: scribblings/ls.scrbl $(AUTHSCRBL) $(CWSCRBL)
-	$(SCRIBBLE) --dest docs/md --markdown scribblings/ls.scrbl
+$(MDDOCS)/cat.md: \
+	$(SCRIBDIR)/cat.scrbl \
+	$(DOCDEPS) 
 
-docs/md/echo.md: scribblings/echo.scrbl $(AUTHSCRBL) $(CWSCRBL)
-	$(SCRIBBLE) --dest docs/md --markdown scribblings/echo.scrbl
+	$(SCRIBBLE) --dest $(MDDOCS) --markdown $(SCRIBDIR)/cat.scrbl
 
-docs/md/stat.md: scribblings/stat.scrbl $(AUTHSCRBL) $(CWSCRBL)
-	$(SCRIBBLE) --dest docs/md --markdown scribblings/stat.scrbl
+$(MDDOCS)/echo.md: \
+	$(SCRIBDIR)/echo.scrbl \
+	$(DOCDEPS) 
 
-docs/md/head.md: scribblings/head.scrbl $(AUTHSCRBL) $(CWSCRBL)
-	$(SCRIBBLE) --dest docs/md --markdown scribblings/head.scrbl
+	$(SCRIBBLE) --dest $(MDDOCS) --markdown $(SCRIBDIR)/echo.scrbl
 
-docs/md/true.md: scribblings/true.scrbl $(AUTHSCRBL) $(CWSCRBL)
-	$(SCRIBBLE) --dest docs/md --markdown scribblings/true.scrbl
+$(MDDOCS)/false.md: \
+	$(SCRIBDIR)/false.scrbl \
+	$(DOCDEPS) 
 
-docs/md/false.md: scribblings/false.scrbl $(AUTHSCRBL) $(CWSCRBL)
-	$(SCRIBBLE) --dest docs/md --markdown scribblings/false.scrbl
+	$(SCRIBBLE) --dest $(MDDOCS) --markdown $(SCRIBDIR)/false.scrbl
 
-docs/md/whoami.md: scribblings/whoami.scrbl $(AUTHSCRBL) $(CWSCRBL)
-	$(SCRIBBLE) --dest docs/md --markdown scribblings/whoami.scrbl
+$(MDDOCS)/head.md: \
+	$(SCRIBDIR)/head.scrbl \
+	$(DOCDEPS) 
 
-docs/md/cat.md: scribblings/cat.scrbl $(AUTHSCRBL) $(CWSCRBL)
-	$(SCRIBBLE) --dest docs/md --markdown scribblings/cat.scrbl
+	$(SCRIBBLE) --dest $(MDDOCS) --markdown $(SCRIBDIR)/head.scrbl
 
-docs/md/md5sum.md: scribblings/md5sum.scrbl $(AUTHSCRBL) $(CWSCRBL)
-	$(SCRIBBLE) --dest docs/md --markdown scribblings/md5sum.scrbl
+$(MDDOCS)/ls.md: \
+	$(SCRIBDIR)/ls.scrbl \
+	$(DOCDEPS) 
+
+	$(SCRIBBLE) --dest $(MDDOCS) --markdown $(SCRIBDIR)/ls.scrbl
+
+$(MDDOCS)/md5sum.md: \
+	$(SCRIBDIR)/md5sum.scrbl \
+	$(DOCDEPS) 
+
+	$(SCRIBBLE) --dest $(MDDOCS) --markdown $(SCRIBDIR)/md5sum.scrbl
+
+$(MDDOCS)/stat.md: \
+	$(SCRIBDIR)/stat.scrbl \
+	$(DOCDEPS) 
+
+	$(SCRIBBLE) --dest $(MDDOCS) --markdown $(SCRIBDIR)/stat.scrbl
+
+$(MDDOCS)/true.md: \
+	$(SCRIBDIR)/true.scrbl \
+	$(DOCDEPS) 
+
+	$(SCRIBBLE) --dest $(MDDOCS) --markdown $(SCRIBDIR)/true.scrbl
+
+$(MDDOCS)/whoami.md: \
+	$(SCRIBDIR)/whoami.scrbl \
+	$(DOCDEPS) 
+	$(SCRIBBLE) --dest $(MDDOCS) --markdown $(SCRIBDIR)/whoami.scrbl
 
 clean:
 	rm -rf compiled
