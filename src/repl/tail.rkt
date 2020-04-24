@@ -1,8 +1,12 @@
 #lang typed/racket
 
+; Copyright 2020 David Wilson
+; See COPYING for licence details
+
 (provide tail%)
 
-(require "util/util.rkt")
+(require "util/util.rkt"
+         "util/file-by-file-processor.rkt")
 
 (define tail%
   (class object%
@@ -13,12 +17,14 @@
                          "Methods:"
                          "(execute FILES) -- display the last lines of FILES"))
 
-    (define/public (execute [files : (Listof String)])
-      (for ([file-name files])                     
-        (let* ([f (open-input-file file-name #:mode 'text)]
-               [lines (port->lines f)]
-               [reversed (reverse lines)]
-               [top-x (take reversed 10)]
-               [output (reverse top-x)])
-          (for ([l output])
-            (displayln l)))))))
+    (: file-handler (-> (Listof String) Void))
+    (define/private (file-handler file-contents)
+      (let* ([reversed (reverse file-contents)]
+             [take-elements (min 10 (length file-contents))]
+             [top-x (take reversed take-elements)]
+             [output (reverse top-x)])
+        (for ([l output])
+          (displayln l))))
+
+    (file-by-file-processor file-handler)))
+

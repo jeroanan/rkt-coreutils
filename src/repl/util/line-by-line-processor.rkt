@@ -3,7 +3,6 @@
 ; Copyright 2020 David Wilson
 ; See COPYING for details
 
-
 (provide line-by-line-processor)
 
 (define-syntax-rule (line-by-line-processor line-function)

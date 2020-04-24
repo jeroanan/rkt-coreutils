@@ -1,8 +1,12 @@
 #lang typed/racket
 
+; Copyright 2020 David Wilson
+; See COPYING for licence details
+
 (provide tac%)
 
-(require "util/util.rkt")
+(require "util/util.rkt"
+         "util/file-by-file-processor.rkt")
 
 (define tac%
   (class object%
@@ -12,12 +16,12 @@
                             ""
                             "Methods:"
                             "(help) -- display this help message"
-                            "(execute FILES) -- concatenate and print FILES in reverse"))    
+                            "(execute FILES) -- concatenate and print FILES in reverse"))
     
-    (define/public (execute [files : (Listof String)])
-      (for ([file-name files])
-        (let* ([f (open-input-file file-name #:mode 'text)]
-               [lines (port->lines f)]
-               [reversed (reverse lines)])
-          (for ([l reversed])
-            (displayln l)))))))
+    (: file-handler (-> (Listof String) Void))
+    (define/private (file-handler file-contents)
+      (let ([reversed (reverse file-contents)])
+        (for ([l reversed])
+          (display l))))
+
+    (file-by-file-processor file-handler)))
