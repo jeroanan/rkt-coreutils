@@ -6,7 +6,8 @@
 (provide head%)
 
 (require "../util/member.rkt"
-         "util/util.rkt")
+         "util/util.rkt"
+         "util/line-by-line-processor.rkt")
 
 (define head%
   (class object%  
@@ -20,22 +21,17 @@
                          "(set-number-of-lines NUM) -- set the number of lines to be printed to NUM"
                          "(get-number-of-lines) -- get the number of lines to be printed"
                          "(execute FILES) -- display the first lines of FILES"))
-        
-    (define/public (execute [files : (Listof String)])
-      (if (empty? files) (handle-stdin) (handle-files files)))     
 
-    (: handle-files (-> (Listof String) Void))
-    (define/private (handle-files files)
-      (for ([file-name files])
-        (when (> (length files) 1) (displayln (format "==> ~a <==" file-name)))
-        (let ([f (open-input-file file-name #:mode 'text )])
-          (for ([i number-of-lines])
-            (displayln (read-line f))))))
+    (line-by-line-processor line-handler)
 
-    (: handle-stdin (-> Void))
-    (define/private (handle-stdin)
-      (for ([i number-of-lines])
-        (let ([l (read-line)])
-          (if (eof-object? l)
-              (exit 0)
-              (displayln l)))))))
+    (: counter Integer)
+    (define counter 0)
+
+    (: line-handler (-> String Void))
+    (define/private (line-handler line)
+      (begin
+        (displayln line)
+        (set! counter (add1 counter))
+        (when (eq? counter number-of-lines) (exit 0))))))
+   
+
