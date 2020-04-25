@@ -19,6 +19,8 @@
    [get-is-directory? (-> Boolean)]
    [get-is-regular-file? (-> Boolean)]
    [get-is-character-device? (-> Boolean)]
+   [get-is-symbolic-link? (-> Boolean)]
+   [get-is-fifo? (-> Boolean)]
    [get-dev (-> Number)]
    [get-uid (-> Number)]
    [get-gid (-> Number)]

@@ -6,16 +6,16 @@
 (require "repl/ls.rkt"
          "util/version.rkt")
 
-(: show-hidden (Parameterof Boolean))
-(define show-hidden (make-parameter #f))
+(define-syntax-rule (boolean-parameter name initial-value)
+  (begin
+    (: name (Parameterof Boolean))
+    (define name (make-parameter initial-value))))
 
-(define hide-implied (make-parameter #t))
-
-(: long-mode (Parameterof Boolean))
-(define long-mode (make-parameter #f))
-
-(: print-inodes (Parameterof Boolean))
-(define print-inodes (make-parameter #f))
+(boolean-parameter show-hidden #f)
+(boolean-parameter hide-implied #t)
+(boolean-parameter long-mode #f)
+(boolean-parameter print-inodes #f)
+(boolean-parameter show-colors #f)
 
 (: pwds (Parameterof (Listof Path)))
 (define pwds (make-parameter (list (current-directory))))
@@ -40,6 +40,7 @@
   #:once-each
   [("-a" "--all") "do not ignore entries starting with ." (set-show-hidden)]
   [("-A" "--almost-all") "do not list implied . and .." (set-almost-all)]
+  [("-c" "--color") "colorise output" (show-colors #t)]
   [("-i" "--inode") "print the index number of each file" (print-inodes #t)]
   [("-l") "use a long listing format" (long-mode #t)]
   [("-v" "--version") "display version information and exit" (print-version-text-and-exit)]
@@ -50,5 +51,6 @@
   (send ls set-hide-implied (hide-implied))
   (send ls set-print-inodes (print-inodes))
   (send ls set-long-mode (long-mode))
+  (send ls set-show-colors (show-colors))
   (send ls execute
         (map (λ (x) (path->string x)) (pwds))))

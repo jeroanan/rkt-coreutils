@@ -29,6 +29,7 @@
     (boolean-attribute print-inodes get-print-inodes set-print-inodes #f)
     (boolean-attribute long-mode get-long-mode set-long-mode #f)
     (boolean-attribute hide-implied get-hide-implied set-hide-implied #f)
+    (boolean-attribute show-colors get-show-colors set-show-colors #f)
     (boolean-attribute show-hidden get-show-hidden set-show-hidden #f)
     
     (: when-long-mode (-> (-> String) (U String Boolean)))
@@ -41,6 +42,55 @@
           (number->string (send inode get-inode))
           #f))
 
+    (: get-ls-colors (-> (HashTable String String)))
+    (define/private (get-ls-colors)
+      (let* ([env-val (environment-variables-ref (current-environment-variables) (string->bytes/utf-8 "LS_COLORS"))]
+             [#{colors-hash : (HashTable String String)} (make-hash)])
+        (if (false? env-val)
+            colors-hash
+            (let* ([env-string (bytes->string/utf-8 env-val)]
+                   [color-entries (string-split env-string ":")])
+              (for ([color-entry color-entries])
+                (let* ([kvp (string-split color-entry "=")]
+                       [key (first kvp)]
+                       [val (second kvp)])
+                  (hash-set! colors-hash key val)))
+              colors-hash))))
+
+    (: ls-colors (HashTable String String))
+    (define ls-colors (get-ls-colors))
+    
+    (define-syntax-rule (make-colorizer name hr)
+      (begin
+        (: name (-> String String))
+        (define/private (name entry-name)
+          (let ([color-code (hash-ref ls-colors  hr)]
+                [default-color (hash-ref ls-colors "rs")])
+            (~a "\033[" color-code "m" entry-name "\033[" default-color "m")))))
+
+    (make-colorizer colorize-directory "di")
+    (make-colorizer colorize-executable "ex")
+    (make-colorizer colorize-character-device "cd")
+    (make-colorizer colorize-symbolic-link "ln")
+    (make-colorizer colorize-pipe "pi")
+
+    (: is-executable? (-> (Instance Stat%) Boolean))
+    (define/private (is-executable? stat)
+      (or (send stat get-owner-has-x?)
+          (send stat get-group-has-x?)
+          (send stat get-other-has-x?)))                
+      
+    (: colorize-filename (-> String (Instance Stat%) String))
+    (define/private (colorize-filename filename stat)      
+      (cond
+        [(not show-colors) filename]
+        [(send stat get-is-symbolic-link?) (colorize-symbolic-link filename)] ; This doesn't work -- don't know why!
+        [(send stat get-is-directory?) (colorize-directory filename)]
+        [(is-executable? stat) (colorize-executable filename)]
+        [(send stat get-is-fifo?) (colorize-pipe filename)]
+        [(send stat get-is-character-device?) (colorize-character-device filename)]
+        [else filename]))
+    
     (: format-entry (-> Path Path String))
     (define/private (format-entry path filename)
       (let* ([filename-string (path->string filename)]
@@ -58,8 +108,9 @@
              [number-of-hardlinks (when-long-mode (λ () (number->string (send stat get-number-of-hardlinks))))]
              [size (when-long-mode (λ () (human-readable-byte-size (assert (send stat get-size) exact-integer?))))]
              [mtime (when-long-mode (λ () (unix-seconds->human-date (assert (send stat get-modified-time) exact-integer?))))]
+             [outp-filename (colorize-filename filename-string stat)]
          
-             [outp-list (list inode mode-str number-of-hardlinks owner-user owner-group size mtime filename-string)]
+             [outp-list (list inode mode-str number-of-hardlinks owner-user owner-group size mtime outp-filename)]
              [outp-filtered (map (λ (p) (format "~a" p)) (filter (λ (x) (not (false? x))) outp-list))]
              [outp-string (string-join outp-filtered " ")])
         outp-string))
