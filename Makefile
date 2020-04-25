@@ -35,6 +35,7 @@ exe: \
 	compiled/rkt-sha256sum \
 	compiled/rkt-sha384sum \
 	compiled/rkt-sha512sum \
+	compiled/rkt-sort \
 	compiled/rkt-tac \
 	compiled/rkt-tail \
 	compiled/rkt-true \
@@ -185,6 +186,15 @@ compiled/rkt-tac: \
 	$(REPL)/util/file-by-file-processor.rkt
 
 	$(RACO) exe -o compiled/rkt-tac src/tac.rkt
+
+compiled/rkt-sort: \
+	src/sort.rkt \
+	$(REPL)/sort.rkt \
+	$(DUTIL)/simple-file-handler-program.rkt \
+	$(VERSIONFILE) \
+	$(REPL)/util/util.rkt \
+
+	$(RACO) exe -o compiled/rkt-sort src/sort.rkt
 
 compiled/rkt-tail: \
 	src/tail.rkt \
