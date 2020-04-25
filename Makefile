@@ -19,15 +19,34 @@ DOCDEPS=$(AUTHSCRBL) $(CWSCRBL)
 all: exe docs
 
 exe: \
+	compiled/rkt-base64 \
 	compiled/rkt-cat \
 	compiled/rkt-echo \
 	compiled/rkt-false \
 	compiled/rkt-head \
 	compiled/rkt-ls \
 	compiled/rkt-md5sum \
+	compiled/rkt-nl \
 	compiled/rkt-stat \
+	compiled/rkt-sha1sum \
+	compiled/rkt-sha224sum \
+	compiled/rkt-sha256sum \
+	compiled/rkt-sha384sum \
+	compiled/rkt-sha512sum \
+	compiled/rkt-tac \
+	compiled/rkt-tail \
 	compiled/rkt-true \
-	compiled/rkt-whoami \
+	compiled/rkt-whoami
+
+compiled/rkt-base64: \
+	src/base64.rkt \
+	$(VERSIONFILE) \
+	$(DUTIL)/simple-file-handler-program.rkt \
+	$(REPL)/base64.rkt \
+	$(REPL)/util/util.rkt \
+	$(REPL)/util/file-by-file-processor.rkt
+
+	$(RACO) exe -o compiled/rkt-base64 src/base64.rkt
 
 compiled/rkt-cat: \
 	src/cat.rkt \
@@ -85,6 +104,15 @@ compiled/rkt-md5sum: \
 
 	$(RACO) exe -o compiled/rkt-md5sum src/md5sum.rkt
 
+compiled/rkt-nl: \
+	src/nl.rkt \
+	$(REPL)/nl.rkt \
+	$(VERSIONFILE) \
+	$(DUTIL)/simple-file-handler-program.rkt \
+	$(REPL)/util/program/line-by-line-processor-program.rkt
+
+	$(RACO) exe -o compiled/rkt-nl src/nl.rkt
+
 compiled/rkt-stat: \
 	src/stat.rkt \
 	$(DLIBC)/stat.rkt \
@@ -99,6 +127,71 @@ compiled/rkt-stat: \
 	$(VERSIONFILE)
 
 	$(RACO) exe -o compiled/rkt-stat src/stat.rkt
+
+compiled/rkt-sha1sum: \
+	src/sha1sum.rkt \
+	$(REPL)/sha1sum.rkt \
+	$(DUTIL)/simple-file-handler-program.rkt \
+	$(VERSIONFILE) \
+	$(REPL)/util/program/shaprogram.rkt
+
+	$(RACO) exe -o compiled/rkt-sha1sum src/sha1sum.rkt
+
+compiled/rkt-sha224sum: \
+	src/sha224sum.rkt \
+	$(REPL)/sha224sum.rkt \
+	$(DUTIL)/simple-file-handler-program.rkt \
+	$(VERSIONFILE) \
+	$(REPL)/util/program/shaprogram.rkt
+
+	$(RACO) exe -o compiled/rkt-sha224sum src/sha224sum.rkt
+
+compiled/rkt-sha256sum: \
+	src/sha256sum.rkt \
+	$(REPL)/sha256sum.rkt \
+	$(DUTIL)/simple-file-handler-program.rkt \
+	$(VERSIONFILE) \
+	$(REPL)/util/program/shaprogram.rkt
+
+	$(RACO) exe -o compiled/rkt-sha256sum src/sha256sum.rkt
+
+compiled/rkt-sha384sum: \
+	src/sha384sum.rkt \
+	$(REPL)/sha384sum.rkt \
+	$(DUTIL)/simple-file-handler-program.rkt \
+	$(VERSIONFILE) \
+	$(REPL)/util/program/shaprogram.rkt
+
+	$(RACO) exe -o compiled/rkt-sha384sum src/sha384sum.rkt
+
+compiled/rkt-sha512sum: \
+	src/sha512sum.rkt \
+	$(REPL)/sha512sum.rkt \
+	$(DUTIL)/simple-file-handler-program.rkt \
+	$(VERSIONFILE) \
+	$(REPL)/util/program/shaprogram.rkt
+
+	$(RACO) exe -o compiled/rkt-sha512sum src/sha512sum.rkt
+
+compiled/rkt-tac: \
+	src/tac.rkt \
+	$(REPL)/tac.rkt \
+	$(DUTIL)/simple-file-handler-program.rkt \
+	$(VERSIONFILE) \
+	$(REPL)/util/util.rkt \
+	$(REPL)/util/file-by-file-processor.rkt
+
+	$(RACO) exe -o compiled/rkt-tac src/tac.rkt
+
+compiled/rkt-tail: \
+	src/tail.rkt \
+	$(REPL)/tail.rkt \
+	$(DUTIL)/simple-file-handler-program.rkt \
+	$(VERSIONFILE) \
+	$(REPL)/util/util.rkt \
+	$(REPL)/util/file-by-file-processor.rkt
+
+	$(RACO) exe -o compiled/rkt-tail src/tail.rkt
 
 compiled/rkt-true: \
 	src/true.rkt \
