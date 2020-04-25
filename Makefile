@@ -1,6 +1,8 @@
 RACO=raco
 SCRIBBLE=scribble
 
+DEPDIR=~/bin
+
 DUTIL=src/util
 DLIBC=src/libc
 VERSIONFILE=src/util/version.rkt
@@ -344,5 +346,8 @@ $(MDDOCS)/whoami.md: \
 clean:
 	rm -rf compiled
 	rm -rf docs/
+
+deploy:
+	cp -f compiled/* $(DEPDIR)
 
 $(shell mkdir -p compiled)
