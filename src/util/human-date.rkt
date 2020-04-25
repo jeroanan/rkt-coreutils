@@ -1,19 +1,9 @@
 #lang typed/racket
 
 ; Copyright 2020 David Wilson
+; See COPYING for details
 
-;This program is free software: you can redistribute it and/or modify
-;it under the terms of the GNU General Public License as published by
-;the Free Software Foundation, either version 3 of the License, or
-;(at your option) any later version.
-;
-;This program is distributed in the hope that it will be useful,
-;but WITHOUT ANY WARRANTY; without even the implied warranty of
-;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-;GNU General Public License for more details.
-;
-;You should have received a copy of the GNU General Public License
-;along with this program.  If not, see <https://www.gnu.org/licenses/>.
+(require "stringutil.rkt")
 
 (define month-names
   (list ""
@@ -35,16 +25,21 @@
          [time : String])
   (let ([current-date (seconds->date (current-seconds))])
     (if (> (date-year current-date) year)
-        (number->string year)
+        (right-aligned-string (number->string year) 5)
         time)))
-                        
+
+(define (pad-time-element [te : String])
+  (if (eq? (string-length te) 1)
+      (~a "0" te)
+      te))
+  
 (define (unix-seconds->human-date [unix-seconds : Integer])
   (let* ([the-date (seconds->date unix-seconds)]
          [year (date-year the-date)]
          [month (list-ref month-names (date-month the-date))]
          [day (number->string (date-day the-date))]
-         [hour (number->string (date-hour the-date))]
-         [minute (number->string (date-minute the-date))]
+         [hour (pad-time-element (number->string (date-hour the-date)))]
+         [minute (pad-time-element (number->string (date-minute the-date)))]
          [time (string-append hour ":" minute)]
          [year-or-time : String (get-year-or-time year time)]
          [output-list (list month day year-or-time)])

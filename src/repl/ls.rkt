@@ -11,7 +11,8 @@
          "../util/fileaccessstr.rkt"
          "../util/human-date.rkt"
          "../util/human-size.rkt"
-         "../util/member.rkt")
+         "../util/member.rkt"
+         "../util/stringutil.rkt")
 
 (require/typed "../libc/stat.rkt"
                [get-stat (-> String String (Instance Stat%))])
@@ -90,6 +91,17 @@
         [(send stat get-is-fifo?) (colorize-pipe filename)]
         [(send stat get-is-character-device?) (colorize-character-device filename)]
         [else filename]))
+
+    (define-syntax-rule (anything->integer val)
+      (assert val exact-integer?))
+
+    (define-syntax-rule (any-list->string-list the-list)
+      (map (λ (p) (~a p)) the-list))
+    
+    (: get-size-string (-> (Instance Stat%) String))
+    (define/private (get-size-string stat)
+      (let ([raw-size (anything->integer (send stat get-size))])
+        (right-aligned-string (human-readable-byte-size raw-size) 4)))
     
     (: format-entry (-> Path Path String))
     (define/private (format-entry path filename)
@@ -106,12 +118,12 @@
              [owner-user (when-long-mode (λ () (send user get-username)))]
              [owner-group (when-long-mode (λ () (send group get-name)))]
              [number-of-hardlinks (when-long-mode (λ () (number->string (send stat get-number-of-hardlinks))))]
-             [size (when-long-mode (λ () (human-readable-byte-size (assert (send stat get-size) exact-integer?))))]
-             [mtime (when-long-mode (λ () (unix-seconds->human-date (assert (send stat get-modified-time) exact-integer?))))]
+             [size (when-long-mode (λ () (get-size-string stat)))]
+             [mtime (when-long-mode (λ () (unix-seconds->human-date (anything->integer (send stat get-modified-time)))))]
              [outp-filename (colorize-filename filename-string stat)]
          
              [outp-list (list inode mode-str number-of-hardlinks owner-user owner-group size mtime outp-filename)]
-             [outp-filtered (map (λ (p) (format "~a" p)) (filter (λ (x) (not (false? x))) outp-list))]
+             [outp-filtered (any-list->string-list (filter (λ (x) (not (false? x))) outp-list))]
              [outp-string (string-join outp-filtered " ")])
         outp-string))
 
@@ -131,7 +143,7 @@
 
     (: process-entry-list (-> (Listof Path) (Listof String)))
     (define/private (process-entry-list es)
-      (let* ([path-strings (map (λ (x) (format "~a" x)) es)]
+      (let* ([path-strings (any-list->string-list es)]
              [sorted (sort path-strings string-ci<?)])
         (add-implied
          (filter-hidden

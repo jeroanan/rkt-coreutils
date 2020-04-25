@@ -88,6 +88,7 @@ compiled/rkt-ls: \
 	$(DUTIL)/human-date.rkt \
 	$(DUTIL)/fileaccessstr.rkt \
 	$(DUTIL)/member.rkt \
+	$(DUTIL)/stringutil.rkt \
 	$(DLIBC)/stat.rkt \
 	$(DLIBC)/pwd.rkt \
 	$(DLIBC)/grp.rkt \
