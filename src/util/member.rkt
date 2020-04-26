@@ -7,18 +7,18 @@
          integer-attribute
          string-list-attribute)
   
-(define-syntax-rule (boolean-attribute field-name getter-name setter-name default-value)
-  (make-attribute Boolean field-name getter-name setter-name default-value))
+(define-syntax-rule (boolean-attribute field-name default-value getter-name setter-name)
+  (make-attribute Boolean field-name default-value getter-name setter-name))
 
-(define-syntax-rule (integer-attribute field-name getter-name setter-name default-value)
-  (make-attribute Integer field-name getter-name setter-name default-value))
+(define-syntax-rule (integer-attribute field-name default-value getter-name setter-name )
+  (make-attribute Integer field-name default-value getter-name setter-name))
 
 (define-syntax-rule (string-list-attribute field-name default-value)
   (make-attribute (Listof String) field-name default-value))
 
 (define-syntax make-attribute
   (syntax-rules ()
-    [(make-public-attribute type field-name getter-name setter-name default-value)
+    [(make-public-attribute type field-name default-value getter-name setter-name)
      (begin
        (: field-name type)
        (field [field-name default-value])

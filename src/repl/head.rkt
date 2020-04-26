@@ -13,7 +13,7 @@
   (class object%  
     (super-new)
 
-    (integer-attribute number-of-lines get-number-of-lines set-number-of-lines 10)
+    (integer-attribute number-of-lines 10 get-number-of-lines set-number-of-lines)
 
     (help-function (list "Print the first lines of each provided file."
                          ""

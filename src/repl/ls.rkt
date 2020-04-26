@@ -27,11 +27,11 @@
   (class object%
     (super-new)
 
-    (boolean-attribute print-inodes get-print-inodes set-print-inodes #f)
-    (boolean-attribute long-mode get-long-mode set-long-mode #f)
-    (boolean-attribute hide-implied get-hide-implied set-hide-implied #f)
-    (boolean-attribute show-colors get-show-colors set-show-colors #f)
-    (boolean-attribute show-hidden get-show-hidden set-show-hidden #f)
+    (boolean-attribute print-inodes #f get-print-inodes set-print-inodes)
+    (boolean-attribute long-mode #f get-long-mode set-long-mode)
+    (boolean-attribute hide-implied #f get-hide-implied set-hide-implied)
+    (boolean-attribute show-colors #f get-show-colors set-show-colors)
+    (boolean-attribute show-hidden #f get-show-hidden set-show-hidden)
     
     (: when-long-mode (-> (-> String) (U String Boolean)))
     (define/private (when-long-mode x)
