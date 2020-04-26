@@ -191,8 +191,10 @@ compiled/rkt-sort: \
 	src/sort.rkt \
 	$(REPL)/sort.rkt \
 	$(DUTIL)/simple-file-handler-program.rkt \
+	$(DUTIL)/member.rkt \
 	$(VERSIONFILE) \
 	$(REPL)/util/util.rkt \
+	$(REPL)/util/file-by-file-processor.rkt
 
 	$(RACO) exe -o compiled/rkt-sort src/sort.rkt
 

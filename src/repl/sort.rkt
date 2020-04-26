@@ -5,7 +5,9 @@
 
 (provide sort%)
 
-(require "util/util.rkt")
+(require "util/util.rkt"
+         "util/file-by-file-processor.rkt"
+         "../util/member.rkt")
 
 (define sort%
   (class object%
@@ -17,26 +19,20 @@
                             "(execute FILES) -- Display the sorted contents of provided FILES"))
     (help-function help-text)
 
-    (define/public (execute [files : (Listof String)])
-      (if (empty? files)
-          (process-stdin)
-          (process-files files)))
+    (string-list-attribute contents (list))
 
-    (: process-stdin (-> Void))
-    (define/private (process-stdin)
-      (let* ([the-lines (port->lines (current-input-port))]
-             [sorted (sort the-lines sort-func)])
-       (for ([l sorted])
-         (displayln l))))
-        
-    (: process-files (-> (Listof String) Void))
-    (define/private (process-files files)
-      (let ([the-lines (list "")])
-        (for ([f files])
-          (set! the-lines (append the-lines (port->lines (open-input-file f)))))
-        (for ([l (sort the-lines sort-func)])
-          (displayln l))))
+    (file-by-file-processor on-process-file on-finished-processing-files)
     
+    (: on-process-file (-> (Listof String) Void))
+    (define (on-process-file lines)
+      (set! contents (append contents lines)))
+
+    (: on-finished-processing-files (-> Void))
+    (define (on-finished-processing-files)
+      (let ([sorted-contents (sort contents sort-func)])
+        (for ([l sorted-contents])
+          (displayln l))))
+
     (: sort-func (-> String String Boolean))
     (define (sort-func str-a str-b)
       (let* ([r #rx"[^A-Za-z0-9]*"]
