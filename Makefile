@@ -42,7 +42,10 @@ exe: \
 	compiled/rkt-uniq \
 	compiled/rkt-whoami
 
-compiled/rkt-base64: \
+compiled/rkt-base64: demods/rkt-base64.zo
+	$(RACO) exe -o compiled/rkt-base64 demods/rkt-base64.zo
+
+demods/rkt-base64.zo: \
 	src/base64.rkt \
 	$(VERSIONFILE) \
 	$(DUTIL)/simple-file-handler-program.rkt \
@@ -50,31 +53,43 @@ compiled/rkt-base64: \
 	$(REPL)/util/util.rkt \
 	$(REPL)/util/file-by-file-processor.rkt
 
-	$(RACO) exe -o compiled/rkt-base64 src/base64.rkt
+	$(RACO) demod -o demods/rkt-base64.zo src/base64.rkt
 
-compiled/rkt-cat: \
+compiled/rkt-cat: demods/rkt-cat.zo
+	$(RACO) exe -o compiled/rkt-cat demods/rkt-cat.zo
+
+demods/rkt-cat.zo: \
 	src/cat.rkt \
 	$(VERSIONFILE) \
 	$(REPL)/cat.rkt \
 	$(DUTIL)/simple-file-handler-program.rkt \
 	$(DUTIL)/version.rkt
 	
-	$(RACO) exe -o compiled/rkt-cat src/cat.rkt
+	$(RACO) demod -o demods/rkt-cat.zo src/cat.rkt
 
-compiled/rkt-echo: \
+compiled/rkt-echo: demods/rkt-echo.zo
+	$(RACO) exe -o compiled/rkt-echo demods/rkt-echo.zo
+
+demods/rkt-echo.zo: \
 	src/echo.rkt \
 	$(VERSIONFILE)
 
-	$(RACO) exe -o compiled/rkt-echo src/echo.rkt
+	$(RACO) demod -o demods/rkt-echo.zo src/echo.rkt
 
-compiled/rkt-false: \
+compiled/rkt-false: demods/rkt-false.zo 
+	$(RACO) exe -o compiled/rkt-false demods/rkt-false.zo
+
+demods/rkt-false.zo: \
 	src/false.rkt \
 	$(DUTIL)/truefalseprogram.rkt \
 	$(VERSIONFILE)
 
-	$(RACO) exe -o compiled/rkt-false src/false.rkt
+	$(RACO) demod -o demods/rkt-false.zo src/false.rkt
 
-compiled/rkt-uniq: \
+compiled/rkt-uniq: demods/rkt-uniq.zo
+	$(RACO) exe -o compiled/rkt-uniq demods/rkt-uniq.zo
+
+demods/rkt-uniq.zo: \
 	src/uniq.rkt \
 	$(REPL)/uniq.rkt \
 	$(DUTIL)/simple-file-handler-program.rkt \
@@ -84,10 +99,12 @@ compiled/rkt-uniq: \
 	$(REPL)/util/line-by-line-processor.rkt \
 	$(VERSIONFILE)
 
-	$(RACO) exe -o compiled/rkt-uniq src/uniq.rkt
+	$(RACO) demod -o demods/rkt-uniq.zo src/uniq.rkt
 
+compiled/rkt-head: demods/rkt-head.zo 
+	$(RACO) exe -o compiled/rkt-head demods/rkt-head.zo
 
-compiled/rkt-head: \
+demods/rkt-head.zo: \
 	src/head.rkt \
 	$(REPL)/head.rkt \
 	$(DUTIL)/member.rkt \
@@ -95,9 +112,12 @@ compiled/rkt-head: \
 	$(REPL)/util/line-by-line-processor.rkt \
 	$(VERSIONFILE)
 
-	$(RACO) exe -o compiled/rkt-head src/head.rkt
+	$(RACO) demod -o demods/rkt-head.zo src/head.rkt
 
-compiled/rkt-ls: \
+compiled/rkt-ls: demods/rkt-ls.zo
+	$(RACO) exe -o compiled/rkt-ls demods/rkt-ls.zo
+
+demods/rkt-ls.zo: \
 	src/ls.rkt \
 	$(DUTIL)/human-size.rkt \
 	$(DUTIL)/human-date.rkt \
@@ -112,26 +132,35 @@ compiled/rkt-ls: \
 	$(TYPEDEFS)/getgrgid.rkt \
 	$(VERSIONFILE) 
 
-	$(RACO) exe -o compiled/rkt-ls src/ls.rkt
+	$(RACO) demod -o demods/rkt-ls.zo src/ls.rkt
 
-compiled/rkt-md5sum: \
+compiled/rkt-md5sum: demods/rkt-md5sum.zo
+	$(RACO) exe -o compiled/rkt-md5sum demods/rkt-md5sum.zo
+
+demods/rkt-md5sum.zo: \
 	src/md5sum.rkt \
 	$(VERSIONFILE) \
 	$(REPL)/md5sum.rkt \
 	$(DUTIL)/simple-file-handler-program.rkt
 
-	$(RACO) exe -o compiled/rkt-md5sum src/md5sum.rkt
+	$(RACO) demod -o demods/rkt-md5sum.zo src/md5sum.rkt
 
-compiled/rkt-nl: \
+compiled/rkt-nl: demods/rkt-nl.zo
+	$(RACO) exe -o compiled/rkt-nl demods/rkt-nl.zo
+
+demods/rkt-nl.zo: \
 	src/nl.rkt \
 	$(REPL)/nl.rkt \
 	$(VERSIONFILE) \
 	$(DUTIL)/simple-file-handler-program.rkt \
 	$(REPL)/util/program/line-by-line-processor-program.rkt
 
-	$(RACO) exe -o compiled/rkt-nl src/nl.rkt
+	$(RACO) demod -o demods/rkt-nl.zo src/nl.rkt
 
-compiled/rkt-stat: \
+compiled/rkt-stat: demods/rkt-stat.zo
+	$(RACO) exe -o compiled/rkt-stat demods/rkt-stat.zo
+
+demods/rkt-stat.zo: \
 	src/stat.rkt \
 	$(DLIBC)/stat.rkt \
 	$(DLIBC)/pwd.rkt \
@@ -144,54 +173,72 @@ compiled/rkt-stat: \
 	$(REPL)/stat.rkt \
 	$(VERSIONFILE)
 
-	$(RACO) exe -o compiled/rkt-stat src/stat.rkt
+	$(RACO) demod -o demods/rkt-stat.zo src/stat.rkt
 
-compiled/rkt-sha1sum: \
+compiled/rkt-sha1sum: demods/rkt-sha1sum.zo
+	$(RACO) exe -o compiled/rkt-sha1sum demods/rkt-sha1sum.zo
+
+demods/rkt-sha1sum.zo: \
 	src/sha1sum.rkt \
 	$(REPL)/sha1sum.rkt \
 	$(DUTIL)/simple-file-handler-program.rkt \
 	$(VERSIONFILE) \
 	$(REPL)/util/program/shaprogram.rkt
 
-	$(RACO) exe -o compiled/rkt-sha1sum src/sha1sum.rkt
+	$(RACO) demod -o demods/rkt-sha1sum.zo src/sha1sum.rkt
 
-compiled/rkt-sha224sum: \
+compiled/rkt-sha224sum: demods/rkt-sha224sum.zo
+	$(RACO) exe -o compiled/rkt-sha224sum demods/rkt-sha224sum.zo
+
+demods/rkt-sha224sum.zo: \
 	src/sha224sum.rkt \
 	$(REPL)/sha224sum.rkt \
 	$(DUTIL)/simple-file-handler-program.rkt \
 	$(VERSIONFILE) \
 	$(REPL)/util/program/shaprogram.rkt
 
-	$(RACO) exe -o compiled/rkt-sha224sum src/sha224sum.rkt
+	$(RACO) demod -o demods/rkt-sha224sum.zo src/sha224sum.rkt
 
-compiled/rkt-sha256sum: \
+compiled/rkt-sha256sum: demods/rkt-sha256sum.zo
+	$(RACO) exe -o compiled/rkt-sha256sum demods/rkt-sha256sum.zo
+
+demods/rkt-sha256sum.zo: \
 	src/sha256sum.rkt \
 	$(REPL)/sha256sum.rkt \
 	$(DUTIL)/simple-file-handler-program.rkt \
 	$(VERSIONFILE) \
 	$(REPL)/util/program/shaprogram.rkt
 
-	$(RACO) exe -o compiled/rkt-sha256sum src/sha256sum.rkt
+	$(RACO) demod -o demods/rkt-sha256sum.zo src/sha256sum.rkt
 
-compiled/rkt-sha384sum: \
+compiled/rkt-sha384sum: demods/rkt-sha384sum.zo
+	$(RACO) exe -o compiled/rkt-sha384sum demods/rkt-sha384sum.zo
+
+demods/rkt-sha384sum.zo: \
 	src/sha384sum.rkt \
 	$(REPL)/sha384sum.rkt \
 	$(DUTIL)/simple-file-handler-program.rkt \
 	$(VERSIONFILE) \
 	$(REPL)/util/program/shaprogram.rkt
 
-	$(RACO) exe -o compiled/rkt-sha384sum src/sha384sum.rkt
+	$(RACO) demod -o demods/rkt-sha384sum.zo src/sha384sum.rkt
 
-compiled/rkt-sha512sum: \
+compiled/rkt-sha512sum: demods/rkt-sha512sum.zo
+	$(RACO) exe -o compiled/rkt-sha512sum demods/rkt-sha512sum.zo
+
+demods/rkt-sha512sum.zo: \
 	src/sha512sum.rkt \
 	$(REPL)/sha512sum.rkt \
 	$(DUTIL)/simple-file-handler-program.rkt \
 	$(VERSIONFILE) \
 	$(REPL)/util/program/shaprogram.rkt
 
-	$(RACO) exe -o compiled/rkt-sha512sum src/sha512sum.rkt
+	$(RACO) demod -o demods/rkt-sha512sum.zo src/sha512sum.rkt
 
-compiled/rkt-tac: \
+compiled/rkt-tac: demods/rkt-tac.zo
+	$(RACO) exe -o compiled/rkt-tac demods/rkt-tac.zo
+
+demods/rkt-tac.zo: \
 	src/tac.rkt \
 	$(REPL)/tac.rkt \
 	$(DUTIL)/simple-file-handler-program.rkt \
@@ -199,9 +246,12 @@ compiled/rkt-tac: \
 	$(REPL)/util/util.rkt \
 	$(REPL)/util/file-by-file-processor.rkt
 
-	$(RACO) exe -o compiled/rkt-tac src/tac.rkt
+	$(RACO) demod -o demods/rkt-tac.zo src/tac.rkt
 
-compiled/rkt-sort: \
+compiled/rkt-sort: demods/rkt-sort.zo
+	$(RACO) exe -o compiled/rkt-sort demods/rkt-sort.zo
+
+demods/rkt-sort.zo: \
 	src/sort.rkt \
 	$(REPL)/sort.rkt \
 	$(DUTIL)/simple-file-handler-program.rkt \
@@ -210,9 +260,12 @@ compiled/rkt-sort: \
 	$(REPL)/util/util.rkt \
 	$(REPL)/util/file-by-file-processor.rkt
 
-	$(RACO) exe -o compiled/rkt-sort src/sort.rkt
+	$(RACO) demod -o demods/rkt-sort.zo src/sort.rkt
 
-compiled/rkt-tail: \
+compiled/rkt-tail: demods/rkt-tail.zo
+	$(RACO) exe -o compiled/rkt-tail demods/rkt-tail.zo
+
+demods/rkt-tail.zo: \
 	src/tail.rkt \
 	$(REPL)/tail.rkt \
 	$(DUTIL)/simple-file-handler-program.rkt \
@@ -220,16 +273,22 @@ compiled/rkt-tail: \
 	$(REPL)/util/util.rkt \
 	$(REPL)/util/file-by-file-processor.rkt
 
-	$(RACO) exe -o compiled/rkt-tail src/tail.rkt
+	$(RACO) demod -o demods/rkt-tail.zo src/tail.rkt
 
-compiled/rkt-true: \
+compiled/rkt-true: demods/rkt-true.zo
+	$(RACO) exe -o compiled/rkt-true demods/rkt-true.zo
+
+demods/rkt-true.zo: \
 	src/true.rkt \
 	$(DUTIL)/truefalseprogram.rkt \
 	$(VERSIONFILE)
 
-	$(RACO) exe -o compiled/rkt-true src/true.rkt
+	$(RACO) demod -o demods/rkt-true.zo src/true.rkt
 
-compiled/rkt-whoami: \
+compiled/rkt-whoami: demods/rkt-whoami.zo
+	$(RACO) exe -o compiled/rkt-whoami demods/rkt-whoami.zo
+
+demods/rkt-whoami.zo: \
 	src/whoami.rkt \
 	$(VERSIONFILE) \
 	$(DUTIL)/simple-program.rkt \
@@ -238,7 +297,7 @@ compiled/rkt-whoami: \
 	$(DLIBC)/unistd.rkt \
 	$(TYPEDEFS)/getpwuid.rkt
 
-	$(RACO) exe -o compiled/rkt-whoami src/whoami.rkt
+	$(RACO) demod -o demods/rkt-whoami.zo src/whoami.rkt
 	
 docs: docs-html docs-md
 
@@ -379,3 +438,4 @@ deploy:
 	cp -f compiled/* $(DEPDIR)
 
 $(shell mkdir -p compiled)
+$(shell mkdir -p demods)
