@@ -39,6 +39,7 @@ exe: \
 	compiled/rkt-tac \
 	compiled/rkt-tail \
 	compiled/rkt-true \
+	compiled/rkt-uniq \
 	compiled/rkt-whoami
 
 compiled/rkt-base64: \
@@ -72,6 +73,19 @@ compiled/rkt-false: \
 	$(VERSIONFILE)
 
 	$(RACO) exe -o compiled/rkt-false src/false.rkt
+
+compiled/rkt-uniq: \
+	src/uniq.rkt \
+	$(REPL)/uniq.rkt \
+	$(DUTIL)/simple-file-handler-program.rkt \
+	$(DUTIL)/member.rkt \
+	$(DUTIL)/stringutil.rkt \
+	$(REPL)/util/util.rkt \
+	$(REPL)/util/line-by-line-processor.rkt \
+	$(VERSIONFILE)
+
+	$(RACO) exe -o compiled/rkt-uniq src/uniq.rkt
+
 
 compiled/rkt-head: \
 	src/head.rkt \

@@ -24,9 +24,8 @@
 
     (line-by-line-processor line-handler)
 
-    (: counter Integer)
-    (define counter 0)
-
+    (integer-attribute counter 0)
+    
     (: line-handler (-> String Void))
     (define/private (line-handler line)
       (begin
@@ -34,4 +33,3 @@
         (set! counter (add1 counter))
         (when (eq? counter number-of-lines) (exit 0))))))
    
-
