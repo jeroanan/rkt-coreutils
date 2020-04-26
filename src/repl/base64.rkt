@@ -1,11 +1,13 @@
-#lang typed/racket
+#lang typed/racket/base
 
 (provide base64%)
 
+(require typed/racket/class
+         racket/list)
+
 (require/typed net/base64
                [base64-encode-stream (-> Input-Port Output-Port Void)])
-(require "util/util.rkt"
-         "util/file-by-file-processor.rkt")
+(require "util/util.rkt")
 
 (define base64%
   (class object%

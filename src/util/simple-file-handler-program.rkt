@@ -1,6 +1,10 @@
-#lang typed/racket
+#lang typed/racket/base
 
 (provide simple-file-handler-program)
+
+(require racket/cmdline
+         racket/list
+         racket/class)
 
 (define-syntax-rule (simple-file-handler-program dispatch-type)
   (begin
