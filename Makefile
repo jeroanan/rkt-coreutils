@@ -232,6 +232,7 @@ compiled/rkt-true: \
 compiled/rkt-whoami: \
 	src/whoami.rkt \
 	$(VERSIONFILE) \
+	$(DUTIL)/simple-program.rkt \
 	$(REPL)/whoami.rkt \
 	$(DLIBC)/pwd.rkt \
 	$(DLIBC)/unistd.rkt \
