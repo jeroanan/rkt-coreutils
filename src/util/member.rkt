@@ -1,7 +1,9 @@
-#lang typed/racket
+#lang typed/racket/base
 
 ; Copyright 2020 David Wilson
 ; See COPYING for licence
+
+(require typed/racket/class)
 
 (provide boolean-attribute
          integer-attribute
