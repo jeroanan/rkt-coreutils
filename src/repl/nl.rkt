@@ -1,9 +1,11 @@
-#lang typed/racket
+#lang typed/racket/base
 
 ; Copyright 2020 David Wilson
 ; See COPYING for details
 
 (provide nl%)
+
+(require racket/format)
 
 (require "util/program/line-by-line-processor-program.rkt")
 
