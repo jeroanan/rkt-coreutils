@@ -1,9 +1,12 @@
-#lang typed/racket
+#lang typed/racket/base
 
 ; Copyright 2020 David Wilson
 ; See COPYING for licence details
 
 (provide tail%)
+
+(require typed/racket/class
+         racket/list)
 
 (require "util/util.rkt"
          "util/file-by-file-processor.rkt")
