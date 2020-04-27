@@ -1,4 +1,4 @@
-#lang typed/racket
+#lang typed/racket/base
 
 ; Copyright 2020 David Wilson
 
@@ -16,6 +16,9 @@
 ;along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 (provide stat%)
+
+(require typed/racket/class
+         racket/list)
 
 (require "../util/fileaccessoct.rkt"
          "../util/fileaccessstr.rkt"
