@@ -18,7 +18,10 @@ SCRIBDIR=scribblings
 
 DOCDEPS=$(AUTHSCRBL) $(CWSCRBL)
 
-all: exe docs
+all: make-all exe docs
+
+make-all: 
+	$(RACO) make src/*.rkt
 
 exe: \
 	compiled/rkt-base64 \
@@ -50,7 +53,7 @@ compiled/rkt-base64: \
 	$(REPL)/util/util.rkt \
 	$(REPL)/util/file-by-file-processor.rkt
 
-	$(RACO) exe -o compiled/rkt-base64 src/base64.rkt
+	$(RACO) exe -lo compiled/rkt-base64 src/base64.rkt
 
 compiled/rkt-cat: \
 	src/cat.rkt \
@@ -59,20 +62,20 @@ compiled/rkt-cat: \
 	$(DUTIL)/simple-file-handler-program.rkt \
 	$(DUTIL)/version.rkt
 	
-	$(RACO) exe -o compiled/rkt-cat src/cat.rkt
+	$(RACO) exe -lo compiled/rkt-cat src/cat.rkt
 
 compiled/rkt-echo: \
 	src/echo.rkt \
 	$(VERSIONFILE)
 
-	$(RACO) exe -o compiled/rkt-echo src/echo.rkt
+	$(RACO) exe -lo compiled/rkt-echo src/echo.rkt
 
 compiled/rkt-false: \
 	src/false.rkt \
 	$(DUTIL)/truefalseprogram.rkt \
 	$(VERSIONFILE)
 
-	$(RACO) exe -o compiled/rkt-false src/false.rkt
+	$(RACO) exe -lo compiled/rkt-false src/false.rkt
 
 compiled/rkt-uniq: \
 	src/uniq.rkt \
@@ -84,7 +87,7 @@ compiled/rkt-uniq: \
 	$(REPL)/util/line-by-line-processor.rkt \
 	$(VERSIONFILE)
 
-	$(RACO) exe -o compiled/rkt-uniq src/uniq.rkt
+	$(RACO) exe -lo compiled/rkt-uniq src/uniq.rkt
 
 
 compiled/rkt-head: \
@@ -95,7 +98,7 @@ compiled/rkt-head: \
 	$(REPL)/util/line-by-line-processor.rkt \
 	$(VERSIONFILE)
 
-	$(RACO) exe -o compiled/rkt-head src/head.rkt
+	$(RACO) exe -lo compiled/rkt-head src/head.rkt
 
 compiled/rkt-ls: \
 	src/ls.rkt \
@@ -112,7 +115,7 @@ compiled/rkt-ls: \
 	$(TYPEDEFS)/getgrgid.rkt \
 	$(VERSIONFILE) 
 
-	$(RACO) exe -o compiled/rkt-ls src/ls.rkt
+	$(RACO) exe -lo compiled/rkt-ls src/ls.rkt
 
 compiled/rkt-md5sum: \
 	src/md5sum.rkt \
@@ -120,7 +123,7 @@ compiled/rkt-md5sum: \
 	$(REPL)/md5sum.rkt \
 	$(DUTIL)/simple-file-handler-program.rkt
 
-	$(RACO) exe -o compiled/rkt-md5sum src/md5sum.rkt
+	$(RACO) exe -lo compiled/rkt-md5sum src/md5sum.rkt
 
 compiled/rkt-nl: \
 	src/nl.rkt \
@@ -129,7 +132,7 @@ compiled/rkt-nl: \
 	$(DUTIL)/simple-file-handler-program.rkt \
 	$(REPL)/util/program/line-by-line-processor-program.rkt
 
-	$(RACO) exe -o compiled/rkt-nl src/nl.rkt
+	$(RACO) exe -lo compiled/rkt-nl src/nl.rkt
 
 compiled/rkt-stat: \
 	src/stat.rkt \
@@ -144,7 +147,7 @@ compiled/rkt-stat: \
 	$(REPL)/stat.rkt \
 	$(VERSIONFILE)
 
-	$(RACO) exe -o compiled/rkt-stat src/stat.rkt
+	$(RACO) exe -lo compiled/rkt-stat src/stat.rkt
 
 compiled/rkt-sha1sum: \
 	src/sha1sum.rkt \
@@ -153,7 +156,7 @@ compiled/rkt-sha1sum: \
 	$(VERSIONFILE) \
 	$(REPL)/util/program/shaprogram.rkt
 
-	$(RACO) exe -o compiled/rkt-sha1sum src/sha1sum.rkt
+	$(RACO) exe -lo compiled/rkt-sha1sum src/sha1sum.rkt
 
 compiled/rkt-sha224sum: \
 	src/sha224sum.rkt \
@@ -162,7 +165,7 @@ compiled/rkt-sha224sum: \
 	$(VERSIONFILE) \
 	$(REPL)/util/program/shaprogram.rkt
 
-	$(RACO) exe -o compiled/rkt-sha224sum src/sha224sum.rkt
+	$(RACO) exe -lo compiled/rkt-sha224sum src/sha224sum.rkt
 
 compiled/rkt-sha256sum: \
 	src/sha256sum.rkt \
@@ -171,7 +174,7 @@ compiled/rkt-sha256sum: \
 	$(VERSIONFILE) \
 	$(REPL)/util/program/shaprogram.rkt
 
-	$(RACO) exe -o compiled/rkt-sha256sum src/sha256sum.rkt
+	$(RACO) exe -lo compiled/rkt-sha256sum src/sha256sum.rkt
 
 compiled/rkt-sha384sum: \
 	src/sha384sum.rkt \
@@ -180,7 +183,7 @@ compiled/rkt-sha384sum: \
 	$(VERSIONFILE) \
 	$(REPL)/util/program/shaprogram.rkt
 
-	$(RACO) exe -o compiled/rkt-sha384sum src/sha384sum.rkt
+	$(RACO) exe -lo compiled/rkt-sha384sum src/sha384sum.rkt
 
 compiled/rkt-sha512sum: \
 	src/sha512sum.rkt \
@@ -189,7 +192,7 @@ compiled/rkt-sha512sum: \
 	$(VERSIONFILE) \
 	$(REPL)/util/program/shaprogram.rkt
 
-	$(RACO) exe -o compiled/rkt-sha512sum src/sha512sum.rkt
+	$(RACO) exe -lo compiled/rkt-sha512sum src/sha512sum.rkt
 
 compiled/rkt-tac: \
 	src/tac.rkt \
@@ -199,7 +202,7 @@ compiled/rkt-tac: \
 	$(REPL)/util/util.rkt \
 	$(REPL)/util/file-by-file-processor.rkt
 
-	$(RACO) exe -o compiled/rkt-tac src/tac.rkt
+	$(RACO) exe -lo compiled/rkt-tac src/tac.rkt
 
 compiled/rkt-sort: \
 	src/sort.rkt \
@@ -210,7 +213,7 @@ compiled/rkt-sort: \
 	$(REPL)/util/util.rkt \
 	$(REPL)/util/file-by-file-processor.rkt
 
-	$(RACO) exe -o compiled/rkt-sort src/sort.rkt
+	$(RACO) exe -lo compiled/rkt-sort src/sort.rkt
 
 compiled/rkt-tail: \
 	src/tail.rkt \
@@ -220,14 +223,14 @@ compiled/rkt-tail: \
 	$(REPL)/util/util.rkt \
 	$(REPL)/util/file-by-file-processor.rkt
 
-	$(RACO) exe -o compiled/rkt-tail src/tail.rkt
+	$(RACO) exe -lo compiled/rkt-tail src/tail.rkt
 
 compiled/rkt-true: \
 	src/true.rkt \
 	$(DUTIL)/truefalseprogram.rkt \
 	$(VERSIONFILE)
 
-	$(RACO) exe -o compiled/rkt-true src/true.rkt
+	$(RACO) exe -lo compiled/rkt-true src/true.rkt
 
 compiled/rkt-whoami: \
 	src/whoami.rkt \
@@ -238,7 +241,7 @@ compiled/rkt-whoami: \
 	$(DLIBC)/unistd.rkt \
 	$(TYPEDEFS)/getpwuid.rkt
 
-	$(RACO) exe -o compiled/rkt-whoami src/whoami.rkt
+	$(RACO) exe -lo compiled/rkt-whoami src/whoami.rkt
 	
 docs: docs-html docs-md
 
