@@ -1,9 +1,13 @@
-#lang typed/racket
+#lang typed/racket/base
 
 ; Copyright 2020 David Wilson
 ; See COPYING for licence details
 
 (provide file-by-file-processor)
+
+(require racket/list
+         typed/racket/class
+         racket/port)
 
 (define-syntax file-by-file-processor
   (syntax-rules ()

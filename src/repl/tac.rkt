@@ -1,9 +1,11 @@
-#lang typed/racket
+#lang typed/racket/base
 
 ; Copyright 2020 David Wilson
 ; See COPYING for licence details
 
 (provide tac%)
+
+(require typed/racket/class)
 
 (require "util/util.rkt"
          "util/file-by-file-processor.rkt")
@@ -22,6 +24,6 @@
     (define/private (file-handler file-contents)
       (let ([reversed (reverse file-contents)])
         (for ([l reversed])
-          (display l))))
+          (displayln l))))
 
     (file-by-file-processor file-handler)))
