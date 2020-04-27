@@ -5,7 +5,6 @@ mkdir -p compiled
 cd src
 
 for f in *.rkt; do
-  echo $f
- raco exe -lo "../compiled/${f%.rkt}" "$f"
+ raco exe -lo "../compiled/rkt-${f%.rkt}" "$f"
 done
 
