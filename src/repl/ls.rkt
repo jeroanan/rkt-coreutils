@@ -1,9 +1,15 @@
-#lang typed/racket
+#lang typed/racket/base
 
 ; Copyright 2020 David Wilson
 ; See COPYING for details
 
 (provide ls%)
+
+(require typed/racket/class
+         racket/bool
+         racket/string
+         racket/list
+         racket/format)
 
 (require "../typedef/stat.rkt"
          "../typedef/getpwuid.rkt"

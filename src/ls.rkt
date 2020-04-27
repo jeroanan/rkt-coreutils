@@ -1,7 +1,12 @@
-#lang typed/racket
+#lang typed/racket/base
 
 ; Copyright 2020 David Wilson
 ; see COPYING for details
+
+(require racket/bool
+         racket/cmdline
+         racket/list
+         typed/racket/class)
 
 (require "repl/ls.rkt"
          "util/version.rkt")
