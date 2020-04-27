@@ -1,9 +1,11 @@
-#lang typed/racket
+#lang typed/racket/base
 
 ; Copyright 2020 David Wilson
 ; See COPYING for details
 
 (provide line-by-line-processor-program)
+
+(require typed/racket/class)
 
 (define-syntax-rule (line-by-line-processor-program type-name help-text line-function)  
   (begin

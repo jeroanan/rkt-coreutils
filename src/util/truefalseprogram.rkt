@@ -3,6 +3,7 @@
 (provide true-false-program)
 
 (require racket/cmdline)
+
 (require "version.rkt")
 
 (define-syntax-rule (true-false-program return-value)
