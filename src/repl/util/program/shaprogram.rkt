@@ -1,6 +1,10 @@
-#lang typed/racket
+#lang typed/racket/base
 
 (provide sha-program)
+
+(require typed/racket/class
+         racket/port
+         racket/list)
 
 (define-syntax-rule (sha-program description type-name sha-method)
   (begin
