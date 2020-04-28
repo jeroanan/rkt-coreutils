@@ -2,6 +2,8 @@
 
 (provide sha1sum%)
 
+(require typed/racket/class)
+
 (require/typed sha
                    [sha1  (-> Bytes Bytes)])
 

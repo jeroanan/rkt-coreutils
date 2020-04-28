@@ -5,6 +5,8 @@
 
 (provide whoami%)
 
+(require typed/racket/class)
+
 (require "util/program/getusernameprogram.rkt")
 
 (require/typed "../libc/unistd.rkt"

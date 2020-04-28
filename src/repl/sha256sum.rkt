@@ -5,6 +5,8 @@
 
 (provide sha256sum%)
 
+(require typed/racket/class)
+
 (require/typed sha
                    [sha256  (-> Bytes Bytes)])
 

@@ -5,6 +5,8 @@
 
 (provide cat%)
 
+(require typed/racket/class)
+
 (require "util/program/line-by-line-processor-program.rkt")
 
 (define help-text (list "Concatenate files and print on standard output."
