@@ -1,21 +1,17 @@
 #lang racket
 
 ; Copyright 2020 David Wilson
+; See COPYING for details
 
-;This program is free software: you can redistribute it and/or modify
-;it under the terms of the GNU General Public License as published by
-;the Free Software Foundation, either version 3 of the License, or
-;(at your option) any later version.
-;
-;This program is distributed in the hope that it will be useful,
-;but WITHOUT ANY WARRANTY; without even the implied warranty of
-;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-;GNU General Public License for more details.
-;
-;You should have received a copy of the GNU General Public License
-;along with this program.  If not, see <https://www.gnu.org/licenses/>.
+(provide getgrgid%
+         get-getgrgid
+         getgrouplist%)
 
-(require ffi/unsafe)
+(require ffi/unsafe
+         dynamic-ffi/unsafe
+         racket/class
+         racket/list
+         racket/format)
 
 (define getgrgid%
   (class object%
@@ -23,6 +19,11 @@
 
     (init gid)
 
+    (define-cstruct _grpstruct ([name _string]
+                                [passwd _string]
+                                [gid _int]
+                                [members _string]))
+    
     (define igid gid)
 
     (define/public (get-name) (grpstruct-name result))
@@ -31,11 +32,6 @@
     (define/public (get-members) (grpstruct-members result))
 
     (define clib (ffi-lib #f))
-    
-    (define-cstruct _grpstruct ([name _string]
-                                [passwd _string]
-                                [gid _uint]
-                                [members _string]))
     
     (define getgrgid (get-ffi-obj
                       "getgrgid" clib
@@ -47,4 +43,50 @@
 (define (get-getgrgid gid)
   (new getgrgid% [gid gid]))
 
-(provide getgrgid% get-getgrgid)
+(define getgrouplist%
+  (class object%
+    (super-new)
+
+    (init user-name number-to-retrieve)
+
+    (define/public (get-next-group-id)
+      (ggl 'getnextgroupid))
+
+    (define/public (get-number-of-groups)
+      (ggl 'getnumberofgroups))
+    
+    (define clib (ffi-lib #f))
+        
+    (define-inline-ffi ggl #:compiler "clang"
+      "#include <stdlib.h>\n"
+      "#include <grp.h>\n"
+      "#include <stdio.h>\n"
+    
+      "gid_t* groups;\n"
+      "int ngroups;\n"
+      "int i = 0;\n"
+
+      "int getnextgroupid(void) {\n"
+      "  if (i<=ngroups) {\n"
+      "    gid_t j = groups[i];\n"
+      "    i++;\n"
+      "    return j;\n"
+      "  }\n"
+      "  return -1;"
+      "}\n"
+
+      "int getnumberofgroups(void) {\n"
+      "  return ngroups;\n"
+      "}\n"
+    
+      "int getgroups(char* username, int number_of_groups) {\n"
+      "  int r;"
+      "  groups = malloc(ngroups * sizeof(gid_t));\n"    
+      "  r = getgrouplist(username, 1000, groups, &ngroups);\n"
+      "  return r;\n"
+      "}\n")
+
+  
+    (ggl 'getgroups user-name number-to-retrieve)))
+  
+  
