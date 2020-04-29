@@ -1,17 +1,16 @@
-#lang racket
+#lang racket/base
 
 ; Copyright 2020 David Wilson
 ; See COPYING for details
 
 (provide getgrgid%
          get-getgrgid
-         getgrouplist%)
+         getgrouplist%
+         get-getgrouplist)
 
 (require ffi/unsafe
          dynamic-ffi/unsafe
-         racket/class
-         racket/list
-         racket/format)
+         racket/class)
 
 (define getgrgid%
   (class object%
@@ -54,6 +53,18 @@
 
     (define/public (get-number-of-groups)
       (ggl 'getnumberofgroups))
+
+    (define/public (get-groups)
+      (define (gl gs)
+        (let ([g (get-next-group-id)])
+          (if (eq? g -1)
+              gs
+              (gl (append gs (list g))))))
+      (ggl 'reset)
+      (gl (list)))
+
+    (define/public (reset)
+      (ggl 'reset))
     
     (define clib (ffi-lib #f))
         
@@ -67,7 +78,7 @@
       "int i = 0;\n"
 
       "int getnextgroupid(void) {\n"
-      "  if (i<=ngroups) {\n"
+      "  if (i<ngroups) {\n"
       "    gid_t j = groups[i];\n"
       "    i++;\n"
       "    return j;\n"
@@ -78,6 +89,10 @@
       "int getnumberofgroups(void) {\n"
       "  return ngroups;\n"
       "}\n"
+
+      "void reset(void) {\n"
+      "  i = 0;"
+      "}\n"
     
       "int getgroups(char* username, int number_of_groups) {\n"
       "  int r;"
@@ -85,8 +100,10 @@
       "  r = getgrouplist(username, 1000, groups, &ngroups);\n"
       "  return r;\n"
       "}\n")
-
   
     (ggl 'getgroups user-name number-to-retrieve)))
+
+(define (get-getgrouplist user-name number-to-retrieve)
+  (new getgrouplist% [user-name user-name] [number-to-retrieve number-to-retrieve]))
   
   
