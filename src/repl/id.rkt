@@ -36,7 +36,7 @@
              [all-gids (get-user-groups user-name)]
              [formatted-main-gid (format-group main-gid)]
              [formatted-gids (format-groups all-gids)]
-             [output (format "uid=(~a) gid=~a groups=~a" uid formatted-main-gid formatted-gids)])        
+             [output (format "uid=~a(~a) gid=~a groups=~a" uid user-name formatted-main-gid formatted-gids)])        
         (displayln output)))
 
     (: format-groups (-> (Listof Integer) String))
