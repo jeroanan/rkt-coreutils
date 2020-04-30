@@ -5,5 +5,4 @@
 (define-type Getpwuid%
   (Class
    [get-username (-> String)]
-   [get-groups (-> (Listof Integer))]
-   [reset (-> Void)]))
+   [get-gid (-> Integer)]))
