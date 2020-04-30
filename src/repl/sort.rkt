@@ -34,7 +34,8 @@
     (define (on-finished-processing-files)
       (let ([sorted-contents (sort contents sort-func)])
         (for ([l sorted-contents])
-          (displayln l))))
+          (displayln l))
+        (set! contents (list))))
 
     (: sort-func (-> String String Boolean))
     (define (sort-func str-a str-b)
