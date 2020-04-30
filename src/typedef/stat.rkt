@@ -23,7 +23,7 @@
    [get-is-fifo? (-> Boolean)]
    [get-dev (-> Number)]
    [get-uid (-> Number)]
-   [get-gid (-> Number)]
+   [get-gid (-> Integer)]
    [get-accessed-time (-> Integer)]
    [get-modified-time (-> Integer)]
    [get-created-time (-> Integer)]

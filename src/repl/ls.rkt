@@ -13,21 +13,18 @@
 
 (require "../typedef/stat.rkt"
          "../typedef/getpwuid.rkt"
-         "../typedef/getgrgid.rkt"
-         "../util/fileaccessstr.rkt"
+         "../util/fileaccessstr.rkt"         
          "../util/human-date.rkt"
          "../util/human-size.rkt"
          "../util/member.rkt"
-         "../util/stringutil.rkt")
+         "../util/stringutil.rkt"
+         "util/gidutil.rkt")
 
 (require/typed "../libc/stat.rkt"
                [get-stat (-> String String (Instance Stat%))])
 
 (require/typed "../libc/pwd.rkt"
                [get-pwuid (-> Number (Instance Getpwuid%))])
-
-(require/typed "../libc/grp.rkt"
-               [get-getgrgid (-> Number (Instance Getgrgid%))])
 
 (define ls%
   (class object%
@@ -115,14 +112,13 @@
              [full-path (build-path path filename)] 
              [f-str (path->string full-path)]
              [stat (get-stat (path->string path) (path->string filename))]
-             [user (get-pwuid (send stat get-uid))]
-             [group (get-getgrgid (send stat get-gid))]
+             [user (get-pwuid (send stat get-uid))]            
          
              [inode (get-inode-for-print stat)]
 
              [mode-str (when-long-mode (λ () (get-mode-str stat)))]
              [owner-user (when-long-mode (λ () (send user get-username)))]
-             [owner-group (when-long-mode (λ () (send group get-name)))]
+             [owner-group (when-long-mode (λ () (gid->group-name (send stat get-gid))))]
              [number-of-hardlinks (when-long-mode (λ () (number->string (send stat get-number-of-hardlinks))))]
              [size (when-long-mode (λ () (get-size-string stat)))]
              [mtime (when-long-mode (λ () (unix-seconds->human-date (anything->integer (send stat get-modified-time)))))]

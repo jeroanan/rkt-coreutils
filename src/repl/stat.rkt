@@ -24,16 +24,13 @@
          "../util/fileaccessstr.rkt"
          "../typedef/stat.rkt"
          "../typedef/getpwuid.rkt"
-         "../typedef/getgrgid.rkt")
+         "util/gidutil.rkt")
 
 (require/typed "../libc/stat.rkt"
                [get-stat (-> String String (Instance Stat%))])
 
 (require/typed "../libc/pwd.rkt"
                [get-pwuid (-> Number (Instance Getpwuid%))])
-
-(require/typed "../libc/grp.rkt"
-               [get-getgrgid (-> Number (Instance Getgrgid%))])
 
 (require/typed racket/date
                [date-display-format ( -> Symbol Void)]
@@ -65,8 +62,7 @@
 
 (define (get-gid-string [stat : (Instance Stat%)])
   (let* ([gid (send stat get-gid)]
-         [g (get-getgrgid gid)]
-         [groupname (send g get-name)])
+         [groupname (gid->group-name gid)])
     (format "(~a/~a)" gid groupname)))
 
 (define-syntax-rule (file-time-getter name time-prop)
