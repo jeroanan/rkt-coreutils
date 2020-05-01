@@ -3,11 +3,13 @@
 ; Copyright 2020 David Wilson
 ; See COPYING for details
 
-(provide get-utmp
-         get-utmp-users)
+(provide get-utmp%
+         get-utmp
+         (struct-out utmpstruct))
 
 (require ffi/unsafe
-         racket/bool)
+         racket/bool
+         racket/class)
 
 (define (_bytes/len n)
   (make-ctype (make-array-type _byte n)
@@ -25,7 +27,6 @@
               (lambda (v)
                 (make-sized-byte-string v n))))
 
-
 (define _pid_t _int32)
 (define _int32_t _int32)
 (define _ut_user_t (_bytes/len 32))
@@ -33,9 +34,6 @@
 (define _ut_id_t (_bytes/len 4))
 (define _ut_host_t (_bytes/len 256))
 (define _ut_unused_t (_bytes/len 20))
-
-(define LOGIN_PROCESS 6)
-(define USER_PROCESS 7)
 
 (define-cstruct _exitstatus([e_termination _short]
                             [e_exit        _short]))
@@ -61,27 +59,41 @@
 (define endutent (get-ffi-obj "endutxent" clib (_fun -> _void)))
 (define getutent (get-ffi-obj "getutxent" clib (_fun #:save-errno 'posix -> _utmpstruct-pointer/null)))
 
-(define (get-utmp)
-  (define (get-entries entries)    
-    (let ([u (getutent)])      
-      (if (false? u)
-          entries
-          (get-entries (append entries (list (struct-copy utmpstruct u)))))))
+(define get-utmp%
+  (class object%
+    (super-new)
+
+    (define/public (start-utmp)
+      (setutent))
+
+    (define/public (end-utmp)
+      (endutent))
+
+    (define current-utmp null)
+
+    (define/public (next-utmp)
+      (let ([u (getutent)])
+        (unless (false? u) (set! current-utmp u))
+        (not (false? u))))
+
+    (define/public (get-type) (utmpstruct-ut_type current-utmp))
+    (define/public (get-pid) (utmpstruct-ut_pid current-utmp))
+    (define/public (get-line) (utmpstruct-ut_line current-utmp))
+    (define/public (get-id) (utmpstruct-ut_id current-utmp))
+    (define/public (get-user) (bytes->string (utmpstruct-ut_user current-utmp)))
+    (define/public (get-host) (utmpstruct-ut_host current-utmp))
+    (define/public (get-exit) (utmpstruct-ut_exit current-utmp))
+    (define/public (get-session) (utmpstruct-ut_session current-utmp))
+    
+    (define (bytes->string bs)
+      (let* ([bytes-list (bytes->list bs)]
+             [no-nulls (strip-null-bytes bytes-list)]
+             [bytes-out (list->bytes no-nulls)]
+             [out-str (bytes->string/utf-8 bytes-out)])
+        out-str))
+
+    (define (strip-null-bytes bs)
+      (filter (λ (x) (not (eq? x 0))) bs))))
+
+(define (get-utmp) (new get-utmp%))
   
-    (setutent)
-    (define entries (get-entries (list)))
-    (endutent)
-    entries)
-
-(define (get-utmp-users)
-  (let* ([utmp (filter-utmps-by-process-type (get-utmp) USER_PROCESS)]
-         [users (map (λ (x) (utmpstruct-ut_user x)) utmp)]
-         [no-nulls-users (map strip-null-bytes users)]
-         [users-strings (map (λ (x) (bytes->string/utf-8 (list->bytes x))) no-nulls-users)])    
-    users-strings))
-
-(define (filter-utmps-by-process-type utmps type)
-  (filter (λ (x) (eq? (utmpstruct-ut_type x) type)) utmps))
-
-(define (strip-null-bytes bs)
-  (filter (λ (x) (not (eq? x 0))) (bytes->list bs)))
