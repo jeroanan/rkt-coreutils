@@ -3,12 +3,6 @@ SCRIBBLE=scribble
 
 DEPDIR=~/bin
 
-DUTIL=src/util
-DLIBC=src/libc
-VERSIONFILE=src/util/version.rkt
-TYPEDEFS=src/typedef
-REPL=src/repl
-
 AUTHSCRBL=scribblings/author.scrbl
 CWSCRBL = scribblings/copyright.scrbl
 
@@ -158,8 +152,10 @@ $(MDDOCS)/whoami.md: \
 	$(DOCDEPS) 
 	$(SCRIBBLE) --dest $(MDDOCS) --markdown $(SCRIBDIR)/whoami.scrbl
 
+launchers:
+	./make-launchers.sh
+
 clean:
-	rm -rf compiled
 	rm -rf docs/
 
 deploy:
