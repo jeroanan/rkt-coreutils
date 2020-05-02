@@ -91,6 +91,7 @@ $(HDOCS)/whoami.html: \
 	$(SCRIBBLE) --dest $(HDOCS) --html $(SCRIBDIR)/whoami.scrbl
 
 docs-md: \
+	README.md \
 	$(MDDOCS)/cat.md \
 	$(MDDOCS)/echo.md \
 	$(MDDOCS)/false.md \
@@ -99,7 +100,10 @@ docs-md: \
 	$(MDDOCS)/md5sum.md \
 	$(MDDOCS)/stat.md \
 	$(MDDOCS)/true.md \
-	$(MDDOCS)/whoami.md 
+	$(MDDOCS)/whoami.md
+
+README.md: 
+	$(SCRIBBLE) --dest . --markdown $(SCRIBDIR)/README.scrbl
 
 $(MDDOCS)/cat.md: \
 	$(SCRIBDIR)/cat.scrbl \
