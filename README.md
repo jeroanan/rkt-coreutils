@@ -40,7 +40,7 @@ Racket’s documentation language. The source for the documentation can be
 found in /Scribblings. I generate documentation in html and markdown,
 which can be found in their respective subfolders.
 
-### 2.2. /scribbings
+### 2.2. /scribblings
 
 Documentation sourcecode, written in Scribble. As well as documentation,
 this file and other markdown files in this repository are also generated
@@ -74,4 +74,4 @@ Type definitions for interaction between typed and untyped code.
 
 #### 2.3.4. util
 
-various utility files and macros.
+Various utility files and macros.

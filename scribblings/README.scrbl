@@ -27,7 +27,7 @@ Once I have a good range of programs basically running I will come back and impl
 Generated documentation. The documentation is generated using Scribble, Racket's documentation language. The source for the documentation can be found in /Scribblings.
 I generate documentation in html and markdown, which can be found in their respective subfolders.
 
-@subsection{/scribbings}
+@subsection{/scribblings}
 
 Documentation sourcecode, written in Scribble. As well as documentation, this file and other markdown files in this repository are also generated from Scribble.
 
@@ -47,4 +47,4 @@ set them up and execute them. This means that programs in this directory can be 
 Type definitions for interaction between typed and untyped code.
 
 @subsubsection{util}
-various utility files and macros.
+Various utility files and macros.
