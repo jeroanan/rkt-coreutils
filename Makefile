@@ -86,6 +86,7 @@ $(HDOCS)/whoami.html: \
 
 docs-md: \
 	README.md \
+	BUILDING.md \
 	$(MDDOCS)/cat.md \
 	$(MDDOCS)/echo.md \
 	$(MDDOCS)/false.md \
@@ -98,6 +99,9 @@ docs-md: \
 
 README.md: $(SCRIBDIR)/README.scrbl
 	$(SCRIBBLE) --dest . --markdown $(SCRIBDIR)/README.scrbl
+
+BUILDING.md: $(SCRIBDIR)/BUILDING.scrbl
+	$(SCRIBBLE) --dest . --markdown $(SCRIBDIR)/BUILDING.scrbl
 
 $(MDDOCS)/cat.md: \
 	$(SCRIBDIR)/cat.scrbl \
