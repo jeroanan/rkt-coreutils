@@ -1,7 +1,7 @@
 #lang typed/racket/base
 
-; Copyright 2020 David Wilson
-; See COPYING for details
+;; Copyright 2020 David Wilson
+;; See COPYING for details
 
 (provide users%)
 
@@ -9,19 +9,15 @@
          racket/string
          racket/struct)
 
-(require "util/util.rkt")
-
-(define-type Getutmp%
-  (Class
-   [start-utmp (-> Void)]
-   [end-utmp (-> Void)]
-   [next-utmp (-> Boolean)]
-   [get-type (-> Integer)]
-   [get-user (-> String)]))
+(require "util/util.rkt" ; contains definition of help-function
+         "../typedef/getutmp.rkt")
 
 (require/typed "../libc/utmp.rkt"
                [get-utmp (-> (Instance Getutmp%))])
 
+;; users% -- emulate the functionality of the coreutils "users" command
+;; type "man users" at a shell prompt for documentation on the original
+;; version.
 (define users%
   (class object%
     (super-new)
@@ -32,12 +28,14 @@
                          "(help) -- display this help message"
                          "(execute) -- display user information"))
 
+    ;; Perform the "users" program operation
     (define/public (execute)
       (let* ([utmp (get-utmp)]
              [the-users (get-usernames)]
              [output (string-join the-users " ")])
         (displayln output)))
 
+    ;; Get a list of users according to libc's utmp functions
     (: get-usernames (-> (Listof String)))
     (define/public (get-usernames)
       (let ([utmp (get-utmp)])
@@ -46,8 +44,10 @@
         (send utmp end-utmp)
         out))    
 
+    ;; libc's identifier for user processes.
     (define USER_PROCESS 7)
-    
+
+    ;; Get all current users from libc and filter them by type for USER_PROCESS 
     (: build-user-list (-> (Instance Getutmp%) (Listof String) (Listof String)))
     (define (build-user-list utmp us)
         (if (send utmp next-utmp)
