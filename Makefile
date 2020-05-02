@@ -102,7 +102,7 @@ docs-md: \
 	$(MDDOCS)/true.md \
 	$(MDDOCS)/whoami.md
 
-README.md: 
+README.md: $(SCRIBDIR)/README.scrbl
 	$(SCRIBBLE) --dest . --markdown $(SCRIBDIR)/README.scrbl
 
 $(MDDOCS)/cat.md: \
