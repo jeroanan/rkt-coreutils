@@ -35,7 +35,10 @@ docs-html: \
 	$(HDOCS)/sha256sum.html \
 	$(HDOCS)/sha384sum.html \
 	$(HDOCS)/sha512sum.html \
+	$(HDOCS)/sort.html \
 	$(HDOCS)/stat.html \
+	$(HDOCS)/tac.html \
+	$(HDOCS)/tail.html \
 	$(HDOCS)/true.html \
 	$(HDOCS)/whoami.html \
 
@@ -127,11 +130,29 @@ $(HDOCS)/sha512sum.html: \
 
 	$(SCRIBBLE) --dest $(HDOCS) --html $(SCRIBDIR)/sha512sum.scrbl
 	
+$(HDOCS)/sort.html: \
+	$(SCRIBDIR)/sort.scrbl \
+	$(DOCDEPS) 
+
+	$(SCRIBBLE) --dest $(HDOCS) --html $(SCRIBDIR)/sort.scrbl
+	
 $(HDOCS)/stat.html: \
 	$(SCRIBDIR)/stat.scrbl \
 	$(DOCDEPS) 
 
 	$(SCRIBBLE) --dest $(HDOCS) --html $(SCRIBDIR)/stat.scrbl
+	
+$(HDOCS)/tac.html: \
+	$(SCRIBDIR)/tac.scrbl \
+	$(DOCDEPS) 
+
+	$(SCRIBBLE) --dest $(HDOCS) --html $(SCRIBDIR)/tac.scrbl
+	
+$(HDOCS)/tail.html: \
+	$(SCRIBDIR)/tail.scrbl \
+	$(DOCDEPS) 
+
+	$(SCRIBBLE) --dest $(HDOCS) --html $(SCRIBDIR)/tail.scrbl
 	
 $(HDOCS)/true.html: \
 	$(SCRIBDIR)/true.scrbl \
@@ -163,7 +184,10 @@ docs-md: \
 	$(MDDOCS)/sha256sum.md \
 	$(MDDOCS)/sha384sum.md \
 	$(MDDOCS)/sha512sum.md \
+	$(MDDOCS)/sort.md \
 	$(MDDOCS)/stat.md \
+	$(MDDOCS)/tac.md \
+	$(MDDOCS)/tail.md \
 	$(MDDOCS)/true.md \
 	$(MDDOCS)/whoami.md
 
@@ -263,11 +287,29 @@ $(MDDOCS)/sha512sum.md: \
 
 	$(SCRIBBLE) --dest $(MDDOCS) --markdown $(SCRIBDIR)/sha512sum.scrbl
 
+$(MDDOCS)/sort.md: \
+	$(SCRIBDIR)/sort.scrbl \
+	$(DOCDEPS) 
+
+	$(SCRIBBLE) --dest $(MDDOCS) --markdown $(SCRIBDIR)/sort.scrbl
+
 $(MDDOCS)/stat.md: \
 	$(SCRIBDIR)/stat.scrbl \
 	$(DOCDEPS) 
 
 	$(SCRIBBLE) --dest $(MDDOCS) --markdown $(SCRIBDIR)/stat.scrbl
+
+$(MDDOCS)/tac.md: \
+	$(SCRIBDIR)/tac.scrbl \
+	$(DOCDEPS) 
+
+	$(SCRIBBLE) --dest $(MDDOCS) --markdown $(SCRIBDIR)/tac.scrbl
+
+$(MDDOCS)/tail.md: \
+	$(SCRIBDIR)/tail.scrbl \
+	$(DOCDEPS) 
+
+	$(SCRIBBLE) --dest $(MDDOCS) --markdown $(SCRIBDIR)/tail.scrbl
 
 $(MDDOCS)/true.md: \
 	$(SCRIBDIR)/true.scrbl \
