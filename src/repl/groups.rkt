@@ -1,13 +1,14 @@
 #lang typed/racket/base
 
-; Copyright 2020 David Wilson
-; See COPYING for details
+;; Copyright 2020 David Wilson
+;; See COPYING for details
 
 (provide groups%)
 
 (require "util/util.rkt"
          "../typedef/getgrouplist.rkt"
          "../typedef/getgrgid.rkt"
+         "../typedef/getpwuid.rkt"
          "../util/member.rkt")
 
 (require typed/racket/class
@@ -16,6 +17,12 @@
 (require/typed "../libc/grp.rkt"
                [get-getgrouplist (-> String Number (Instance Getgrouplist%))]
                [get-getgrgid (-> Integer (Instance Getgrgid%))])
+
+(require/typed "../libc/unistd.rkt"
+               [get-euid (-> Integer)])
+
+(require/typed "../libc/pwd.rkt"
+               [get-pwuid (-> Number (Instance Getpwuid%))])
 
 (define groups%
   (class object%
@@ -34,9 +41,18 @@
     
     (: execute (-> String Void))
     (define/public (execute user-name)
-      (let* ([group-counter (get-getgrouplist user-name 0)]
+      (let* ([un (get-username user-name)]
+             [group-counter (get-getgrouplist un 0)]
              [number-of-groups (send group-counter get-number-of-groups)]
-             [group-number-getter (get-getgrouplist user-name number-of-groups)]
+             [group-number-getter (get-getgrouplist un number-of-groups)]
              [the-groups (send group-number-getter get-groups)]
-             [group-names (map (λ ([x : Integer]) (gid->group-name x)) the-groups)])
-      (displayln (string-join group-names))))))
+             [group-names (map (λ ([x : Integer]) (gid->group-name x)) the-groups)])        
+        (displayln (string-join group-names))))
+
+    (: get-username (-> String String))
+    (define/private (get-username user-name)
+      (if (string=? "" user-name)
+          (let* ([uid (get-euid)]
+                 [pwuid (get-pwuid uid)])
+            (send pwuid get-username))
+          user-name))))
