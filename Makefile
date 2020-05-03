@@ -204,7 +204,7 @@ docs-md: \
 	$(MDDOCS)/tail.md \
 	$(MDDOCS)/true.md \
 	$(MDDOCS)/users.md \
-	$(MDDOCS)/whoami.md \
+	$(MDDOCS)/who.md \
 	$(MDDOCS)/whoami.md
 
 README.md: $(SCRIBDIR)/README.scrbl

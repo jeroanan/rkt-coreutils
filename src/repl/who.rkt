@@ -8,7 +8,8 @@
 ;; includes help-method
 (require "util/util.rkt"
          "../typedef/getutmp.rkt"
-         "../util/stringutil.rkt")
+         "../util/stringutil.rkt"
+         "util/member.rkt")
 
 (require typed/racket/class
          typed/racket/date
@@ -26,25 +27,42 @@
 (define who%
   (class object%
     (super-new)
-
+   
     (help-function
      (list "Print information about users that are currently logged in."
            ""
            "Methods:"
+           "(set-show-header <#t|#f>) -- Whether or not to show header. Default #f."
+           "(get-show-header) -- Get value of show-header"
+           ""
            "(help) -- display this help message"
            "(execute) -- print information about users that are currently logged in."))
 
+    ;; Whether to show headings above the listing
+    (boolean-attribute show-header #f get-show-header set-show-header)
+    
+    ;; How wide various column widths in output should be
+    (: user-column-width Exact-Nonnegative-Integer)
+    (define user-column-width 8)
+
+    (: line-column-width Exact-Nonnegative-Integer)
+    (define line-column-width 12)
+
+    (: time-column-width Exact-Nonnegative-Integer)
+    (define time-column-width 16)
+    
     ;; peform the "who" program execution
     (define/public (execute)
       (let ([entries (build-who-list)])
+        (when show-header (displayln (get-header)))
         (for ([e entries])
-          (let* ([output-fields (list (left-aligned-string (whoentry-user e) 8)
-                                      (left-aligned-string (whoentry-line e) 12)
+          (let* ([output-fields (list (left-aligned-string (whoentry-user e) user-column-width)
+                                      (left-aligned-string (whoentry-line e) line-column-width)
                                       (make-time-string (whoentry-time e))
                                       (~a "(" (whoentry-host e) ")"))]
                  [output (string-join output-fields " ")])
-            (displayln output)))))
-
+            (displayln output)))))     
+    
     ;; Make a list of whoentry for output by querying libc's utmp
     (: build-who-list (-> (Listof whoentry)))
     (define/private (build-who-list)
@@ -81,6 +99,16 @@
        (send utmp get-host)
        (send utmp get-time)))
 
+    ;; Build the string that will be used for the header of the listing.
+    (: get-header (-> String))
+    (define/private (get-header)
+      (let ([name-header (left-aligned-string "NAME" user-column-width)]
+            [line-header (left-aligned-string "LINE" line-column-width)]
+            [time-header (left-aligned-string "TIME" time-column-width)]
+            [comment-header "COMMENT"])
+        (~a name-header " " line-header " " time-header " " comment-header)))
+
+    ;; Take an iso-8601and output an yyyy-mm-dd HH:MM timestring.
     (: make-time-string (-> Integer String))
     (define (make-time-string seconds)
       (let* ([the-date (seconds->date seconds)]
