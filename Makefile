@@ -40,6 +40,8 @@ docs-html: \
 	$(HDOCS)/tac.html \
 	$(HDOCS)/tail.html \
 	$(HDOCS)/true.html \
+	$(HDOCS)/users.html \
+	$(HDOCS)/who.html \
 	$(HDOCS)/whoami.html \
 
 $(HDOCS)/base64.html: \
@@ -160,11 +162,23 @@ $(HDOCS)/true.html: \
 
 	$(SCRIBBLE) --dest $(HDOCS) --html $(SCRIBDIR)/true.scrbl
 
+$(HDOCS)/users.html: \
+	$(SCRIBDIR)/users.scrbl \
+	$(DOCDEPS) 
+
+	$(SCRIBBLE) --dest $(HDOCS) --html $(SCRIBDIR)/users.scrbl
+
 $(HDOCS)/whoami.html: \
 	$(SCRIBDIR)/whoami.scrbl \
 	$(DOCDEPS) 
 
 	$(SCRIBBLE) --dest $(HDOCS) --html $(SCRIBDIR)/whoami.scrbl
+
+$(HDOCS)/who.html: \
+	$(SCRIBDIR)/who.scrbl \
+	$(DOCDEPS) 
+
+	$(SCRIBBLE) --dest $(HDOCS) --html $(SCRIBDIR)/who.scrbl
 
 docs-md: \
 	README.md \
@@ -189,6 +203,8 @@ docs-md: \
 	$(MDDOCS)/tac.md \
 	$(MDDOCS)/tail.md \
 	$(MDDOCS)/true.md \
+	$(MDDOCS)/users.md \
+	$(MDDOCS)/whoami.md \
 	$(MDDOCS)/whoami.md
 
 README.md: $(SCRIBDIR)/README.scrbl
@@ -317,10 +333,21 @@ $(MDDOCS)/true.md: \
 
 	$(SCRIBBLE) --dest $(MDDOCS) --markdown $(SCRIBDIR)/true.scrbl
 
+$(MDDOCS)/users.md: \
+	$(SCRIBDIR)/users.scrbl \
+	$(DOCDEPS) 
+
+	$(SCRIBBLE) --dest $(MDDOCS) --markdown $(SCRIBDIR)/users.scrbl
+
 $(MDDOCS)/whoami.md: \
 	$(SCRIBDIR)/whoami.scrbl \
 	$(DOCDEPS) 
 	$(SCRIBBLE) --dest $(MDDOCS) --markdown $(SCRIBDIR)/whoami.scrbl
+
+$(MDDOCS)/who.md: \
+	$(SCRIBDIR)/who.scrbl \
+	$(DOCDEPS) 
+	$(SCRIBBLE) --dest $(MDDOCS) --markdown $(SCRIBDIR)/who.scrbl
 
 launchers:
 	./make-launchers.sh
