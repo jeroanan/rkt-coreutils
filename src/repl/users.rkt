@@ -17,7 +17,7 @@
 
 ;; users% -- emulate the functionality of the coreutils "users" command
 ;; type "man users" at a shell prompt for documentation on the original
-;; version.
+;; program.
 (define users%
   (class object%
     (super-new)
@@ -47,7 +47,7 @@
     ;; libc's identifier for user processes.
     (define USER_PROCESS 7)
 
-    ;; Get all current users from libc and filter them by type for USER_PROCESS 
+    ;; Get all current users from libc's utmp and filter them by type for USER_PROCESS 
     (: build-user-list (-> (Instance Getutmp%) (Listof String) (Listof String)))
     (define (build-user-list utmp us)
         (if (send utmp next-utmp)

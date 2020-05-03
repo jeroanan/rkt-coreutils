@@ -38,8 +38,8 @@
 (define-cstruct _exitstatus([e_termination _short]
                             [e_exit        _short]))
 
-(define-cstruct _timeval([time_t      _long]
-                         [suseconds_t _long]))
+(define-cstruct _timeval([time_t      _int32]
+                         [suseconds_t _int32]))
 
 
 (define-cstruct _utmpstruct([ut_type    _short]
@@ -49,7 +49,7 @@
                             [ut_user    _ut_user_t]
                             [ut_host    _ut_host_t]
                             [ut_exit    _exitstatus]
-                            [ut_session _long]
+                            [ut_session _int32]
                             [ut_tv      _timeval]
                             [ut_addr_v6 _int32_t]
                             [unused     _ut_unused_t]))
@@ -57,7 +57,8 @@
 (define clib (ffi-lib #f))
 (define setutent (get-ffi-obj "setutxent" clib (_fun -> _void)))
 (define endutent (get-ffi-obj "endutxent" clib (_fun -> _void)))
-(define getutent (get-ffi-obj "getutxent" clib (_fun #:save-errno 'posix -> _utmpstruct-pointer/null)))
+(define getutent (get-ffi-obj "getutxent" clib
+                              (_fun #:save-errno 'posix -> _utmpstruct-pointer/null)))
 
 (define get-utmp%
   (class object%
@@ -76,14 +77,21 @@
         (unless (false? u) (set! current-utmp u))
         (not (false? u))))
 
+    (define-syntax-rule (string-member-from-bytes name value)
+      (define/public (name) (bytes->string value)))
+    
     (define/public (get-type) (utmpstruct-ut_type current-utmp))
     (define/public (get-pid) (utmpstruct-ut_pid current-utmp))
-    (define/public (get-line) (utmpstruct-ut_line current-utmp))
+    (string-member-from-bytes get-line (utmpstruct-ut_line current-utmp))
     (define/public (get-id) (utmpstruct-ut_id current-utmp))
-    (define/public (get-user) (bytes->string (utmpstruct-ut_user current-utmp)))
-    (define/public (get-host) (utmpstruct-ut_host current-utmp))
+    (string-member-from-bytes get-user (utmpstruct-ut_user current-utmp))
+    (string-member-from-bytes get-host (utmpstruct-ut_host current-utmp))
     (define/public (get-exit) (utmpstruct-ut_exit current-utmp))
     (define/public (get-session) (utmpstruct-ut_session current-utmp))
+
+    (define/public (get-time)
+      (let ([tv (utmpstruct-ut_tv current-utmp)])
+        (timeval-time_t tv)))
     
     (define (bytes->string bs)
       (let* ([bytes-list (bytes->list bs)]
