@@ -7,12 +7,14 @@
 
 ;; includes help-method
 (require "util/util.rkt"
-         "../typedef/getutmp.rkt")
+         "../typedef/getutmp.rkt"
+         "../util/stringutil.rkt")
 
 (require typed/racket/class
          typed/racket/date
          racket/format
-         racket/string)
+         racket/string
+         racket/list)
 
 ;; access to getutmp, which uses libc to get info on logged-in users
 (require/typed "../libc/utmp.rkt"
@@ -36,10 +38,10 @@
     (define/public (execute)
       (let ([entries (build-who-list)])
         (for ([e entries])
-          (let* ([output-fields (list (whoentry-user e)
-                                      (whoentry-line e)
-                                      (date->string (seconds->date (whoentry-time e)) #t)
-                                      (whoentry-host e))]
+          (let* ([output-fields (list (left-aligned-string (whoentry-user e) 8)
+                                      (left-aligned-string (whoentry-line e) 12)
+                                      (make-time-string (whoentry-time e))
+                                      (~a "(" (whoentry-host e) ")"))]
                  [output (string-join output-fields " ")])
             (displayln output)))))
 
@@ -77,7 +79,18 @@
        (send utmp get-user)
        (send utmp get-line)
        (send utmp get-host)
-       (send utmp get-time)))))
+       (send utmp get-time)))
+
+    (: make-time-string (-> Integer String))
+    (define (make-time-string seconds)
+      (let* ([the-date (seconds->date seconds)]
+             [date-str (date->string the-date #t)]
+             [date-time (string-split date-str "T")]             
+             [time-split (string-split (second date-time) ":")]
+             [date-out (first date-time)]
+             [time-out (~a (first time-split) ":" (second time-split))])        
+             
+      (~a date-out " " time-out)))))
 
 (struct whoentry ([type : Integer]
                   [user : String]
