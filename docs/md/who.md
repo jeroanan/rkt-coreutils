@@ -14,8 +14,9 @@ Show who is logged on.
 
 ## 4. Parameters
 
-**-H, –headings** – print a line of column headings   **-v** – display
-version information and exit
+**-H, –headings** – print a line of column headings
+
+**-v** – display version information and exit
 
 ## 5. Author
 

@@ -15,7 +15,7 @@ Show who is logged on.
 
 @section{Parameters}
 @bold{-H, --headings} -- print a line of column headings
-@linebreak{}
+
 @bold{-v} -- display version information and exit
 
 @include-section["author.scrbl"]
