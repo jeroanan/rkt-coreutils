@@ -1,17 +1,18 @@
-# cat
+# base64
 
 ## 1. Name
 
-cat - Concatenate files and print on standard output.
+base64 - Base64-encode files and print on standard output.
 
 ## 2. Synopsis
 
-**cat** \[FILE\]...
+**base64** \[FILE\]...
 
 ## 3. Description
 
-Concatenate FILEs and print on stadnard output. If no FILEs are provided
-then read stdin.
+Base64-encode FILEs and print on stadnard output. If no FILEs are
+provided then read stdin. If multiple files are provided then
+concatenate their contents and base-64 encode the result.
 
 ## 4. Author
 

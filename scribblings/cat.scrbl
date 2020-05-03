@@ -1,8 +1,6 @@
 #lang scribble/base
 
-#lang scribble/base
-
-@title{whoami}
+@title{cat}
 
 @section{Name}
 
@@ -13,7 +11,7 @@ cat - Concatenate files and print on standard output.
 
 @section{Description}
 
-Concatenate FILEs and print on stadnard output.
+Concatenate FILEs and print on stadnard output. If no FILEs are provided then read stdin.
 
 @include-section["author.scrbl"]
 @include-section["copyright.scrbl"]

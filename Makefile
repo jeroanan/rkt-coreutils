@@ -87,6 +87,7 @@ $(HDOCS)/whoami.html: \
 docs-md: \
 	README.md \
 	BUILDING.md \
+	$(MDDOCS)/base64.md \
 	$(MDDOCS)/cat.md \
 	$(MDDOCS)/echo.md \
 	$(MDDOCS)/false.md \
@@ -102,6 +103,12 @@ README.md: $(SCRIBDIR)/README.scrbl
 
 BUILDING.md: $(SCRIBDIR)/BUILDING.scrbl
 	$(SCRIBBLE) --dest . --markdown $(SCRIBDIR)/BUILDING.scrbl
+
+$(MDDOCS)/base64.md: \
+	$(SCRIBDIR)/base64.scrbl \
+	$(DOCDEPS) 
+
+	$(SCRIBBLE) --dest $(MDDOCS) --markdown $(SCRIBDIR)/base64.scrbl
 
 $(MDDOCS)/cat.md: \
 	$(SCRIBDIR)/cat.scrbl \
