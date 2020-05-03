@@ -1,7 +1,9 @@
 #lang typed/racket/base
 
-; Copyright 2020 David Wilson
-; see COPYING for details
+;; Copyright 2020 David Wilson
+;; see COPYING for details
+
+;; ls.rkt: Command-line front-end for repl/ls.rkt
 
 (require racket/bool
          racket/cmdline
@@ -9,32 +11,41 @@
          typed/racket/class)
 
 (require "repl/ls.rkt"
+         "util/param.rkt"
          "util/version.rkt")
 
-(define-syntax-rule (boolean-parameter name initial-value)
-  (begin
-    (: name (Parameterof Boolean))
-    (define name (make-parameter initial-value))))
-
+;; Should hidden entries be shown?
 (boolean-parameter show-hidden #f)
+
+;; Should implied entries ("." and "..") be shown?
 (boolean-parameter hide-implied #t)
+
+;; Should we display in long mode?
 (boolean-parameter long-mode #f)
+
+;; Should inode numbers be displayed?
 (boolean-parameter print-inodes #f)
+
+;; Should output be in color?
 (boolean-parameter show-colors #f)
 
+;; The directories to list
 (: pwds (Parameterof (Listof Path)))
 (define pwds (make-parameter (list (current-directory))))
 
+;; Sets show hidden but ensures we don't display implied entries as part of output.
 (define (set-almost-all)
   (begin
     (when (false? show-hidden) (hide-implied #t))
     (show-hidden #t)))
 
+;; Show everything, including implied entries
 (define (set-show-hidden)
   (begin
     (show-hidden #t)
     (hide-implied #f)))
 
+;; Set directories to list from command-line parameters
 (define (set-the-pwds [ps : (Pairof Any (Listof Any))])
   (let* ([#{strings : (Listof String)} (map (λ (x) (format "~a" x)) ps)]
          [the-dirs (map (λ (x) (string->path x)) strings)])
