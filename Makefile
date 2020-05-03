@@ -20,15 +20,25 @@ make-all:
 docs: docs-html docs-md
 
 docs-html: \
+	$(HDOCS)/base64.html \
 	$(HDOCS)/cat.html \
 	$(HDOCS)/echo.html \
 	$(HDOCS)/false.html \
+	$(HDOCS)/groups.html \
 	$(HDOCS)/head.html \
+	$(HDOCS)/id.html \
 	$(HDOCS)/ls.html \
 	$(HDOCS)/md5sum.html \
+	$(HDOCS)/nl.html \
 	$(HDOCS)/stat.html \
 	$(HDOCS)/true.html \
 	$(HDOCS)/whoami.html \
+
+$(HDOCS)/base64.html: \
+	$(SCRIBDIR)/base64.scrbl \
+	$(DOCDEPS)
+
+	$(SCRIBBLE) --dest $(HDOCS) --html $(SCRIBDIR)/base64.scrbl
 
 $(HDOCS)/cat.html: \
 	$(SCRIBDIR)/cat.scrbl \
@@ -48,10 +58,21 @@ $(HDOCS)/false.html: \
 
 	$(SCRIBBLE) --dest $(HDOCS) --html $(SCRIBDIR)/false.scrbl
 
+$(HDOCS)/groups.html: \
+	$(SCRIBDIR)/groups.scrbl \
+	$(DOCDEPS) 
+
+	$(SCRIBBLE) --dest $(HDOCS) --html $(SCRIBDIR)/groups.scrbl
+
 $(HDOCS)/head.html: \
 	$(SCRIBDIR)/head.scrbl \
 	$(DOCDEPS) 
 	$(SCRIBBLE) --dest $(HDOCS) --html $(SCRIBDIR)/head.scrbl
+
+$(HDOCS)/id.html: \
+	$(SCRIBDIR)/id.scrbl \
+	$(DOCDEPS) 
+	$(SCRIBBLE) --dest $(HDOCS) --html $(SCRIBDIR)/id.scrbl
 
 $(HDOCS)/ls.html: \
 	$(SCRIBDIR)/ls.scrbl \
@@ -65,6 +86,12 @@ $(HDOCS)/md5sum.html: \
 	$(DOCDEPS) 
 
 	$(SCRIBBLE) --dest $(HDOCS) --html $(SCRIBDIR)/md5sum.scrbl
+
+$(HDOCS)/nl.html: \
+	$(SCRIBDIR)/nl.scrbl \
+	$(DOCDEPS) 
+
+	$(SCRIBBLE) --dest $(HDOCS) --html $(SCRIBDIR)/nl.scrbl
 
 $(HDOCS)/stat.html: \
 	$(SCRIBDIR)/stat.scrbl \
@@ -92,8 +119,11 @@ docs-md: \
 	$(MDDOCS)/echo.md \
 	$(MDDOCS)/false.md \
 	$(MDDOCS)/head.md \
+	$(MDDOCS)/id.md \
+	$(MDDOCS)/groups.md \
 	$(MDDOCS)/ls.md \
 	$(MDDOCS)/md5sum.md \
+	$(MDDOCS)/nl.md \
 	$(MDDOCS)/stat.md \
 	$(MDDOCS)/true.md \
 	$(MDDOCS)/whoami.md
@@ -128,11 +158,23 @@ $(MDDOCS)/false.md: \
 
 	$(SCRIBBLE) --dest $(MDDOCS) --markdown $(SCRIBDIR)/false.scrbl
 
+$(MDDOCS)/groups.md: \
+	$(SCRIBDIR)/groups.scrbl \
+	$(DOCDEPS) 
+
+	$(SCRIBBLE) --dest $(MDDOCS) --markdown $(SCRIBDIR)/groups.scrbl
+
 $(MDDOCS)/head.md: \
 	$(SCRIBDIR)/head.scrbl \
 	$(DOCDEPS) 
 
 	$(SCRIBBLE) --dest $(MDDOCS) --markdown $(SCRIBDIR)/head.scrbl
+
+$(MDDOCS)/id.md: \
+	$(SCRIBDIR)/id.scrbl \
+	$(DOCDEPS) 
+
+	$(SCRIBBLE) --dest $(MDDOCS) --markdown $(SCRIBDIR)/id.scrbl
 
 $(MDDOCS)/ls.md: \
 	$(SCRIBDIR)/ls.scrbl \
@@ -145,6 +187,12 @@ $(MDDOCS)/md5sum.md: \
 	$(DOCDEPS) 
 
 	$(SCRIBBLE) --dest $(MDDOCS) --markdown $(SCRIBDIR)/md5sum.scrbl
+
+$(MDDOCS)/nl.md: \
+	$(SCRIBDIR)/nl.scrbl \
+	$(DOCDEPS) 
+
+	$(SCRIBBLE) --dest $(MDDOCS) --markdown $(SCRIBDIR)/nl.scrbl
 
 $(MDDOCS)/stat.md: \
 	$(SCRIBDIR)/stat.scrbl \
