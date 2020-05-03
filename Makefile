@@ -30,6 +30,11 @@ docs-html: \
 	$(HDOCS)/ls.html \
 	$(HDOCS)/md5sum.html \
 	$(HDOCS)/nl.html \
+	$(HDOCS)/sha1sum.html \
+	$(HDOCS)/sha224sum.html \
+	$(HDOCS)/sha256sum.html \
+	$(HDOCS)/sha384sum.html \
+	$(HDOCS)/sha512sum.html \
 	$(HDOCS)/stat.html \
 	$(HDOCS)/true.html \
 	$(HDOCS)/whoami.html \
@@ -80,7 +85,6 @@ $(HDOCS)/ls.html: \
 
 	$(SCRIBBLE) --dest $(HDOCS) --html $(SCRIBDIR)/ls.scrbl
 
-
 $(HDOCS)/md5sum.html: \
 	$(SCRIBDIR)/md5sum.scrbl \
 	$(DOCDEPS) 
@@ -93,6 +97,36 @@ $(HDOCS)/nl.html: \
 
 	$(SCRIBBLE) --dest $(HDOCS) --html $(SCRIBDIR)/nl.scrbl
 
+$(HDOCS)/sha1sum.html: \
+	$(SCRIBDIR)/sha1sum.scrbl \
+	$(DOCDEPS) 
+
+	$(SCRIBBLE) --dest $(HDOCS) --html $(SCRIBDIR)/sha1sum.scrbl
+	
+$(HDOCS)/sha224sum.html: \
+	$(SCRIBDIR)/sha224sum.scrbl \
+	$(DOCDEPS) 
+
+	$(SCRIBBLE) --dest $(HDOCS) --html $(SCRIBDIR)/sha224sum.scrbl
+	
+$(HDOCS)/sha256sum.html: \
+	$(SCRIBDIR)/sha256sum.scrbl \
+	$(DOCDEPS) 
+
+	$(SCRIBBLE) --dest $(HDOCS) --html $(SCRIBDIR)/sha256sum.scrbl
+	
+$(HDOCS)/sha384sum.html: \
+	$(SCRIBDIR)/sha384sum.scrbl \
+	$(DOCDEPS) 
+
+	$(SCRIBBLE) --dest $(HDOCS) --html $(SCRIBDIR)/sha384sum.scrbl
+	
+$(HDOCS)/sha512sum.html: \
+	$(SCRIBDIR)/sha512sum.scrbl \
+	$(DOCDEPS) 
+
+	$(SCRIBBLE) --dest $(HDOCS) --html $(SCRIBDIR)/sha512sum.scrbl
+	
 $(HDOCS)/stat.html: \
 	$(SCRIBDIR)/stat.scrbl \
 	$(DOCDEPS) 
@@ -124,6 +158,11 @@ docs-md: \
 	$(MDDOCS)/ls.md \
 	$(MDDOCS)/md5sum.md \
 	$(MDDOCS)/nl.md \
+	$(MDDOCS)/sha1sum.md \
+	$(MDDOCS)/sha224sum.md \
+	$(MDDOCS)/sha256sum.md \
+	$(MDDOCS)/sha384sum.md \
+	$(MDDOCS)/sha512sum.md \
 	$(MDDOCS)/stat.md \
 	$(MDDOCS)/true.md \
 	$(MDDOCS)/whoami.md
@@ -193,6 +232,36 @@ $(MDDOCS)/nl.md: \
 	$(DOCDEPS) 
 
 	$(SCRIBBLE) --dest $(MDDOCS) --markdown $(SCRIBDIR)/nl.scrbl
+
+$(MDDOCS)/sha1sum.md: \
+	$(SCRIBDIR)/sha1sum.scrbl \
+	$(DOCDEPS) 
+
+	$(SCRIBBLE) --dest $(MDDOCS) --markdown $(SCRIBDIR)/sha1sum.scrbl
+
+$(MDDOCS)/sha224sum.md: \
+	$(SCRIBDIR)/sha224sum.scrbl \
+	$(DOCDEPS) 
+
+	$(SCRIBBLE) --dest $(MDDOCS) --markdown $(SCRIBDIR)/sha224sum.scrbl
+
+$(MDDOCS)/sha256sum.md: \
+	$(SCRIBDIR)/sha256sum.scrbl \
+	$(DOCDEPS) 
+
+	$(SCRIBBLE) --dest $(MDDOCS) --markdown $(SCRIBDIR)/sha256sum.scrbl
+
+$(MDDOCS)/sha384sum.md: \
+	$(SCRIBDIR)/sha384sum.scrbl \
+	$(DOCDEPS) 
+
+	$(SCRIBBLE) --dest $(MDDOCS) --markdown $(SCRIBDIR)/sha384sum.scrbl
+
+$(MDDOCS)/sha512sum.md: \
+	$(SCRIBDIR)/sha512sum.scrbl \
+	$(DOCDEPS) 
+
+	$(SCRIBBLE) --dest $(MDDOCS) --markdown $(SCRIBDIR)/sha512sum.scrbl
 
 $(MDDOCS)/stat.md: \
 	$(SCRIBDIR)/stat.scrbl \
