@@ -57,6 +57,7 @@
              [sp (string-split s ".")])
         (first sp)))
 
+    ;; Get the current time part of the current date.
     (: current-time (-> String))
     (define/private (current-time)
       (let* ([d (current-date)]
@@ -65,6 +66,7 @@
              [s (date-second d)])
         (format "~a:~a:~a" (pad-zero h) (pad-zero m) (pad-zero s))))
 
+    ;; If the given number is single-digit prefix it with a zero
     (: pad-zero (-> Integer String))
     (define/private (pad-zero num-in)
       (let ([s (number->string num-in)])
