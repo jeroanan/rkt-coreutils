@@ -2,7 +2,8 @@
 
 (require typed/racket/class)
 
-(provide get-user-process-utmp-entries)
+(provide get-user-process-utmp-entries
+         (struct-out whoentry))
 
 ;; access to getutmp, which uses libc to get info on logged-in users
 (require/typed "../../libc/utmp.rkt"

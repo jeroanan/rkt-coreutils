@@ -9,6 +9,7 @@
 (require "util/util.rkt"
          "../typedef/getutmp.rkt"
          "../util/stringutil.rkt"
+         "util/getutmp.rkt"
          "util/member.rkt")
 
 (require typed/racket/class
@@ -16,10 +17,6 @@
          racket/format
          racket/string
          racket/list)
-
-;; access to getutmp, which uses libc to get info on logged-in users
-(require/typed "../libc/utmp.rkt"
-               [get-utmp (-> (Instance Getutmp%))])
 
 ;; who% -- emulate the functionality of the coreutils "who" command.
 ;; type "man who" at a shell prompt for documentation on the original
@@ -53,7 +50,7 @@
     
     ;; peform the "who" program execution
     (define/public (execute)
-      (let ([entries (build-who-list)])
+      (let ([entries (get-user-process-utmp-entries)])
         (when show-header (displayln (get-header)))
         (for ([e entries])
           (let* ([output-fields (list (left-aligned-string (whoentry-user e) user-column-width)
@@ -63,41 +60,7 @@
                  [output (string-join output-fields " ")])
             (displayln output)))))     
     
-    ;; Make a list of whoentry for output by querying libc's utmp
-    (: build-who-list (-> (Listof whoentry)))
-    (define/private (build-who-list)
-      (let ([utmp (get-utmp)])
-        (send utmp start-utmp)
-        (define out (make-entry-list (list) utmp))
-        (send utmp end-utmp)
-        out))
-
-    ;; libc's identifier for login processes.
-    (define LOGIN_PROCESS 6)
-    ;; libc's identifier for user processes.
-    (define USER_PROCESS 7)
-
     (date-display-format 'iso-8601)
-    
-    ;; Get all current users from libc's utmp and filter them by type for USER_PROCESS 
-    (: make-entry-list (-> (Listof whoentry) (Instance Getutmp%) (Listof whoentry)))
-    (define (make-entry-list entries utmp)      
-      (if (send utmp next-utmp)                    
-          (if (eq? (send utmp get-type) USER_PROCESS)
-              (make-entry-list (append entries (list (make-whoentry utmp))) utmp)
-              (make-entry-list entries utmp))
-          entries))
-
-    ;; Query an instance of Getutmp% and make an instance
-    ;; of whoentry, which contains what we need to display
-    (: make-whoentry (-> (Instance Getutmp%) whoentry))
-    (define (make-whoentry utmp)
-      (whoentry
-       (send utmp get-type)
-       (send utmp get-user)
-       (send utmp get-line)
-       (send utmp get-host)
-       (send utmp get-time)))
 
     ;; Build the string that will be used for the header of the listing.
     (: get-header (-> String))
@@ -119,9 +82,3 @@
              [time-out (~a (first time-split) ":" (second time-split))])        
              
       (~a date-out " " time-out)))))
-
-(struct whoentry ([type : Integer]
-                  [user : String]
-                  [line : String]
-                  [host : String]
-                  [time : Integer]))
