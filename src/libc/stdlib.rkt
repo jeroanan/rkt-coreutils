@@ -21,8 +21,3 @@
     (list (array-ref aout 0)
           (array-ref aout 1)
           (array-ref aout 2))))
-         
-         
-    
-   
-

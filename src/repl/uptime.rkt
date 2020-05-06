@@ -12,7 +12,11 @@
          racket/port
          racket/string)
 
-(require "util/util.rkt")
+(require "util/util.rkt"
+         "util/getutmp.rkt")
+
+(require/typed "../libc/stdlib.rkt"
+               [get-load-avgs  (-> (Listof Real))])
 
 ;; The file in GNU/Linux that holds the uptime number.
 (define uptime-file "/proc/uptime")
@@ -43,19 +47,28 @@
              [uptime-hours  (floor (assert (/ secs-less-days seconds-per-hour) real?))]
              [uptime-hours-secs (* uptime-hours 3600)]
              [secs-less-days-and-hours (- secs uptime-days-secs uptime-hours-secs)]
-             [uptime-minutes (floor (assert (/ secs-less-days-and-hours seconds-per-minute) real?))])
-        (format "~a up ~a days, ~a:~a"
-                (current-time)
-                (real->integer-string uptime-days)
-                (real->integer-string uptime-hours)
-                (real->integer-string uptime-minutes))))
+             [uptime-minutes (floor (assert (/ secs-less-days-and-hours seconds-per-minute) real?))]
+             [load-avgs (get-load-avgs)]
+             [no-of-users (length (get-user-process-utmp-entries))])
+        (displayln
+         (format " ~a up ~a days, ~a:~a,  ~a users,  load average: ~a, ~a, ~a"
+                 (current-time)
+                 (real->integer-string uptime-days)
+                 (real->integer-string uptime-hours)
+                 (real->integer-string uptime-minutes)
+                 no-of-users
+                 (first load-avgs)
+                 (second load-avgs)
+                 (third load-avgs)))))
 
     ;; Take a real number (e.g. 39.0) and return the integer portion (e.g. 39) as a string
     (: real->integer-string (-> Real String))
     (define/private (real->integer-string real-in)
       (let* ([s (number->string real-in)]
              [sp (string-split s ".")])
-        (first sp)))
+        (if (< real-in 10)
+            (format "0~a" (first sp))
+            (first sp))))
 
     ;; Get the current time part of the current date.
     (: current-time (-> String))
@@ -73,7 +86,3 @@
         (if (< num-in 10) 
             (format "0~a" s)
             s)))))
-
-    
-
-    
