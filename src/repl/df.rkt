@@ -4,6 +4,7 @@
 ;; See COPYING for licence
 
 (require typed/racket/class
+         racket/bool
          racket/list
          racket/port
          racket/string)
@@ -19,9 +20,15 @@
     (define/public (execute)
       (let* ([mountinfo-entries (get-mountinfo-entries)]
              [distinct-device-ids (get-distinct-device-ids mountinfo-entries)]
-             [de-duped-entries (get-entries-for-device-ids mountinfo-entries distinct-device-ids)])
-        (displayln (length mountinfo-entries))
-        (displayln (length distinct-device-ids))))
+             [de-duped-entries (get-entries-for-device-ids mountinfo-entries distinct-device-ids)]
+             [filter-remotes (filter (λ ([x : mountinfo-entry])
+                                       (not (is-remote-filesystem? x))) de-duped-entries)]
+             [filter-dummies (filter (λ ([x : mountinfo-entry])
+                                       (not (is-dummy-filesystem? x))) filter-remotes)])
+        (displayln (format "Entries in file: ~a" (length mountinfo-entries)))
+        (displayln (format "De-duped entries: ~a" (length de-duped-entries)))
+        (displayln (format "Filtered out remotes: ~a" (length filter-remotes)))
+        (displayln (format "Filtered dummies: ~a" (length filter-dummies)))))
     
     (define mountinfo-file "/proc/self/mountinfo")
 
@@ -108,7 +115,7 @@
     ;; - Its name is "-hosts"
     (: is-remote-filesystem? (-> mountinfo-entry Boolean))
     (define (is-remote-filesystem? mi-entry)
-      (let* ([fs-name (mountinfo-entry-dev-id mi-entry)]
+      (let* ([fs-name (mountinfo-entry-source mi-entry)]
              [fs-type (mountinfo-entry-type mi-entry)]
              [contains-colon? (string-contains? fs-name ":")]
              [starts-with-double-slash? (string-prefix? fs-name "//")]
@@ -121,6 +128,25 @@
              [smb-or-cifs? (or smbfs-type? smb3-type? cifs-type?)]
              [is-share? (and smb-or-cifs? starts-with-double-slash?)])
         (or contains-colon? is-share? afs-type? auristorfs-type? hosts-name?)))
+
+    ;; Given a mountinfo-entry, check if it is of a dummy filesystem type.
+    (: is-dummy-filesystem? (-> mountinfo-entry Boolean))
+    (define (is-dummy-filesystem? mi-entry)
+      (let ([dummy-fs-types (list "autofs"
+                                  "proc"
+                                  "subfs"
+                                  "debugfs"
+                                  "devpts"
+                                  "fusectl"
+                                  "mqueue"
+                                  "rpc_pipefs"
+                                  "sysfs"
+                                  "devfs"
+                                  "kernfs"
+                                  "ignore")])        
+        (list? (member (mountinfo-entry-type mi-entry) dummy-fs-types))))
+
+    (define-syntax-rule (true? pred) (not (false? pred)))
     
     ;; Given a mountinfo-entry return the value of its dev-id field
     (: get-device-id (-> mountinfo-entry String))
