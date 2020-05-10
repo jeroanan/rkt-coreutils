@@ -218,7 +218,7 @@
       (let ([headers
              (list
               (left-aligned-string "Filesystem" filesystem-width)
-              (right-aligned-string "1K blocks" 1k-blocks-width)
+              (right-aligned-string "1K-blocks" 1k-blocks-width)
               (right-aligned-string "Used" 1k-blocks-used-width)
               (right-aligned-string "Available" 1k-blocks-available-width)
               (right-aligned-string "Use%" percent-used-width)
@@ -234,7 +234,8 @@
               (right-aligned-string (df-output-1k-blocks-used df-out) 1k-blocks-used-width)
               (right-aligned-string (df-output-1k-blocks-available df-out) 1k-blocks-available-width)
               (right-aligned-string
-               (format "~a%" (df-output-percent-used df-out)) percent-used-width))])
+               (format "~a%" (df-output-percent-used df-out)) percent-used-width)
+              (df-output-mounted-on df-out))])
         (string-join fields " ")))
 
     (: get-max-list-member (-> (Listof df-output) (-> df-output Index) Integer))
