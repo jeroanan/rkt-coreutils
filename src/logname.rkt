@@ -1,9 +1,8 @@
-#lang typed/racket/base
+#lang s-exp "util/frontend-program.rkt"
 
 ; Copyright 2020 David Wilson
 ; See COPYING for details
 
-(require "repl/logname.rkt"         
-         "util/simple-program.rkt")
+(backend-code "repl/logname.rkt")
 
 (simple-program logname%)
