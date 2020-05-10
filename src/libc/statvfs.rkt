@@ -3,31 +3,7 @@
 ; Copyright 2020 David Wilson
 ; See COPYING for details
 
-(require ffi/unsafe
-         dynamic-ffi/unsafe)
-
-(define _fsblkcnt_t _ulong);_uint64)
-(define _fsfilcnt_t _ulong);_uint32)
-
-(define-cstruct _statvfsstruct([f_bsize   _ulong] ; block size
-                               [f_frsize  _ulong] ; fragment size
-                               [f_blocks  _fsblkcnt_t]
-                               [f_bfree   _fsblkcnt_t]
-                               [f_bavail  _fsblkcnt_t]
-                               [f_files   _fsfilcnt_t]
-                               [f_ffree   _fsfilcnt_t]
-                               [f_favail  _fsfilcnt_t]
-                               [f_fsid    _ulong]
-                               [f_flag    _ulong]
-                               [f_namemax _ulong]))
-
-(define clib (ffi-lib #f))
-(define statvfs (get-ffi-obj "statvfs" clib (_fun _string (i : (_ptr o _statvfsstruct))
-                                                  -> (r : _int)
-                                                  -> (values r i))))
-
-
-
+(require dynamic-ffi/unsafe)
 
 (define-inline-ffi ggl #:compiler "clang"
   "#include <sys/statvfs.h>\n"
@@ -46,6 +22,14 @@
   "  return stat.f_blocks;\n"
   "}\n"
 
+  "fsblkcnt_t getfree(void) {\n"
+  "  return stat.f_bfree;\n"
+  "}\n"
+
+  "fsblkcnt_t getavailable(void) {\n"
+  "  return stat.f_bavail;\n"
+  "}\n"
+
   "fsfilcnt_t getfiles(void) {\n"
   "  return stat.f_files;\n"
   "}\n"
@@ -54,7 +38,13 @@
   "  return statvfs(path, &stat);\n"
   "}\n")
 
-(provide get-statvfs get-blocks get-blocksize get-fragmentsize get-files)
+(provide get-statvfs
+         get-blocks
+         get-free
+         get-available
+         get-blocksize
+         get-fragmentsize
+         get-files)
 
 (define (get-statvfs path)
   (ggl 'getstatvfs path))
@@ -67,6 +57,12 @@
 
 (define (get-blocks)
   (ggl 'getblocks))
+
+(define (get-free)
+  (ggl 'getfree))
+
+(define (get-available)
+  (ggl 'getavailable))
 
 (define (get-files)
   (ggl 'getfiles))

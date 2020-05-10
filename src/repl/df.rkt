@@ -3,13 +3,21 @@
 ;; Copyright 2020 David Wilson
 ;; See COPYING for licence
 
+(provide df%)
+
 (require typed/racket/class
          racket/bool
          racket/list
          racket/port
          racket/string)
 
-(require (for-syntax racket/list))
+(require "../util/stringutil.rkt")
+
+(require/typed "../libc/statvfs.rkt"
+               [get-statvfs  (-> String Integer)]
+               [get-blocks (-> Integer)]
+               [get-available (-> Integer)]
+               [get-fragmentsize (-> Integer)])
 
 ;; df - display file system diskusage
 (define df%
@@ -24,11 +32,14 @@
              [filter-remotes (filter (λ ([x : mountinfo-entry])
                                        (not (is-remote-filesystem? x))) de-duped-entries)]
              [filter-dummies (filter (λ ([x : mountinfo-entry])
-                                       (not (is-dummy-filesystem? x))) filter-remotes)])
-        (displayln (format "Entries in file: ~a" (length mountinfo-entries)))
-        (displayln (format "De-duped entries: ~a" (length de-duped-entries)))
-        (displayln (format "Filtered out remotes: ~a" (length filter-remotes)))
-        (displayln (format "Filtered dummies: ~a" (length filter-dummies)))))
+                                       (not (is-dummy-filesystem? x))) filter-remotes)]
+             [filter-zero-blocksize (filter (λ ([x : mountinfo-entry])
+                                              (not (is-zero-block-size? x))) filter-dummies)]
+             [output (map mountinfo-entry->df-output filter-zero-blocksize)])
+        (set-column-widths output)
+        (displayln (get-header))
+        (for ([o output])
+          (displayln (get-row o)))))
     
     (define mountinfo-file "/proc/self/mountinfo")
 
@@ -91,7 +102,7 @@
                      (string-join
                       (append
                        (rest
-                        (string-split mountinfo-line "-")))) " ")])
+                        (string-split mountinfo-line " - ")))) " ")])
         result))
       
     ;; The optional fields part of the line is everything after the fifth word and before the "-".
@@ -99,7 +110,7 @@
     (define (get-optional-fields line-split)
       (let* ([optionals-onward (drop line-split 5)]
              [rejoined (string-join optionals-onward " ")]
-             [resplit (string-split rejoined "-")])
+             [resplit (string-split rejoined " - ")])
         (first resplit)))
 
     ;; Given the list of mountinfo-entries, get the unique values of the dev-id field
@@ -146,23 +157,97 @@
                                   "ignore")])        
         (list? (member (mountinfo-entry-type mi-entry) dummy-fs-types))))
 
-    (define-syntax-rule (true? pred) (not (false? pred)))
-    
+    ;; Given a mountinfo-entry, determine whether it has zero block size.
+    (: is-zero-block-size? (-> mountinfo-entry Boolean))
+    (define (is-zero-block-size? mi-entry)
+      (begin
+        (get-statvfs (mountinfo-entry-target mi-entry))        
+        (= (get-blocks) 0)))
+
     ;; Given a mountinfo-entry return the value of its dev-id field
     (: get-device-id (-> mountinfo-entry String))
     (define (get-device-id x)
-      (mountinfo-entry-dev-id x))))
+      (mountinfo-entry-dev-id x))
 
-(define-syntax-rule (make-de-duper de-duper-name list-type output-type de-dupe-function)
-  (begin
-    (: de-duper-name (-> (Listof list-type) (Listof output-type) (Listof output-type)))
-    (define (de-duper-name to-de-dupe output-lst)
-      (if (empty? to-de-dupe)
-          output-lst
-          (let ([de-dupe-value (de-dupe-function (first to-de-dupe))])
-                (if (memv de-dupe-value output-lst)                    
-                    (de-duper-name (rest to-de-dupe) output-lst)                    
-                    (de-duper-name (rest to-de-dupe) (append output-lst (list de-dupe-value)))))))))
+    (: mountinfo-entry->df-output (-> mountinfo-entry df-output))
+    (define (mountinfo-entry->df-output mi-entry)
+      (let* ([stat (get-statvfs (mountinfo-entry-target mi-entry))]
+             [block-multiplier (/ (get-fragmentsize) 1024)]
+             [1k-blocks (assert (* (get-blocks) block-multiplier) integer?)]
+             [1k-blocks-available (assert (* (get-available) block-multiplier) integer?)]
+             [1k-blocks-used (- 1k-blocks 1k-blocks-available)]
+             [percent-used (if (eq? 1k-blocks-available 0)
+                               100
+                               (ceiling (* (/ 1k-blocks-used 1k-blocks) 100)))])
+            (df-output (mountinfo-entry-source mi-entry)
+                       1k-blocks
+                       1k-blocks-used
+                       1k-blocks-available
+                       percent-used
+                       (mountinfo-entry-target mi-entry))))
+    
+    (define-syntax-rule (get-col-width col-member min-width lst)
+      (max min-width (get-max-list-member 
+                       lst
+                       (λ ([x : df-output])
+                         (string-length (anything->string (col-member x)))))))
+
+    (define-syntax-rule (make-col-width-field name min-width)
+      (begin
+        (: name Exact-Nonnegative-Integer)
+        (define name min-width)))
+    
+    (make-col-width-field filesystem-width 14)
+    (make-col-width-field 1k-blocks-width 9)
+    (make-col-width-field 1k-blocks-used-width 5)
+    (make-col-width-field 1k-blocks-available-width 9)
+    (make-col-width-field percent-used-width 4)
+
+    (: set-column-widths (-> (Listof df-output) Void))
+    (define (set-column-widths df-outputs)
+      (set! filesystem-width (get-col-width df-output-filesystem filesystem-width df-outputs))
+      (set! 1k-blocks-width (get-col-width df-output-1k-blocks 1k-blocks-width df-outputs))
+      (set! 1k-blocks-used-width
+            (get-col-width df-output-1k-blocks-used 1k-blocks-used-width df-outputs))
+      (set! 1k-blocks-available-width
+            (get-col-width df-output-1k-blocks-available 1k-blocks-available-width df-outputs))
+      (set! percent-used-width (get-col-width df-output-percent-used percent-used-width df-outputs)))
+                    
+    (: get-header (-> String))
+    (define/private (get-header)
+      (let ([headers
+             (list
+              (left-aligned-string "Filesystem" filesystem-width)
+              (right-aligned-string "1K blocks" 1k-blocks-width)
+              (right-aligned-string "Used" 1k-blocks-used-width)
+              (right-aligned-string "Available" 1k-blocks-available-width)
+              (right-aligned-string "Use%" percent-used-width)
+              "Mounted on")])
+        (string-join headers " ")))
+
+    (: get-row (-> df-output String))
+    (define/private (get-row df-out)
+      (let ([fields
+             (list
+              (left-aligned-string (df-output-filesystem df-out) filesystem-width)
+              (right-aligned-string (df-output-1k-blocks df-out) 1k-blocks-width)
+              (right-aligned-string (df-output-1k-blocks-used df-out) 1k-blocks-used-width)
+              (right-aligned-string (df-output-1k-blocks-available df-out) 1k-blocks-available-width)
+              (right-aligned-string
+               (format "~a%" (df-output-percent-used df-out)) percent-used-width))])
+        (string-join fields " ")))
+
+    (: get-max-list-member (-> (Listof df-output) (-> df-output Index) Integer))
+    (define (get-max-list-member lst number-extractor)
+
+      (: iterator (-> (Listof df-output) Integer Integer))
+      (define (iterator lst current-max)        
+        (if (empty? lst)
+            current-max
+            (if (>(number-extractor (first lst)) current-max)
+                (iterator (rest lst) (number-extractor (first lst)))
+                (iterator (rest lst) current-max))))
+      (iterator lst 0))))
 
 (struct mountinfo-entry
   [(id : String)
@@ -174,3 +259,11 @@
    (type : String)
    (source : String)
    (rw : String)])
+
+(struct df-output
+  [(filesystem : String)   
+   (1k-blocks : Integer)
+   (1k-blocks-used : Integer)
+   (1k-blocks-available : Integer)
+   (percent-used : Integer)
+   (mounted-on : String)])
