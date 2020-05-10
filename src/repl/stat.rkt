@@ -10,7 +10,7 @@
          racket/list)
 
 (require "util/fileaccessoct.rkt"
-         "../util/fileaccessstr.rkt"
+         "util/fileaccessstr.rkt"
          "typedef/stat.rkt"
          "../typedef/getpwuid.rkt"
          "util/gidutil.rkt"

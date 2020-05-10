@@ -5,7 +5,7 @@
 
 (provide get-mode-str)
 
-(require "../repl/typedef/stat.rkt")
+(require "../typedef/stat.rkt")
 
 (require typed/racket/class)
 
