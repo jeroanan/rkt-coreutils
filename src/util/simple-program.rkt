@@ -7,8 +7,9 @@
 
 (require "version.rkt")
 
-(define-syntax-rule (simple-program type)
+(define-syntax-rule (simple-program backend-loc type)
   (begin
+    (require backend-loc)
     (define args (make-parameter (list)))
 
     (command-line

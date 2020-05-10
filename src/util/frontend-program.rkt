@@ -10,5 +10,4 @@
 (require racket/cmdline
          racket/class)
 
-(require 
-         "simple-program.rkt")
+(require "simple-program.rkt")

@@ -1,9 +1,3 @@
-#lang typed/racket/base
+#lang s-exp "util/frontend-program.rkt"
 
-; Copyright 2020 David Wilson
-; See COPYING for details
-
-(require "repl/whoami.rkt"         
-         "util/simple-program.rkt")
-
-(simple-program whoami%)
+(simple-program "repl/whoami.rkt" whoami%)
