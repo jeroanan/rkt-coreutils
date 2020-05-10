@@ -2,13 +2,17 @@
 
 (provide simple-file-handler-program)
 
+; Copyright 2020 David Wilson
+; See COPYING for details
+
 (require racket/cmdline
          racket/list
          racket/class)
 
-(define-syntax-rule (simple-file-handler-program dispatch-type)
+(define-syntax-rule (simple-file-handler-program backend-loc dispatch-type)
   (begin
     (require "util/version.rkt")
+    (require backend-loc)
 
     (: the-files (Parameter (Listof String)))
     (define the-files (make-parameter (list)))

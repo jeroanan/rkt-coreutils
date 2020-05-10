@@ -1,6 +1,3 @@
-#lang typed/racket/base
+#lang s-exp "util/frontend-program.rkt"
 
-(require "repl/base64.rkt"
-         "util/simple-file-handler-program.rkt")
-
-(simple-file-handler-program base64%)
+(simple-file-handler-program "repl/base64.rkt" base64%)

@@ -1,9 +1,3 @@
-#lang typed/racket/base
+#lang s-exp "util/frontend-program.rkt"
 
-; Copyright 2020 David Wilson
-; See COPYING for details
-
-(require "repl/nl.rkt"
-         "util/simple-file-handler-program.rkt")
-
-(simple-file-handler-program nl%)
+(simple-file-handler-program "repl/nl.rkt" nl%)

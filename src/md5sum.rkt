@@ -1,9 +1,3 @@
-#lang typed/racket/base
+#lang s-exp "util/frontend-program.rkt"
 
-; Copyright 2020 David Wilson
-; see COPYING for licence
-
-(require "repl/md5sum.rkt"
-         "util/simple-file-handler-program.rkt")
-
-(simple-file-handler-program md5sum%)
+(simple-file-handler-program "repl/md5sum.rkt" md5sum%)

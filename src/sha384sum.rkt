@@ -1,9 +1,3 @@
-#lang typed/racket/base
+#lang s-exp "util/frontend-program.rkt"
 
-; Copyright 2020 David Wilson
-; See COPYING for licence
-
-(require "repl/sha384sum.rkt"
-         "util/simple-file-handler-program.rkt")
-
-(simple-file-handler-program sha384sum%)
+(simple-file-handler-program "repl/sha384sum.rkt" sha384sum%)
