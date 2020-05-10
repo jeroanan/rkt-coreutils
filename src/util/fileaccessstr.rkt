@@ -3,7 +3,9 @@
 ; Copyright 2020 David Wilson
 ; See COPYING for details
 
-(require "../typedef/stat.rkt")
+(provide get-mode-str)
+
+(require "../repl/typedef/stat.rkt")
 
 (require typed/racket/class)
 
@@ -21,9 +23,23 @@
               [x-flag (if (send stat x) "x" "-")])
           (string-append r-flag w-flag x-flag)))))
   
-(get-permissions-mode get-owner-mode get-owner-has-rwx? get-owner-has-r? get-owner-has-w? get-owner-has-x?)
-(get-permissions-mode get-group-mode get-group-has-rwx? get-group-has-r? get-group-has-w? get-group-has-x?)
-(get-permissions-mode get-other-mode get-other-has-rwx? get-other-has-r? get-other-has-w? get-other-has-x?)
+(get-permissions-mode get-owner-mode
+                      get-owner-has-rwx?
+                      get-owner-has-r?
+                      get-owner-has-w?
+                      get-owner-has-x?)
+
+(get-permissions-mode get-group-mode
+                      get-group-has-rwx?
+                      get-group-has-r?
+                      get-group-has-w?
+                      get-group-has-x?)
+
+(get-permissions-mode get-other-mode
+                      get-other-has-rwx?
+                      get-other-has-r?
+                      get-other-has-w?
+                      get-other-has-x?)
 
 (define (get-mode-str [stat : (Instance Stat%)])
   (let ([file-type (get-file-type-char stat)]
@@ -32,4 +48,3 @@
         [other-mode (get-other-mode stat)])
   (string-append file-type owner-mode group-mode other-mode)))
 
-(provide get-mode-str)

@@ -11,7 +11,7 @@
          racket/list
          racket/format)
 
-(require "../typedef/stat.rkt"
+(require "typedef/stat.rkt"
          "../typedef/getpwuid.rkt"
          "../util/fileaccessstr.rkt"         
          "../util/human-date.rkt"
@@ -61,7 +61,7 @@
           (number->string (send inode get-inode))
           #f))
 
-    ;; Populate hte ls-colors hashtable with ls colors by looking at the LS_COLORS env. variable.
+    ;; Populate the ls-colors hashtable with ls colors by looking at the LS_COLORS env. variable.
     ;; Colors in LS_COLORS are key=value, with each KVP separated by a ":".
     (: get-ls-colors (-> (HashTable String String)))
     (define/private (get-ls-colors)
@@ -211,4 +211,4 @@
               (displayln
                (if (is-implied-path? f)
                    f
-                   (format-entry (string->path p) (string->path (format "~a" f))))))))))))
+                   (format-entry (string->path p) (string->path (anything->string f))))))))))))

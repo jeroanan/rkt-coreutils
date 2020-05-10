@@ -1,40 +1,27 @@
 #lang typed/racket/base
 
 ; Copyright 2020 David Wilson
-
-;This program is free software: you can redistribute it and/or modify
-;it under the terms of the GNU General Public License as published by
-;the Free Software Foundation, either version 3 of the License, or
-;(at your option) any later version.
-;
-;This program is distributed in the hope that it will be useful,
-;but WITHOUT ANY WARRANTY; without even the implied warranty of
-;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-;GNU General Public License for more details.
-;
-;You should have received a copy of the GNU General Public License
-;along with this program.  If not, see <https://www.gnu.org/licenses/>.
+; See COPYING for details
 
 (provide stat%)
 
 (require typed/racket/class
+         typed/racket/date
          racket/list)
 
-(require "../util/fileaccessoct.rkt"
+(require "util/fileaccessoct.rkt"
          "../util/fileaccessstr.rkt"
-         "../typedef/stat.rkt"
+         "typedef/stat.rkt"
          "../typedef/getpwuid.rkt"
-         "util/gidutil.rkt")
+         "util/gidutil.rkt"
+         "../util/stringutil.rkt"
+         "util/util.rkt")
 
 (require/typed "../libc/stat.rkt"
                [get-stat (-> String String (Instance Stat%))])
 
 (require/typed "../libc/pwd.rkt"
                [get-pwuid (-> Number (Instance Getpwuid%))])
-
-(require/typed racket/date
-               [date-display-format ( -> Symbol Void)]
-               [date->string (-> date Boolean String)])
 
 (define (get-file-type-string [stat : (Instance Stat%)])
   (cond
@@ -117,8 +104,8 @@
       (let-values ([(p f _) (split-path the-file)])        
         (let ([p-string (if (eq? p 'relative)
                             (path->string (current-directory))
-                            (format "~a" p))]
-              [f-string (format "~a" f)])
+                            (anything->string p))]
+              [f-string (anything->string f)])
           (list p-string f-string))))
 
     (define/public (execute [files : (Listof String)])
@@ -128,11 +115,7 @@
                [file-name (second path-parts)])
           (display-output the-path file-name))))
 
-    (define/public (help)
-      (let ([help-strings (list "Print status of each provided file."
+    (help-function (list "Print status of each provided file."
                                 ""
                                 "Methods:"
-                                "(execute FILES) -- display the status of FILES")])
-        (for ([hs help-strings])
-          (displayln hs))))))
-
+                                "(execute FILES) -- display the status of FILES"))))
