@@ -353,7 +353,7 @@ launchers:
 	./make-launchers.sh
 
 clean:
-	rm -rf docs/
+	rm -rf docs/; find . -type d -name compiled -prune -exec rm -rf {} \;
 
 deploy:
 	cp -f compiled/* $(DEPDIR)
