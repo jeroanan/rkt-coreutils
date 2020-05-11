@@ -15,7 +15,7 @@
          "../typedef/getpwuid.rkt"
          "util/fileaccessstr.rkt"         
          "util/human-date.rkt"
-         "../util/human-size.rkt"
+         "util/human-size.rkt"
          "util/member.rkt"
          "../util/stringutil.rkt"
          "util/gidutil.rkt")
