@@ -3,7 +3,9 @@
 ; Copyright 2020 David Wilson
 ; See COPYING for details
 
-(require "stringutil.rkt")
+(provide unix-seconds->human-date)
+
+(require "../../util/stringutil.rkt")
 
 (require racket/format
          racket/string)
@@ -47,6 +49,4 @@
          [year-or-time : String (get-year-or-time year time)]
          [output-list (list month day year-or-time)])
     (string-join output-list " ")))
-
-(provide unix-seconds->human-date)
   
