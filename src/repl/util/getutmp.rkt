@@ -1,15 +1,18 @@
 #lang typed/racket/base
 
-(require typed/racket/class)
+;; Copyright 2020 David Wilson
+;; See COPYING for details
 
 (provide get-user-process-utmp-entries
          (struct-out whoentry))
+
+(require typed/racket/class)
 
 ;; access to getutmp, which uses libc to get info on logged-in users
 (require/typed "../../libc/utmp.rkt"
                [get-utmp (-> (Instance Getutmp%))])
 
-(require "../../typedef/getutmp.rkt")
+(require "../typedef/getutmp.rkt")
 
 ;; libc's identifier for login processes.
 (define LOGIN_PROCESS 6)

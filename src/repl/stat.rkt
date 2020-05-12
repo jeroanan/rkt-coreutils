@@ -12,7 +12,7 @@
 (require "util/fileaccessoct.rkt"
          "util/fileaccessstr.rkt"
          "typedef/stat.rkt"
-         "../typedef/getpwuid.rkt"
+         "typedef/getpwuid.rkt"
          "util/gidutil.rkt"
          "../util/stringutil.rkt"
          "util/util.rkt")
@@ -23,6 +23,7 @@
 (require/typed "../libc/pwd.rkt"
                [get-pwuid (-> Number (Instance Getpwuid%))])
 
+;; Take an instance of Stat% and return a string representing the inode type
 (define (get-file-type-string [stat : (Instance Stat%)])
   (cond
     [(send stat get-is-regular-file?) "regular file"]
@@ -30,28 +31,33 @@
     [(send stat get-is-character-device?) "character special file"]
     [else ""]))
 
+;; Take an instance of Stat% and return a hex and dec representation of the device no.
 (define (get-device-string [stat : (Instance Stat%)])
   (let* ([dev-no (send stat get-dev)]
          [dev-no-decimal (number->string dev-no)]
          [dev-no-hex (number->string dev-no 16)])
     (format "~ah/~ad" dev-no-hex dev-no-decimal)))
 
+;; Take an instance of Stat% and return octal and string representatinos of its access mode
 (define (get-access-string [stat : (Instance Stat%)])
   (let ([access-oct (get-mode-oct-str stat)]
         [access-str (get-mode-str stat)])
     (format "(~a/~a)" access-oct access-str)))
 
+;; Take an instance of Stat% and return the uid and associated username
 (define (get-uid-string [stat : (Instance Stat%)])
   (let* ([uid (send stat get-uid)]
          [p (get-pwuid uid)]
          [username (send p get-username)])
     (format "(~a/~a)" uid username)))
 
+;; Take an instance of Stat% and return the gid and associated group name
 (define (get-gid-string [stat : (Instance Stat%)])
   (let* ([gid (send stat get-gid)]
          [groupname (gid->group-name gid)])
     (format "(~a/~a)" gid groupname)))
 
+;; Define a function that gets the given time property from an instance of Stat%
 (define-syntax-rule (file-time-getter name time-prop)
   (define (name [stat : (Instance Stat%)])
     (let ([the-time (send stat time-prop)])
@@ -62,6 +68,7 @@
 (file-time-getter get-modified-time get-modified-time)
 (file-time-getter get-created-time get-created-time)
 
+;; Print status of each provided file.
 (define stat% 
   (class object%
     (super-new)

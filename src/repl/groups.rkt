@@ -6,9 +6,9 @@
 (provide groups%)
 
 (require "util/util.rkt"
-         "../typedef/getgrouplist.rkt"
-         "../typedef/getgrgid.rkt"
-         "../typedef/getpwuid.rkt")
+         "typedef/getgrouplist.rkt"
+         "typedef/getgrgid.rkt"
+         "typedef/getpwuid.rkt")
 
 (require typed/racket/class
          racket/string)

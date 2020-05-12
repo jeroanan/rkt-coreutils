@@ -7,7 +7,7 @@
 
 ;; includes help-method
 (require "util/util.rkt"
-         "../typedef/getutmp.rkt"
+         "typedef/getutmp.rkt"
          "../util/stringutil.rkt"
          "util/getutmp.rkt"
          "util/member.rkt")
