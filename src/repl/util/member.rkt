@@ -7,8 +7,9 @@
          private-boolean-attribute
          public-integer-attribute
          private-integer-attribute
-         string-list-attribute
-         string-attribute)
+         public-string-attribute
+         private-string-attribute
+         string-list-attribute)
 
 (require typed/racket/class)
 
@@ -26,12 +27,11 @@
 (define-syntax-rule (private-integer-attribute field-name default-value)
   (private-attribute field-name Integer default-value))
 
-(define-syntax integer-attribute
-  (syntax-rules ()
-    [(public-integer-attribute field-name default-value getter-name setter-name)
-     (make-attribute Integer field-name default-value getter-name setter-name)]
-    [(private-integer-attribute field-name default-value)
-     (make-attribute Integer field-name default-value)]))
+(define-syntax-rule (public-string-attribute field-name default-value)
+  (public-attribute field-name String default-value))
+
+(define-syntax-rule (private-string-attribute field-name default-value)
+  (private-attribute field-name String default-value))
 
 (define-syntax-rule (string-list-attribute field-name default-value)
   (make-attribute (Listof String) field-name default-value))

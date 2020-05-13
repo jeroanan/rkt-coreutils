@@ -18,7 +18,7 @@
     (super-new)
 
     ;; The last line to have been processed
-    (string-attribute previous-line "")
+    (private-string-attribute previous-line "")
 
     ;; Is this the first line in the file?
     (private-boolean-attribute first-line? #t)
