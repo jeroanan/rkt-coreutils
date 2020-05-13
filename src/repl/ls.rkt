@@ -35,19 +35,19 @@
     (super-new)
 
     ;; Whether to print inode no.
-    (boolean-attribute print-inodes #f get-print-inodes set-print-inodes)
+    (public-boolean-attribute print-inodes #f)
 
     ;; If true output in "long mode". Otherwise just show what's in the listing.
-    (boolean-attribute long-mode #f get-long-mode set-long-mode)
+    (public-boolean-attribute long-mode #f)
 
     ;; If true don't include "." and ".." when showing all entries
-    (boolean-attribute hide-implied #f get-hide-implied set-hide-implied)
+    (public-boolean-attribute hide-implied #f)
 
     ;; Should output in in colour? Don't use in the repl.
-    (boolean-attribute show-colors #f get-show-colors set-show-colors)
+    (public-boolean-attribute show-colors #f)
 
     ;; Should hidden entries be shown?
-    (boolean-attribute show-hidden #f get-show-hidden set-show-hidden)
+    (public-boolean-attribute show-hidden #f)
 
     ;; If long mode is enabled then execute the given function. Otherwise return false.
     (: when-long-mode (-> (-> String) (U String Boolean)))

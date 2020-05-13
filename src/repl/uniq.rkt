@@ -21,7 +21,7 @@
     (string-attribute previous-line "")
 
     ;; Is this the first line in the file?
-    (boolean-attribute first-line? #t)
+    (private-boolean-attribute first-line? #t)
     
     (help-function (list "Display uniq lines in FILE"
                          ""

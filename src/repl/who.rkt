@@ -36,7 +36,7 @@
            "(execute) -- print information about users that are currently logged in."))
 
     ;; Whether to show headings above the listing
-    (boolean-attribute show-header #f get-show-header set-show-header)
+    (public-boolean-attribute show-header #t)    
     
     ;; How wide various column widths in output should be
     (: user-column-width Exact-Nonnegative-Integer)
