@@ -1,4 +1,4 @@
-#lang typed/racket/base
+#lang s-exp "util/frontend-program.rkt"
 
 ; Copyright 2020 David Wilson
 ; See COPYING for details
@@ -7,12 +7,10 @@
          racket/list
          racket/class)
 
-(require "util/version.rkt"
-         "util/stringutil.rkt"
+(require "util/stringutil.rkt"
          "repl/groups.rkt")
 
-(: the-username (Parameterof String))
-(define the-username (make-parameter ""))
+(string-parameter the-username "")
 
 (command-line
   #:argv (current-command-line-arguments)

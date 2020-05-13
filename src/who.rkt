@@ -1,4 +1,4 @@
-#lang typed/racket/base
+#lang s-exp "util/frontend-program.rkt"
 
 ; Copyright 2020 David Wilson
 ; See COPYING for details
@@ -6,9 +6,7 @@
 (require racket/cmdline
          typed/racket/class)
 
-(require "repl/who.rkt"
-         "util/param.rkt"
-         "util/version.rkt")
+(require "repl/who.rkt")
 
 (boolean-parameter show-heading #f)
 

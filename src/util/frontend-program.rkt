@@ -5,6 +5,8 @@
 
 (provide simple-program
          simple-file-handler-program
+         (all-from-out "param.rkt")
+         (all-from-out "version.rkt")
          (all-from-out typed/racket/base)
          (rename-out [require backend-code]))
 
@@ -12,4 +14,6 @@
          racket/class)
 
 (require "simple-program.rkt"
-         "simple-file-handler-program.rkt")
+         "simple-file-handler-program.rkt"
+         "param.rkt"
+         "version.rkt")
