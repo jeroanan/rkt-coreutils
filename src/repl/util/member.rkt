@@ -5,7 +5,8 @@
 
 (provide public-boolean-attribute
          private-boolean-attribute
-         integer-attribute
+         public-integer-attribute
+         private-integer-attribute
          string-list-attribute
          string-attribute)
 
@@ -18,13 +19,12 @@
 
 (define-syntax-rule (private-boolean-attribute field-name default-value)
   (private-attribute field-name Boolean default-value))
-  
-(define-syntax boolean-attribute
-  (syntax-rules ()
-    [(public-boolean-attribute field-name default-value getter-name setter-name)
-     (make-attribute Boolean field-name default-value getter-name setter-name)]
-    [(private-boolean-attribute field-name default-value)
-     (make-attribute Boolean field-name default-value)]))
+
+(define-syntax-rule (public-integer-attribute field-name default-value)
+  (public-attribute field-name Integer default-value))
+
+(define-syntax-rule (private-integer-attribute field-name default-value)
+  (private-attribute field-name Integer default-value))
 
 (define-syntax integer-attribute
   (syntax-rules ()

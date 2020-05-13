@@ -19,7 +19,7 @@
     (super-new)
 
     ;; The number of lines from each file to print
-    (integer-attribute number-of-lines 10 get-number-of-lines set-number-of-lines)
+    (public-integer-attribute number-of-lines 10)
 
     (help-function (list "Print the first lines of each provided file."
                          ""
@@ -32,7 +32,7 @@
     (line-by-line-processor line-handler)
 
     ;; How many lines have been printed so far.
-    (integer-attribute counter 0)
+    (private-integer-attribute counter 0)
 
     ;; Print each line as it is sent in. If we have gotten to the number of lines spcified, stop the
     ;; program.
