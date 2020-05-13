@@ -6,10 +6,13 @@
 (require typed/racket/class)
 
 (provide boolean-attribute
+         public-boolean-attribute
          integer-attribute
          string-list-attribute
          string-attribute)
-  
+
+(require (for-syntax racket/base))
+              
 (define-syntax boolean-attribute
   (syntax-rules ()
     [(public-boolean-attribute field-name default-value getter-name setter-name)
@@ -30,6 +33,30 @@
 (define-syntax-rule (string-attribute field-name default-value)
   (make-attribute String field-name default-value))
 
+(define-syntax-rule (public-boolean-attribute field-name default-value)
+  (public-attribute field-name Boolean default-value))
+  
+(define-syntax (public-attribute stx)
+  (syntax-case stx ()
+    [(_ field-name type default-value)
+     (with-syntax ([getter-name
+                    (datum->syntax #'field-name
+                                   (string->symbol (format "get-~a"
+                                                           (syntax->datum #'field-name))))]
+                   [setter-name
+                    (datum->syntax #'field-name
+                                   (string->symbol (format "set-~a"
+                                                           (syntax->datum #'field-name))))])
+       #'(begin
+           (: field-name type)
+           (field [field-name default-value])
+           
+           (: getter-name (-> type))
+           (define/public (getter-name) field-name)
+
+           (define/public (setter-name [x : type]) (set! field-name x))))]))
+                 
+                 
 (define-syntax make-attribute
   (syntax-rules ()
     [(make-public-attribute type field-name default-value getter-name setter-name)
