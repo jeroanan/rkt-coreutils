@@ -8,7 +8,7 @@
 
 (require typed/racket/class)
 
-(require/typed "../../libc/grp.rkt"
+(require/typed "../libc/grp.rkt"
                [get-getgrgid (-> Number (Instance Getgrgid%))]
                [get-getgrouplist (-> String Integer (Instance Getgrouplist%))])
 

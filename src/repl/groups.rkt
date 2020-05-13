@@ -13,14 +13,14 @@
 (require typed/racket/class
          racket/string)
 
-(require/typed "../libc/grp.rkt"
+(require/typed "libc/grp.rkt"
                [get-getgrouplist (-> String Number (Instance Getgrouplist%))]
                [get-getgrgid (-> Integer (Instance Getgrgid%))])
 
-(require/typed "../libc/unistd.rkt"
+(require/typed "libc/unistd.rkt"
                [get-euid (-> Integer)])
 
-(require/typed "../libc/pwd.rkt"
+(require/typed "libc/pwd.rkt"
                [get-pwuid (-> Number (Instance Getpwuid%))])
 
 ;; Groups: Print the given user's groups

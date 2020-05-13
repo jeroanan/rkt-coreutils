@@ -15,7 +15,7 @@
 (require "util/util.rkt"
          "util/getutmp.rkt")
 
-(require/typed "../libc/stdlib.rkt"
+(require/typed "libc/stdlib.rkt"
                [get-load-avgs  (-> (Listof Real))])
 
 ;; The file in GNU/Linux that holds the uptime number.

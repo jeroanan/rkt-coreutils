@@ -20,10 +20,10 @@
          "../util/stringutil.rkt"
          "util/gidutil.rkt")
 
-(require/typed "../libc/stat.rkt"
+(require/typed "libc/stat.rkt"
                [get-stat (-> String String (Instance Stat%))])
 
-(require/typed "../libc/pwd.rkt"
+(require/typed "libc/pwd.rkt"
                [get-pwuid (-> Number (Instance Getpwuid%))])
 
 ;; ls - list directories

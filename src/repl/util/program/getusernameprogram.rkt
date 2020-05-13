@@ -8,7 +8,7 @@
 (require "../../typedef/getpwuid.rkt"
          "../util.rkt")
 
-(require/typed "../../../libc/pwd.rkt"
+(require/typed "../../libc/pwd.rkt"
                [get-pwuid (-> Number (Instance Getpwuid%))])
 
 ;; Define a program the calls get-uid-func and retrieves the username with the result

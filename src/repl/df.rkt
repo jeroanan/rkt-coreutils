@@ -13,7 +13,7 @@
 
 (require "../util/stringutil.rkt")
 
-(require/typed "../libc/statvfs.rkt"
+(require/typed "libc/statvfs.rkt"
                [get-statvfs  (-> String Integer)]
                [get-blocks (-> Integer)]
                [get-available (-> Integer)]

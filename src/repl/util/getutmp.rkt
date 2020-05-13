@@ -9,7 +9,7 @@
 (require typed/racket/class)
 
 ;; access to getutmp, which uses libc to get info on logged-in users
-(require/typed "../../libc/utmp.rkt"
+(require/typed "../libc/utmp.rkt"
                [get-utmp (-> (Instance Getutmp%))])
 
 (require "../typedef/getutmp.rkt")

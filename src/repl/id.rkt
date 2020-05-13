@@ -12,10 +12,10 @@
 (require typed/racket/class
          racket/string)
 
-(require/typed "../libc/unistd.rkt"
+(require/typed "libc/unistd.rkt"
                [get-euid (-> Integer)])
 
-(require/typed "../libc/pwd.rkt"
+(require/typed "libc/pwd.rkt"
                [get-pwuid (-> Integer (Instance Getpwuid%))])
 
 ;; id - Print user information

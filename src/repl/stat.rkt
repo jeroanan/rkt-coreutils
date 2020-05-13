@@ -17,10 +17,10 @@
          "../util/stringutil.rkt"
          "util/util.rkt")
 
-(require/typed "../libc/stat.rkt"
+(require/typed "libc/stat.rkt"
                [get-stat (-> String String (Instance Stat%))])
 
-(require/typed "../libc/pwd.rkt"
+(require/typed "libc/pwd.rkt"
                [get-pwuid (-> Number (Instance Getpwuid%))])
 
 ;; Take an instance of Stat% and return a string representing the inode type
@@ -72,7 +72,8 @@
 (define stat% 
   (class object%
     (super-new)
-    
+
+    ;; Display formatted output
     (define (display-output [the-path : String] [the-file : String])
       (let* ([s (get-stat the-path the-file)]
              [output-elements (list (list ;Line 1
@@ -107,6 +108,7 @@
               (display (format "~a~a~a\t" key seperator value))))
           (displayln ""))))
 
+    ;; Takes a string representation of a filename with path and returns the path and filename parts.
     (define (get-path-parts [the-file : String])
       (let-values ([(p f _) (split-path the-file)])        
         (let ([p-string (if (eq? p 'relative)
@@ -115,6 +117,7 @@
               [f-string (anything->string f)])
           (list p-string f-string))))
 
+    ;; Main program execution
     (define/public (execute [files : (Listof String)])
       (for ([f files])
         (let* ([path-parts (get-path-parts f)]
