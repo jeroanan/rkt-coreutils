@@ -23,7 +23,7 @@
                          "(execute FILES) -- Display the sorted contents of provided FILES"))
 
     ;; The contents of the files
-    (string-list-attribute contents (list))
+    (private-string-list-attribute contents (list))
 
     ;; Process each file provided and for each file call on-process-file. When finished processing
     ;; all files, call on-finished-processing-files
