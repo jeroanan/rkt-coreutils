@@ -3,6 +3,8 @@
 ; Copyright 2020 David Wilson
 ; See COPYING for details
 
+(provide human-readable-byte-size)
+
 (define (get-human-readable-size [byte-size : Integer]
                                  [unit-size : Integer]
                                  [unit-symbol : String])
@@ -14,28 +16,28 @@
             (exact->inexact
              (* 10 (/ remainder unit-size)))))]
          [is-kilobytes? (eq? unit-size 1024)]
-         [omit-decimal? (or is-kilobytes? (eq? remainder-decimal 0))]
-         [whole-thing-string (number->string
-                              (if
-                               (and is-kilobytes? (> remainder-decimal 0))
-                               (+ whole-things 1)
-                               whole-things))]
-         [decimal-string (string-append "." (number->string remainder-decimal))]
-         [output (string-append
-                  whole-thing-string
-                  (if omit-decimal? "" decimal-string)
+         [omit-decimal? (and is-kilobytes? (> whole-things 9))]
+         [whole-number-to-display (if omit-decimal? (add1 whole-things) whole-things)]
+         [decimal-string (if omit-decimal? "" (format ".~a" remainder-decimal))]
+         [output (format
+                  "~a~a~a"
+                  whole-number-to-display
+                  decimal-string
                   unit-symbol)])
     output))
 
-(define (human-readable-byte-size [byte-size : Integer])
-  (let* ([kilobyte 1024]
-         [megabyte (* kilobyte 1024)]
-         [gigabyte (* megabyte 1024)])
-    (cond
-      [(< byte-size kilobyte) (number->string byte-size)]
-      [(< byte-size megabyte) (get-human-readable-size byte-size kilobyte "K")]
-      [(and (>= byte-size megabyte) (< byte-size gigabyte))
-       (get-human-readable-size byte-size megabyte "M")] 
-      [else (get-human-readable-size byte-size gigabyte "G")])))
+(define kilobyte-bytes 1024)
+(define megabyte-bytes (* kilobyte-bytes 1024))
+(define gigabyte-bytes (* megabyte-bytes 1024))
+          
+(define (human-readable-byte-size [number-of-bytes : Integer])
+  (define under-a-kilobyte? (< number-of-bytes kilobyte-bytes))
+  (define under-a-megabyte? (< number-of-bytes megabyte-bytes))
+  (define under-a-gigabyte? (< number-of-bytes gigabyte-bytes))
+  
+  (cond
+    [under-a-kilobyte? (number->string number-of-bytes)]
+    [under-a-megabyte? (get-human-readable-size number-of-bytes kilobyte-bytes "K")]
+    [under-a-gigabyte? (get-human-readable-size number-of-bytes megabyte-bytes "M")] 
+    [else (get-human-readable-size number-of-bytes gigabyte-bytes "G")]))
 
-(provide human-readable-byte-size)
