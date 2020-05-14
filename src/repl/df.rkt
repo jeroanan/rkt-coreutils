@@ -11,7 +11,9 @@
          racket/port
          racket/string)
 
-(require "../util/stringutil.rkt")
+(require "../util/stringutil.rkt"
+         "util/human-size.rkt"
+         "util/member.rkt")
 
 (require/typed "libc/statvfs.rkt"
                [get-statvfs  (-> String Integer)]
@@ -24,6 +26,9 @@
   (class object%
     (super-new)
 
+    ;; Whether to display sizes in human-readable format
+    (public-boolean-attribute human-readable #f)
+    
     ;; Main program execution
     (define/public (execute)
       (let* ([mountinfo-entries (get-mountinfo-entries)]
@@ -230,13 +235,23 @@
       (let ([fields
              (list
               (left-aligned-string (df-output-filesystem df-out) filesystem-width)
-              (right-aligned-string (df-output-1k-blocks df-out) 1k-blocks-width)
-              (right-aligned-string (df-output-1k-blocks-used df-out) 1k-blocks-used-width)
-              (right-aligned-string (df-output-1k-blocks-available df-out) 1k-blocks-available-width)
+              (right-aligned-string (get-size-string (df-output-1k-blocks df-out)) 1k-blocks-width)
+              (right-aligned-string (get-size-string
+                                     (df-output-1k-blocks-used df-out))
+                                      1k-blocks-used-width)
+              (right-aligned-string (get-size-string
+                                     (df-output-1k-blocks-available df-out))
+                                     1k-blocks-available-width)
               (right-aligned-string
                (format "~a%" (df-output-percent-used df-out)) percent-used-width)
               (df-output-mounted-on df-out))])
         (string-join fields " ")))
+
+    (: get-size-string (-> Integer String))
+    (define/private (get-size-string 1k-blocks)
+      (if human-readable
+          (human-readable-byte-size (* 1k-blocks 1024))
+          (number->string 1k-blocks)))
 
     (: get-max-list-member (-> (Listof df-output) (-> df-output Index) Integer))
     (define (get-max-list-member lst number-extractor)
