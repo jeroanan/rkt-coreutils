@@ -34,17 +34,8 @@ Documentation sourcecode, written in Scribble. As well as documentation, this fi
 @subsection{/src}
 Project sourcecode. The racket files here form the programs of this project that can be executed from the command line. It also contains the following high-level subfolders:
 
-@subsubsection{libc}
-I am trying to stick to Racket where possible but there are some things for which support just doesn't exist in Racket. For these situations I am using
-the files in this directory to call into the standard C library. Mostly this uses Racket's FFI functionality so at first glance it appears to be just more racket but
-occasionally I am resorting to the dynamic FFI library to embed C programs.
 
 @subsubsection{repl}
 This folder contains the files that do most of the "heavy lifting" of program execution. Programs in the root directory instantiate programs in this directory,
 set them up and execute them. This means that programs in this directory can be run directly from Racket's REPL.
 
-@subsubsection{typedef}
-Type definitions for interaction between typed and untyped code.
-
-@subsubsection{util}
-Various utility files and macros.

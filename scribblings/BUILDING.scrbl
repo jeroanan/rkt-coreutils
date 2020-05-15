@@ -8,6 +8,11 @@
  @item{Racket}
  @item{racket, raco and scribble executables must be in the PATH}]
 
+In addition, the following Rakcet packages must be present:
+@itemlist[
+ @item{dynamic-ffi}
+ @item{sha}]
+
 @section{Running (from the shell)}
 
 The programs in the src/ directory can be run directly using racket. To get better performance out of

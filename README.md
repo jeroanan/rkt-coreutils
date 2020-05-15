@@ -52,26 +52,9 @@ Project sourcecode. The racket files here form the programs of this
 project that can be executed from the command line. It also contains the
 following high-level subfolders:
 
-#### 2.3.1. libc
-
-I am trying to stick to Racket where possible but there are some things
-for which support just doesn’t exist in Racket. For these situations I
-am using the files in this directory to call into the standard C
-library. Mostly this uses Racket’s FFI functionality so at first glance
-it appears to be just more racket but occasionally I am resorting to the
-dynamic FFI library to embed C programs.
-
-#### 2.3.2. repl
+#### 2.3.1. repl
 
 This folder contains the files that do most of the "heavy lifting" of
 program execution. Programs in the root directory instantiate programs
 in this directory, set them up and execute them. This means that
 programs in this directory can be run directly from Racket’s REPL.
-
-#### 2.3.3. typedef
-
-Type definitions for interaction between typed and untyped code.
-
-#### 2.3.4. util
-
-Various utility files and macros.
