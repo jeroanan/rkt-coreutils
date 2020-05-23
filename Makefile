@@ -10,12 +10,22 @@ HDOCS=docs/html
 MDDOCS=docs/md
 SCRIBDIR=scribblings
 
+CSRCDIR=src/repl/libc/src
+
 DOCDEPS=$(AUTHSCRBL) $(CWSCRBL)
 
-all: make-all docs
+all: make-all clibs docs
 
 make-all: 
 	$(RACO) make src/*.rkt
+
+clibs: $(CSRCDIR)/getgrouplist.so
+
+$(CSRCDIR)/getgrouplist.so: $(CSRCDIR)/getgrouplist.o
+	gcc $(CSRCDIR)/getgrouplist.o -shared -o $(CSRCDIR)/getgrouplist.so
+
+$(CSRCDIR)/getgrouplist.o: $(CSRCDIR)/getgrouplist.c
+	gcc -c -fPIC $(CSRCDIR)/getgrouplist.c -o $(CSRCDIR)/getgrouplist.o
 
 docs: docs-html docs-md
 

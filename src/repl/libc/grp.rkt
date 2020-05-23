@@ -5,13 +5,16 @@
 
 (provide getgrgid%
          get-getgrgid
-         getgrouplist%
-         get-getgrouplist)
+         get-group-list)
 
 (require ffi/unsafe
-         dynamic-ffi/unsafe
-         racket/class)
+         racket/class
+         racket/runtime-path
+         racket/list
+         (for-syntax racket/base))
 
+;; wrapper for C getgrgid function. Take a gid and
+;; store an instance of Grpstruct in a member
 (define getgrgid%
   (class object%
     (super-new)
@@ -42,68 +45,25 @@
 (define (get-getgrgid gid)
   (new getgrgid% [gid gid]))
 
-(define getgrouplist%
-  (class object%
-    (super-new)
+(define-runtime-path lib-path (build-path "src" "getgrouplist"))
+(define clib (ffi-lib lib-path))
 
-    (init user-name number-to-retrieve)
+(define get-groups (get-ffi-obj "getgroups" clib (_fun _string _int _int -> (r : _int))))
+(define get-number-of-groups (get-ffi-obj "get_number_of_groups" clib (_fun -> _int)))
+(define get-next-group (get-ffi-obj "get_next_group_id" clib (_fun -> _int)))
 
-    (define/public (get-next-group-id)
-      (ggl 'getnextgroupid))
+(define (get-group-list user-name primary-gid)
+  (define group-count (get-group-count user-name primary-gid))  
+  (define r (get-groups user-name primary-gid group-count))
+  (flatten (collate-group-ids (list))))
 
-    (define/public (get-number-of-groups)
-      (ggl 'getnumberofgroups))
+(define (get-group-count user-name primary-gid)
+  (begin
+    (get-groups user-name primary-gid 0)    
+    (get-number-of-groups)))
 
-    (define/public (get-groups)
-      (define (gl gs)
-        (let ([g (get-next-group-id)])
-          (if (eq? g -1)
-              gs
-              (gl (append gs (list g))))))
-      (ggl 'reset)
-      (gl (list)))
-
-    (define/public (reset)
-      (ggl 'reset))
-    
-    (define clib (ffi-lib #f))
-        
-    (define-inline-ffi ggl #:compiler "clang"
-      "#include <stdlib.h>\n"
-      "#include <grp.h>\n"
-      "#include <stdio.h>\n"
-    
-      "gid_t* groups;\n"
-      "int ngroups;\n"
-      "int i = 0;\n"
-
-      "int getnextgroupid(void) {\n"
-      "  if (i<ngroups) {\n"
-      "    gid_t j = groups[i];\n"
-      "    i++;\n"
-      "    return j;\n"
-      "  }\n"
-      "  return -1;"
-      "}\n"
-
-      "int getnumberofgroups(void) {\n"
-      "  return ngroups;\n"
-      "}\n"
-
-      "void reset(void) {\n"
-      "  i = 0;"
-      "}\n"
-    
-      "int getgroups(char* username, int number_of_groups) {\n"
-      "  int r;"
-      "  groups = malloc(ngroups * sizeof(gid_t));\n"    
-      "  r = getgrouplist(username, 1000, groups, &ngroups);\n"
-      "  return r;\n"
-      "}\n")
-  
-    (ggl 'getgroups user-name number-to-retrieve)))
-
-(define (get-getgrouplist user-name number-to-retrieve)
-  (new getgrouplist% [user-name user-name] [number-to-retrieve number-to-retrieve]))
-  
-  
+(define (collate-group-ids ids)
+  (define next-group-id (get-next-group))
+  (if (eq? -1 next-group-id)
+      ids
+      (collate-group-ids (cons ids next-group-id))))

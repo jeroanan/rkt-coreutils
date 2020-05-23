@@ -2,3 +2,5 @@
 compiled/
 demods/
 *~
+*.o
+*.so

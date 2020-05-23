@@ -1,41 +1,16 @@
 #lang racket
 
-; Copyright 2020 David Wilson
+;; Copyright 2020 David Wilson
+;; See COPYING for details.
 
-;This program is free software: you can redistribute it and/or modify
-;it under the terms of the GNU General Public License as published by
-;the Free Software Foundation, either version 3 of the License, or
-;(at your option) any later version.
-;
-;This program is distributed in the hope that it will be useful,
-;but WITHOUT ANY WARRANTY; without even the implied warranty of
-;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-;GNU General Public License for more details.
-;
-;You should have received a copy of the GNU General Public License
-;along with this program.  If not, see <https://www.gnu.org/licenses/>.
+(provide getpwuid%
+         get-pwuid
+         getpwnam%
+         get-pwnam)
 
 (require ffi/unsafe)
 
-(define getpwuid%
-  (class object%
-    (super-new)
-
-    (init uid)
-
-    (define iuid uid)
-
-    (define/public (get-username) (passwdstruct-name result))
-    (define/public (get-password) (passwdstruct-passwd result))
-    (define/public (get-uid) (passwdstruct-uid result))
-    (define/public (get-gid) (passwdstruct-gid result))
-    (define/public (get-gecos) (passwdstruct-gecos result))
-    (define/public (get-home-dir) (passwdstruct-dir result))
-    (define/public (get-shell) (passwdstruct-shell result))
-
-    (define clib (ffi-lib #f))
-
-    (define-cstruct _passwdstruct([name _string]
+(define-cstruct _passwdstruct([name _string]
                                   [passwd _string]
                                   [uid _uint]
                                   [gid _uint]
@@ -43,14 +18,56 @@
                                   [dir _string]
                                   [shell _string]))
 
+(define clib (ffi-lib #f))
+
+(define getpwd%
+  (class object%
+    (super-new)
+
+    (field [result null])
+    
+    (define/public (get-username) (passwdstruct-name result))
+    (define/public (get-password) (passwdstruct-passwd result))
+    (define/public (get-uid) (passwdstruct-uid result))
+    (define/public (get-gid) (passwdstruct-gid result))
+    (define/public (get-gecos) (passwdstruct-gecos result))
+    (define/public (get-home-dir) (passwdstruct-dir result))
+    (define/public (get-shell) (passwdstruct-shell result))
+    
+    (define/public (set-result res) (set! result res))))
+
+(define getpwuid%
+  (class getpwd%
+    (super-new)
+
+    (init uid)
+
+    (define iuid uid)    
+
     (define getpwuid (get-ffi-obj
                   "getpwuid" clib
                   (_fun #:save-errno 'posix
                          _int -> _passwdstruct-pointer)) )
 
-    (define result (getpwuid iuid))))
+    (send this set-result (getpwuid iuid))))
 
 (define (get-pwuid uid)
-  (new getpwuid% [uid uid]))  
+  (new getpwuid% [uid uid]))
 
-(provide getpwuid% get-pwuid)
+(define getpwnam%
+  (class getpwd%
+    (super-new)
+
+    (init user-name)
+    
+    (define iuser-name user-name)
+
+    (define getpwnam (get-ffi-obj
+                      "getpwnam" clib
+                      (_fun _string -> _passwdstruct-pointer)))
+
+    (send this set-result (getpwnam iuser-name))))
+
+(define (get-pwnam user-name)
+  (new getpwnam% [user-name user-name]))
+

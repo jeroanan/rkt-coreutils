@@ -8,20 +8,22 @@
 (require "util/util.rkt"
          "typedef/getgrouplist.rkt"
          "typedef/getgrgid.rkt"
+         "typedef/getpwnam.rkt"
          "typedef/getpwuid.rkt")
 
 (require typed/racket/class
          racket/string)
 
 (require/typed "libc/grp.rkt"
-               [get-getgrouplist (-> String Number (Instance Getgrouplist%))]
+               [get-group-list (-> String Number (Listof Integer))]
                [get-getgrgid (-> Integer (Instance Getgrgid%))])
 
 (require/typed "libc/unistd.rkt"
                [get-euid (-> Integer)])
 
 (require/typed "libc/pwd.rkt"
-               [get-pwuid (-> Number (Instance Getpwuid%))])
+               [get-pwuid (-> Number (Instance Getpwuid%))]
+               [get-pwnam (-> String (Instance Getpwnam%))])
 
 ;; Groups: Print the given user's groups
 (define groups%
@@ -44,10 +46,9 @@
     (: execute (-> String Void))
     (define/public (execute user-name)
       (let* ([un (get-username user-name)]
-             [group-counter (get-getgrouplist un 0)]
-             [number-of-groups (send group-counter get-number-of-groups)]
-             [group-number-getter (get-getgrouplist un number-of-groups)]
-             [the-groups (send group-number-getter get-groups)]
+             [pwnam (get-pwnam un)]
+             [primary-gid (send pwnam get-gid)]
+             [the-groups (get-group-list un primary-gid)]             
              [group-names (map (λ ([x : Integer]) (gid->group-name x)) the-groups)])        
         (displayln (string-join group-names))))
 
