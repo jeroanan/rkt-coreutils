@@ -10,10 +10,13 @@
 
 (require/typed "../libc/grp.rkt"
                [get-getgrgid (-> Number (Instance Getgrgid%))]
-               [get-getgrouplist (-> String Integer (Instance Getgrouplist%))])
+               [get-group-list (-> String Number (Listof Integer))])
+
+(require/typed "../libc/pwd.rkt"
+               [get-pwnam (-> String (Instance Getpwnam%))])
 
 (require "../typedef/getgrgid.rkt"
-         "../typedef/getgrouplist.rkt")
+         "../typedef/getpwnam.rkt")
 
 ;; Take a group id and return its name
 (: gid->group-name (-> Integer String))
@@ -24,9 +27,8 @@
 ;; Get all groups that the given user-name is a member of
 (: get-user-groups (-> String (Listof Integer)))
 (define (get-user-groups user-name)
-  (let* ([group-counter (get-getgrouplist user-name 0)]
-         [group-count (send group-counter get-number-of-groups)]
-         [group-getter (get-getgrouplist user-name group-count)]
-         [all-groups (send group-getter get-groups)])
-    all-groups))
+  (let* ([pwnam (get-pwnam user-name)]
+         [primary-gid (send pwnam get-gid)]
+         [the-groups (get-group-list user-name primary-gid)])
+    the-groups))
   
