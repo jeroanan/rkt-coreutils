@@ -4,3 +4,4 @@ demods/
 *~
 *.o
 *.so
+a.out
