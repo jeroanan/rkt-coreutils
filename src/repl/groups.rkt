@@ -6,24 +6,17 @@
 (provide groups%)
 
 (require "util/util.rkt"
-         "typedef/getgrouplist.rkt"
-         "typedef/getgrgid.rkt"
-         "typedef/getpwnam.rkt"
-         "typedef/getpwuid.rkt")
+         "typedef/getpwuid.rkt"
+         "util/gidutil.rkt")
 
 (require typed/racket/class
          racket/string)
-
-(require/typed "libc/grp.rkt"
-               [get-group-list (-> String Number (Listof Integer))]
-               [get-getgrgid (-> Integer (Instance Getgrgid%))])
 
 (require/typed "libc/unistd.rkt"
                [get-euid (-> Integer)])
 
 (require/typed "libc/pwd.rkt"
-               [get-pwuid (-> Number (Instance Getpwuid%))]
-               [get-pwnam (-> String (Instance Getpwnam%))])
+               [get-pwuid (-> Number (Instance Getpwuid%))])
 
 ;; Groups: Print the given user's groups
 (define groups%
@@ -36,19 +29,11 @@
                          "(execute user-name) -- Print the user-name's groups" 
                          "(help) -- display this help message"))
 
-    ;; Takes a group id and returns its name
-    (: gid->group-name (-> Integer String))
-    (define/private (gid->group-name gid)
-      (let ([getgrgid (get-getgrgid gid)])
-        (send getgrgid get-name)))
-
     ;; Main program execution
     (: execute (-> String Void))
     (define/public (execute user-name)
-      (let* ([un (get-username user-name)]
-             [pwnam (get-pwnam un)]
-             [primary-gid (send pwnam get-gid)]
-             [the-groups (get-group-list un primary-gid)]             
+      (let* ([un (get-username user-name)]             
+             [the-groups (get-user-groups un)]             
              [group-names (map (λ ([x : Integer]) (gid->group-name x)) the-groups)])        
         (displayln (string-join group-names))))
 
