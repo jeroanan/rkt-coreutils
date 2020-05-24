@@ -31,4 +31,3 @@
          [primary-gid (send pwnam get-gid)]
          [the-groups (get-group-list user-name primary-gid)])
     the-groups))
-  

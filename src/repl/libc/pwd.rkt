@@ -1,4 +1,4 @@
-#lang racket
+#lang s-exp "ffi.rkt"
 
 ;; Copyright 2020 David Wilson
 ;; See COPYING for details.
@@ -8,7 +8,8 @@
          getpwnam%
          get-pwnam)
 
-(require ffi/unsafe)
+(require ffi/unsafe
+         racket/class)
 
 (define-cstruct _passwdstruct([name _string]
                                   [passwd _string]
@@ -43,12 +44,8 @@
     (init uid)
 
     (define iuid uid)    
-
-    (define getpwuid (get-ffi-obj
-                  "getpwuid" clib
-                  (_fun #:save-errno 'posix
-                         _int -> _passwdstruct-pointer)) )
-
+    
+    (c-function getpwuid clib _passwdstruct-pointer "getpwuid" _int)
     (send this set-result (getpwuid iuid))))
 
 (define (get-pwuid uid)
@@ -62,9 +59,7 @@
     
     (define iuser-name user-name)
 
-    (define getpwnam (get-ffi-obj
-                      "getpwnam" clib
-                      (_fun _string -> _passwdstruct-pointer)))
+    (c-function getpwnam clib _passwdstruct-pointer "getpwnam" _string)
 
     (send this set-result (getpwnam iuser-name))))
 

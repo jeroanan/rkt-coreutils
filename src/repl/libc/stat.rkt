@@ -1,4 +1,4 @@
-#lang racket
+#lang s-exp "ffi.rkt"
 
 ; Copyright 2020 David Wilson
 
@@ -15,8 +15,14 @@
 ;You should have received a copy of the GNU General Public License
 ;along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+(provide stat% stat? get-stat)
 
-(require ffi/unsafe)
+(require ffi/unsafe
+         racket/class
+         racket/runtime-path
+         (for-syntax racket/base))
+
+(define-runtime-path lib-path (build-path "src" "lib" "stat"))
 
 (define stat%
   (class object%
@@ -31,20 +37,46 @@
       (if (string=? file-name "")
           path
           (build-path path file-name)))
- 
-    (define/public (get-dev) (statstruct-dev stat-buf))
-    (define/public (get-inode) (statstruct-ino stat-buf))
-    (define/public (get-mode) (statstruct-mode stat-buf))
-    (define/public (get-number-of-hardlinks) (statstruct-nlink stat-buf))
-    (define/public (get-uid) (statstruct-uid stat-buf))
-    (define/public (get-gid) (statstruct-gid stat-buf))
-    (define/public (get-rdev) (statstruct-rdev stat-buf))
-    (define/public (get-size) (statstruct-size stat-buf))
-    (define/public (get-block-size) (statstruct-blksize stat-buf))
-    (define/public (get-blocks) (statstruct-blocks stat-buf))
-    (define/public (get-accessed-time) (timespec-sec (statstruct-atim stat-buf)))
-    (define/public (get-modified-time) (timespec-sec (statstruct-mtim stat-buf)))
-    (define/public (get-created-time) (timespec-sec (statstruct-ctim stat-buf)))
+
+    (define _dev_t _long)
+    (define _ino_t _long)
+    (define _mode_t _uint)
+    (define _nlink_t _long)
+    (define _uid_t _uint)
+    (define _gid_t _uint)
+    (define _off_t _long)
+    (define _blksize_t _long)
+    (define _blkcnt_t _long)
+    
+    (define clib (ffi-lib lib-path))
+    (c-function stat clib _int "getstat" _string)
+    (c-function _get-dev clib _dev_t "get_dev")
+    (c-function _get-ino clib _ino_t "get_ino")
+    (c-function _get-mode clib _mode_t "get_mode")
+    (c-function _get-nlink clib _nlink_t "get_nlink")
+    (c-function _get-uid clib _uid_t "get_uid")
+    (c-function _get-gid clib _gid_t "get_gid")
+    (c-function _get-rdev clib _dev_t "get_rdev")
+    (c-function _get-size clib _off_t "get_size")
+    (c-function _get-blksize clib _blksize_t "get_blksize")
+    (c-function _get-blocks clib _blkcnt_t "get_blocks")
+    (c-function _get-atime clib _long "get_atime")
+    (c-function _get-mtime clib _long "get_mtime")
+    (c-function _get-ctime clib _long "get_ctime")
+    
+    (define/public (get-dev) (_get-dev))
+    (define/public (get-inode) (_get-ino))
+    (define/public (get-mode) (_get-mode))
+    (define/public (get-number-of-hardlinks) (_get-nlink))
+    (define/public (get-uid) (_get-uid))
+    (define/public (get-gid) (_get-gid))
+    (define/public (get-rdev) (_get-dev))
+    (define/public (get-size) (_get-size))
+    (define/public (get-block-size) (_get-blksize))
+    (define/public (get-blocks) (_get-blocks))
+    (define/public (get-accessed-time) (_get-atime))
+    (define/public (get-modified-time) (_get-mtime))
+    (define/public (get-created-time) (_get-ctime))
 
     (define (has-file-type-flag? file-type-mask) (eq? (bitwise-and (get-mode) s-ifmt) file-type-mask))
     
@@ -74,14 +106,16 @@
     (define/public (get-other-has-w?) (has-mode-flag? s-iwoth))
     (define/public (get-other-has-x?) (has-mode-flag? s-ixoth))
 
-    (define clib (ffi-lib #f))
+    (stat full-path)
+    
     (define-cstruct _timespec ([sec _long]
                                [nsec _long]))
-
-    (define-cstruct _statstruct([dev _long]
-                                [ino _long]
-                                [nlink _long]
-                                [mode _uint]
+    
+    
+    (define-cstruct _statstruct([dev _dev_t]
+                                [ino _ino_t]                                
+                                [mode _mode_t]
+                                [nlink _nlink_t]
                                 [uid _uint]
                                 [gid _uint]
                                 [__pad0 _int]
@@ -94,17 +128,8 @@
                                 [ctim _timespec]
                                 [__glibc_reserved (_array _long 3)]))
 
-    (define stat (get-ffi-obj
-                  "__xstat" clib
-                  (_fun #:save-errno 'posix
-                        _int _string _statstruct-pointer -> _int)) )
     
-    (define stat-buf (cast
-                      (malloc _statstruct)
-                      _pointer
-                      _statstruct-pointer))
     
-    (define stat-result (stat 1 full-path stat-buf))
 
     ;; file type mask definitions
     (define s-ifmt #o00170000)
@@ -141,4 +166,4 @@
 (define (get-stat path file-name)
   (new stat% [path path] [file-name file-name]))
 
-(provide stat% stat? get-stat)
+

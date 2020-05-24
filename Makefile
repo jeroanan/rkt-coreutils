@@ -19,16 +19,27 @@ all: make-all clibs docs
 make-all: 
 	$(RACO) make src/*.rkt
 
-clibs: $(CSRCDIR)/getgrouplist.so
+clibs: $(CSRCDIR)/lib/getstatvfs.so \
+	$(CSRCDIR)/lib/getgrouplist.so \
+	$(CSRCDIR)/lib/stat.so
 
-$(CSRCDIR)/getgrouplist.so: $(CSRCDIR)/getgrouplist.o $(CSRCDIR)/getstatvfs.o
-	gcc $(CSRCDIR)/getgrouplist.o $(CSRCDIR)/getstatvfs.o -shared -o $(CSRCDIR)/getgrouplist.so
+$(CSRCDIR)/lib/getstatvfs.so: $(CSRCDIR)/lib/getstatvfs.o 
+	gcc $(CSRCDIR)/lib/getstatvfs.o -shared -o $(CSRCDIR)/lib/getstatvfs.so
 
-$(CSRCDIR)/getgrouplist.o: $(CSRCDIR)/getgrouplist.c
-	gcc -c -fPIC $(CSRCDIR)/getgrouplist.c -o $(CSRCDIR)/getgrouplist.o
+$(CSRCDIR)/lib/getstatvfs.o: $(CSRCDIR)/getstatvfs.c
+	gcc -c -fPIC $(CSRCDIR)/getstatvfs.c -o $(CSRCDIR)/lib/getstatvfs.o
 
-$(CSRCDIR)/getstatvfs.o: $(CSRCDIR)/getstatvfs.c
-	gcc -c -fPIC $(CSRCDIR)/getstatvfs.c -o $(CSRCDIR)/getstatvfs.o
+$(CSRCDIR)/lib/getgrouplist.so: $(CSRCDIR)/lib/getgrouplist.o 
+	gcc $(CSRCDIR)/lib/getgrouplist.o -shared -o $(CSRCDIR)/lib/getgrouplist.so
+
+$(CSRCDIR)/lib/getgrouplist.o: $(CSRCDIR)/getgrouplist.c
+	gcc -c -fPIC $(CSRCDIR)/getgrouplist.c -o $(CSRCDIR)/lib/getgrouplist.o
+
+$(CSRCDIR)/lib/stat.so: $(CSRCDIR)/lib/stat.o 
+	gcc $(CSRCDIR)/lib/stat.o -shared -o $(CSRCDIR)/lib/stat.so
+
+$(CSRCDIR)/lib/stat.o: $(CSRCDIR)/stat.c
+	gcc -c -fPIC $(CSRCDIR)/stat.c -o $(CSRCDIR)/lib/stat.o
 
 
 docs: docs-html docs-md
@@ -367,9 +378,10 @@ launchers:
 	./make-launchers.sh
 
 clean:
-	rm -rf docs/; find . -type d -name compiled -prune -exec rm -rf {} \;
+	rm -rf docs/; find . -type d -name compiled -prune -exec rm -rf {} \;; rm -rf $(CSRCDIR)/lib
 
 deploy:
 	cp -f compiled/* $(DEPDIR)
 
 $(shell mkdir -p compiled)
+$(shell mkdir -p $(CSRCDIR)/lib)

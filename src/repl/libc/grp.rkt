@@ -1,4 +1,4 @@
-#lang racket/base
+#lang s-exp "ffi.rkt"
 
 ; Copyright 2020 David Wilson
 ; See COPYING for details
@@ -33,24 +33,21 @@
     (define/public (get-gid) (grpstruct-gid result))
     (define/public (get-members) (grpstruct-members result))
 
-    (define clib (ffi-lib #f))
+    (define sclib (ffi-lib #f))
     
-    (define getgrgid (get-ffi-obj
-                      "getgrgid" clib
-                      (_fun #:save-errno 'posix
-                            _int -> _grpstruct-pointer)) )
-
+    (c-function getgrgid clib _grpstruct-pointer "getgrgid" _int)
+        
     (define result (getgrgid igid))))
 
 (define (get-getgrgid gid)
   (new getgrgid% [gid gid]))
 
-(define-runtime-path lib-path (build-path "src" "getgrouplist"))
+(define-runtime-path lib-path (build-path "src" "lib" "getgrouplist"))
 (define clib (ffi-lib lib-path))
 
-(define get-groups (get-ffi-obj "getgroups" clib (_fun _string _int _int -> (r : _int))))
-(define get-number-of-groups (get-ffi-obj "get_number_of_groups" clib (_fun -> _int)))
-(define get-next-group (get-ffi-obj "get_next_group_id" clib (_fun -> _int)))
+(c-function get-groups clib _int "getgroups" _string _int _int)
+(c-function get-number-of-groups clib _int "get_number_of_groups")
+(c-function get-next-group clib _int "get_next_group_id")
 
 (define (get-group-list user-name primary-gid)
   (define group-count (get-group-count user-name primary-gid))  
