@@ -3,8 +3,42 @@
 ; Copyright 2020 David Wilson
 ; See COPYING for details
 
-(require dynamic-ffi/unsafe)
+(provide get-statvfs
+         get-blocks
+         get-free
+         get-available
+         get-blocksize
+         get-fragmentsize
+         get-files)
 
+(require ffi/unsafe
+         racket/runtime-path
+         (for-syntax racket/base))
+
+(define-syntax (c-function stx)
+  (syntax-case stx ()
+    [(_ racket-name return-type c-name param-type)
+     #'(define racket-name (get-ffi-obj c-name clib (_fun param-type -> return-type)))]
+    [(_ racket-name return-type c-name)
+     #'(define racket-name (get-ffi-obj c-name clib (_fun -> return-type)))]))
+     
+;(define-syntax-rule (c-function racket-name return-type c-name param-type)
+;  (define racket-name (get-ffi-obj c-name clib (_fun param-type -> return-type))))
+
+(define _fsblkcnt_t _int)
+(define _fsfilcnt_t _ulong)
+
+(define-runtime-path lib-path (build-path "src" "getgrouplist"))
+(define clib (ffi-lib lib-path))
+
+(c-function get-statvfs _int "getstatvfs" _string)
+(c-function get-blocks _fsblkcnt_t "getblocks")
+(c-function get-free _fsblkcnt_t "getfree")
+(c-function get-available _fsblkcnt_t "getavailable")
+(c-function get-blocksize _ulong "getblocksize")
+(c-function get-fragmentsize  _ulong "getfragmentsize")
+(c-function get-files _fsfilcnt_t "getfiles")
+#|
 (define-inline-ffi ggl #:compiler "clang"
   "#include <sys/statvfs.h>\n"
   
@@ -38,14 +72,6 @@
   "  return statvfs(path, &stat);\n"
   "}\n")
 
-(provide get-statvfs
-         get-blocks
-         get-free
-         get-available
-         get-blocksize
-         get-fragmentsize
-         get-files)
-
 (define (get-statvfs path)
   (ggl 'getstatvfs path))
 
@@ -66,3 +92,4 @@
 
 (define (get-files)
   (ggl 'getfiles))
+|#

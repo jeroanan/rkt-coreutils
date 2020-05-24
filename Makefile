@@ -21,11 +21,15 @@ make-all:
 
 clibs: $(CSRCDIR)/getgrouplist.so
 
-$(CSRCDIR)/getgrouplist.so: $(CSRCDIR)/getgrouplist.o
-	gcc $(CSRCDIR)/getgrouplist.o -shared -o $(CSRCDIR)/getgrouplist.so
+$(CSRCDIR)/getgrouplist.so: $(CSRCDIR)/getgrouplist.o $(CSRCDIR)/getstatvfs.o
+	gcc $(CSRCDIR)/getgrouplist.o $(CSRCDIR)/getstatvfs.o -shared -o $(CSRCDIR)/getgrouplist.so
 
 $(CSRCDIR)/getgrouplist.o: $(CSRCDIR)/getgrouplist.c
 	gcc -c -fPIC $(CSRCDIR)/getgrouplist.c -o $(CSRCDIR)/getgrouplist.o
+
+$(CSRCDIR)/getstatvfs.o: $(CSRCDIR)/getstatvfs.c
+	gcc -c -fPIC $(CSRCDIR)/getstatvfs.c -o $(CSRCDIR)/getstatvfs.o
+
 
 docs: docs-html docs-md
 
