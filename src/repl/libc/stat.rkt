@@ -108,29 +108,6 @@
 
     (stat full-path)
     
-    (define-cstruct _timespec ([sec _long]
-                               [nsec _long]))
-    
-    
-    (define-cstruct _statstruct([dev _dev_t]
-                                [ino _ino_t]                                
-                                [mode _mode_t]
-                                [nlink _nlink_t]
-                                [uid _uint]
-                                [gid _uint]
-                                [__pad0 _int]
-                                [rdev _ulong]
-                                [size _long]
-                                [blksize _long]
-                                [blocks _long]
-                                [atim _timespec]
-                                [mtim _timespec]
-                                [ctim _timespec]
-                                [__glibc_reserved (_array _long 3)]))
-
-    
-    
-
     ;; file type mask definitions
     (define s-ifmt #o00170000)
     (define s-ifsock #o0140000)
