@@ -1,4 +1,4 @@
-#lang racket
+#lang s-exp "ffi.rkt"
 
 ; Copyright 2020 David Wilson
 ; See COPYING for details.
@@ -9,11 +9,8 @@
 
 (define clib (ffi-lib #f))
 
-(define-syntax-rule (ffi-fun->int func-name)
-  (get-ffi-obj func-name clib (_fun -> _int)))
-
-(define _geteuid (ffi-fun->int "geteuid"))
-(define _getuid (ffi-fun->int "getuid"))
+(c-function _geteuid clib _int "geteuid")
+(c-function _getuid clib _int "getuid")
 
 (define (get-euid) (_geteuid))
 (define (get-uid) (_getuid))

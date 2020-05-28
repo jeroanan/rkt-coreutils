@@ -1,4 +1,4 @@
-#lang racket/base
+#lang s-exp "ffi.rkt"
 
 ; Copyright 2020 David Wilson
 ; See COPYING for details
@@ -55,10 +55,9 @@
                             [unused     _ut_unused_t]))
 
 (define clib (ffi-lib #f))
-(define setutent (get-ffi-obj "setutxent" clib (_fun -> _void)))
-(define endutent (get-ffi-obj "endutxent" clib (_fun -> _void)))
-(define getutent (get-ffi-obj "getutxent" clib
-                              (_fun #:save-errno 'posix -> _utmpstruct-pointer/null)))
+(c-function setutent clib _void "setutxent")
+(c-function endutent clib _void "endutxent")
+(c-function getutent clib _utmpstruct-pointer/null "getutxent")
 
 (define get-utmp%
   (class object%

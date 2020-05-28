@@ -1,4 +1,4 @@
-#lang racket
+#lang s-exp "ffi.rkt"
 
 ; Copyright 2020 David Wilson
 ; See COPYING for details.
@@ -11,7 +11,7 @@
 
 (define _avgs (_array _double 3))
 
-(define getloadavg (get-ffi-obj "getloadavg" clib (_fun _avgs _int -> _int)))
+(c-function getloadavg clib _int "getloadavg" _avgs _int)
 
 ;; Get load averages for last 1, 5 and 15 minutes
 (define (get-load-avgs)
