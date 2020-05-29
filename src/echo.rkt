@@ -1,4 +1,4 @@
-#lang typed/racket/base
+#lang s-exp "util/frontend-program.rkt"
 
 ; Copyright 2020 David Wilson
 ; See COPYING for details.
@@ -7,13 +7,7 @@
          racket/list
          racket/string)
 
-(require "util/version.rkt")
-
-(define the-string (make-parameter (list "")))
-
-(define (set-the-string [s : (Pairof Any (Listof Any))])
-  (let ([#{strings : (Listof String)} (map (λ (x) (format "~a" x)) s)])
-    (the-string strings)))
+(string-list-parameter the-string)
 
 (command-line
   #:argv (current-command-line-arguments)

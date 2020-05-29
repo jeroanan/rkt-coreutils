@@ -1,4 +1,4 @@
-#lang typed/racket/base
+#lang s-exp "util/frontend-program.rkt"
 
 ;; Copyright 2020 David Wilson
 ;; see COPYING for details
@@ -10,9 +10,7 @@
          racket/list
          typed/racket/class)
 
-(require "repl/ls.rkt"
-         "util/param.rkt"
-         "util/version.rkt")
+(require "repl/ls.rkt")
 
 ;; Should hidden entries be shown?
 (boolean-parameter show-hidden #f)
@@ -47,7 +45,7 @@
 
 ;; Set directories to list from command-line parameters
 (define (set-the-pwds [ps : (Pairof Any (Listof Any))])
-  (let* ([#{strings : (Listof String)} (map (λ (x) (format "~a" x)) ps)]
+  (let* ([strings (map (λ (x) (format "~a" x)) ps)]
          [the-dirs (map (λ (x) (string->path x)) strings)])
     (pwds the-dirs)))
 
