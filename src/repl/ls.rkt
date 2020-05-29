@@ -203,7 +203,7 @@
        (eq? p "..")))
 
     ;; Main program execution.
-    (define/public (execute [dirs : (Listof String)])
+    (define/public (execute [dirs : (Listof String)])      
       (for ([p dirs])
         (let* ([dlist (process-entry-list (directory-list p))])
           (for ([f dlist])

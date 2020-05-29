@@ -10,7 +10,8 @@
          racket/list
          typed/racket/class)
 
-(require "repl/ls.rkt")
+(require "repl/ls.rkt"
+         "util/stringutil.rkt")
 
 ;; Should hidden entries be shown?
 (boolean-parameter show-hidden #f)
@@ -27,10 +28,6 @@
 ;; Should output be in color?
 (boolean-parameter show-colors #f)
 
-;; The directories to list
-(: pwds (Parameterof (Listof Path)))
-(define pwds (make-parameter (list (current-directory))))
-
 ;; Sets show hidden but ensures we don't display implied entries as part of output.
 (define (set-almost-all)
   (begin
@@ -43,11 +40,8 @@
     (show-hidden #t)
     (hide-implied #f)))
 
-;; Set directories to list from command-line parameters
-(define (set-the-pwds [ps : (Pairof Any (Listof Any))])
-  (let* ([strings (map (λ (x) (format "~a" x)) ps)]
-         [the-dirs (map (λ (x) (string->path x)) strings)])
-    (pwds the-dirs)))
+;; The directories to list
+(string-list-parameter pwds (list (anything->string (current-directory))))
 
 (command-line
   #:argv (current-command-line-arguments)
@@ -58,7 +52,7 @@
   [("-i" "--inode") "print the index number of each file" (print-inodes #t)]
   [("-l") "use a long listing format" (long-mode #t)]
   [("-v" "--version") "display version information and exit" (print-version-text-and-exit)]
-  #:args dir (unless (empty? dir) (set-the-pwds dir)))
+  #:args dir (unless (empty? dir) (set-pwds dir)))
 
 (let ([ls (new ls%)])
   (send ls set-show-hidden (show-hidden))
@@ -66,5 +60,4 @@
   (send ls set-print-inodes (print-inodes))
   (send ls set-long-mode (long-mode))
   (send ls set-show-colors (show-colors))
-  (send ls execute
-        (map (λ (x) (path->string x)) (pwds))))
+  (send ls execute (pwds)))

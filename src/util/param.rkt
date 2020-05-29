@@ -17,13 +17,18 @@
 
 (define-syntax (string-list-parameter stx)
   (syntax-case stx ()
-    [(_ name)
+    [(_ name) #'(_make-string-list-parameter name (list ""))]
+    [(_ name default-value) #'(_make-string-list-parameter name default-value)]))
+
+(define-syntax (_make-string-list-parameter stx)
+  (syntax-case stx ()
+    [(_ name default-value)
      (with-syntax ([setter-name
                     (datum->syntax #'name
                                    (string->symbol (format "set-~a"
                                                            (syntax->datum #'name))))])
        #'(begin
-           (make-typed-parameter (Listof String) name (list ""))
+           (make-typed-parameter (Listof String) name default-value)
       
            (define (setter-name [s : (Pairof Any (Listof Any))])
              (let ([strings (map (λ (x) (format "~a" x)) s)])
