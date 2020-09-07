@@ -14,11 +14,11 @@ In addition, the following Rakcet packages must be present:
 
 * sha
 
-## 2. Running \(from the shell\)
+## 2. Running (from the shell)
 
 The programs in the src/ directory can be run directly using racket. To
 get better performance out of the programs they can be compiled to
-bytecode first \(see below Makefile targets\).
+bytecode first (see below Makefile targets).
 
 ## 3. Makefile Targets
 
