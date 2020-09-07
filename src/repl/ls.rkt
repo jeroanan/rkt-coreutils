@@ -3,7 +3,9 @@
 ;; Copyright 2020 David Wilson
 ;; See COPYING for details
 
-(provide ls%)
+(provide ls%
+         ls)
+         
 
 (require typed/racket/class
          racket/bool
@@ -202,8 +204,24 @@
        (eq? p ".")
        (eq? p "..")))
 
+    (define/public (help)
+      (begin
+        (displayln "ls% -- list directory contents") 
+        (displayln "-- METHODS --")
+        (displayln "")
+        (displayln "(exec [dirs : (Listof String)]) -- List the contents of a list of directories")
+        (displayln "help -- Display this help text")
+        (displayln "")
+        (displayln "-- PROPERTIES --")
+        (displayln "(all properties prefixed with get- or set-)")
+        (displayln "print-inodes (bool) -- Whether to print inodes")
+        (displayln "long-mode (bool) -- Whether to print in long mode")
+        (displayln "hide-implied (bool) -- Whether to hide '.' and '..' entries")
+        (displayln "show-colors (bool) -- Whether to show colors (not in repl)")
+        (displayln "show-hidden (bool) -- Whether to show hidden directories")))
+
     ;; Main program execution.
-    (define/public (execute [dirs : (Listof String)])      
+    (define/public (execute [dirs : (Listof String)])
       (for ([p dirs])
         (let* ([dlist (process-entry-list (directory-list p))])
           (for ([f dlist])
@@ -212,3 +230,5 @@
                (if (is-implied-path? f)
                    f
                    (format-entry (string->path p) (string->path (anything->string f))))))))))))
+
+(define ls (new ls%))
