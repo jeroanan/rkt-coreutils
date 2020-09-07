@@ -1,8 +1,10 @@
 #lang racket
 
-(require "../repl/ls.rkt")
+(require "../repl/ls.rkt"
+         "../repl/who.rkt")
 
-(provide ls)
+(provide ls
+         who)
 
 (define-syntax (shell-command stx)
   (syntax-case stx ()
@@ -21,9 +23,12 @@
 
             
             (define (help-func)
-              (send name help))))]))
+              (send name-obj help))))]))
 
 
 (shell-command ls ls%)
 (define (ls) (send ls-obj execute (list (path->string (current-directory)))))
+
+(shell-command who who%)
+(define (who) (send who-obj execute))
 
