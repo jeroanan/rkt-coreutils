@@ -8,7 +8,7 @@
 (require typed/racket/class
          racket/list)
 
-(require "util/util.rkt"
+(require "util/help.rkt"
          "util/file-by-file-processor.rkt")
 
 (define tail%

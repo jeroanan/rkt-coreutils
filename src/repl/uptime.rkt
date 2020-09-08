@@ -12,7 +12,7 @@
          racket/port
          racket/string)
 
-(require "util/util.rkt"
+(require "util/help.rkt"
          "util/getutmp.rkt")
 
 (require/typed "libc/stdlib.rkt"

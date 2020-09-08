@@ -6,7 +6,7 @@
 (provide get-user-name-program)
 
 (require "../../typedef/getpwuid.rkt"
-         "../util.rkt")
+         "../help.rkt")
 
 (require/typed "../../libc/pwd.rkt"
                [get-pwuid (-> Number (Instance Getpwuid%))])

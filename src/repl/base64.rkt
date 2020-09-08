@@ -7,7 +7,8 @@
 
 (require/typed net/base64
                [base64-encode-stream (-> Input-Port Output-Port Void)])
-(require "util/util.rkt")
+
+(require "util/help.rkt")
 
 (define base64%
   (class object%

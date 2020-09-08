@@ -6,7 +6,7 @@
 (provide who%)
 
 ;; includes help-method
-(require "util/util.rkt"
+(require "util/help.rkt"
          "typedef/getutmp.rkt"
          "../util/stringutil.rkt"
          "util/getutmp.rkt"

@@ -14,7 +14,7 @@
 (require "../util/stringutil.rkt"
          "util/human-size.rkt"
          "util/member.rkt"
-         "util/util.rkt")
+         "util/help.rkt")
 
 (require/typed "libc/statvfs.rkt"
                [get-statvfs  (-> String Integer)]

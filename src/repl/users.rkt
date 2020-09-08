@@ -10,7 +10,7 @@
          racket/struct)
 
 (require "util/getutmp.rkt"
-         "util/util.rkt")
+         "util/help.rkt")
 
 ;; users% -- emulate the functionality of the coreutils "users" command
 ;; type "man users" at a shell prompt for documentation on the original

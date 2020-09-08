@@ -7,7 +7,7 @@
 
 (require typed/racket/class)
 
-(require "util/util.rkt"
+(require "util/help.rkt"
          "util/file-by-file-processor.rkt")
 
 (define tac%

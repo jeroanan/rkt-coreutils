@@ -5,7 +5,7 @@
 
 (provide groups%)
 
-(require "util/util.rkt"
+(require "util/help.rkt"
          "typedef/getpwuid.rkt"
          "util/gidutil.rkt")
 

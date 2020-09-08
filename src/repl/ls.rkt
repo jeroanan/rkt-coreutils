@@ -19,7 +19,7 @@
          "util/human-date.rkt"
          "util/human-size.rkt"
          "util/member.rkt"
-         "util/util.rkt"
+         "util/help.rkt"
          "../util/stringutil.rkt"
          "util/gidutil.rkt")
 

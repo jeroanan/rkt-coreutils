@@ -7,7 +7,7 @@
 
 (require typed/racket/class)
 
-(require "util/util.rkt"
+(require "util/help.rkt"
          "util/line-by-line-processor.rkt"
          "util/member.rkt"
          "../util/stringutil.rkt")

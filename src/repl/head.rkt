@@ -8,7 +8,7 @@
 (require typed/racket/class)
 
 (require "util/member.rkt"
-         "util/util.rkt"
+         "util/help.rkt"
          "util/line-by-line-processor.rkt")
 
 ;; Head: Print the first lines of the given files

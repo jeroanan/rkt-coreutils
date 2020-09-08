@@ -15,7 +15,7 @@
          "typedef/getpwuid.rkt"
          "util/gidutil.rkt"
          "../util/stringutil.rkt"
-         "util/util.rkt")
+         "util/help.rkt")
 
 (require/typed "libc/stat.rkt"
                [get-stat (-> String String (Instance Stat%))])

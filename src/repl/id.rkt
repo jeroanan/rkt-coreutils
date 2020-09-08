@@ -7,7 +7,7 @@
 
 (require "typedef/getpwuid.rkt"
          "util/gidutil.rkt"
-         "util/util.rkt")
+         "util/help.rkt")
 
 (require typed/racket/class
          racket/string)

@@ -9,7 +9,7 @@
 
 (define-syntax-rule (line-by-line-processor-program type-name help-text line-function)  
   (begin
-    (require "util/util.rkt"
+    (require "util/help.rkt"
              "util/line-by-line-processor.rkt")
     
     (define type-name
