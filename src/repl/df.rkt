@@ -13,7 +13,8 @@
 
 (require "../util/stringutil.rkt"
          "util/human-size.rkt"
-         "util/member.rkt")
+         "util/member.rkt"
+         "util/util.rkt")
 
 (require/typed "libc/statvfs.rkt"
                [get-statvfs  (-> String Integer)]
@@ -25,6 +26,17 @@
 (define df%
   (class object%
     (super-new)
+
+    (help-function
+      (list "Print disk usage information"      
+            ""
+            "Methods:"
+            "(help) -- Display this help message"
+            "(execute) -- Display disk usage information"
+            ""
+            "Properties:"
+            "(all properties prefixed with get- or set-)"
+            "human-readable (bool) -- Whether to display sizes in human-readable format"))
 
     ;; Whether to display sizes in human-readable format
     (public-boolean-attribute human-readable #f)
