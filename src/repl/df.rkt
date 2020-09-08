@@ -28,14 +28,11 @@
     (super-new)
 
     (help-function
-      (list "Print disk usage information"      
-            ""
-            "Methods:"
+      "Print disk usage information"      
+      (list 
             "(help) -- Display this help message"
-            "(execute) -- Display disk usage information"
-            ""
-            "Properties:"
-            "(all properties prefixed with get- or set-)"
+            "(execute) -- Display disk usage information")
+      (list
             "human-readable (bool) -- Whether to display sizes in human-readable format"))
 
     ;; Whether to display sizes in human-readable format
