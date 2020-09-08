@@ -38,33 +38,66 @@
             (define (help-func)
               (send name-obj help))))]))
 
+
 (define-syntax (execute-command stx)
   (syntax-case stx ()
     [(_ name)
-     (with-syntax ([obj-name
-                     (datum->syntax #'name
-                                    (string->symbol
-                                      (format "~a-obj"
-                                              (syntax->datum #'name))))])
-                  #'(send obj-name execute))]))
+     #'(send (name-obj name) execute)]
+    [(_ name param)
+     #'(send (name-obj name) execute param)]))
+
+(define-syntax (name-obj stx)
+  (syntax-case stx ()
+   [(_ name)
+    (with-syntax ([name-obj
+                    (datum->syntax #'name
+                                   (string->symbol
+                                     (format "~a-obj"
+                                             (syntax->datum #'name))))])
+                 #'name-obj)]))
 
 (shell-command "../repl/df.rkt"
                df
                df%
                (execute-command df))
 
+(shell-command "../repl/groups.rkt"
+               groups
+               groups%
+               (execute-command groups))
+
+(shell-command "../repl/id.rkt"
+               id
+               id%
+               (execute-command id))
+
 (shell-command "../repl/ls.rkt"
                ls 
                ls% 
-               (send ls-obj execute (list (path->string (current-directory)))))
+               (execute-command ls (list (path->string (current-directory)))))
 
 (shell-command "../repl/logname.rkt"
                logname
                logname%
                (execute-command logname))
 
+(shell-command "../repl/users.rkt"
+               users
+               users%
+               (execute-command users))
+
+(shell-command "../repl/uptime.rkt"
+               uptime
+               uptime%
+               (execute-command uptime))
+
 (shell-command "../repl/who.rkt"
                who 
                who% 
                (execute-command who))
+
+(shell-command "../repl/whoami.rkt"
+               whoami
+               whoami%
+               (execute-command whoami))
 
