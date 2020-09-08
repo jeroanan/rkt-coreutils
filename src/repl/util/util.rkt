@@ -2,8 +2,6 @@
 
 (provide help-function)
 
-(require racket/class)
-
 (define-syntax (help-function stx)
   (syntax-case stx ()
     [(_ help-text)
