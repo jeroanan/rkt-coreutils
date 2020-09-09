@@ -31,13 +31,12 @@
     (super-new)
 
     (help-function
-     (list
       "Display system uptime"
-      ""
-      "Methods:"
-      "(help) -- Display this help message"
-      "(execute) -- Display system uptime"
-      "(get-data) -- Get the data that would be displayed by execute and return as a string"))
+      (list
+        "(help) -- Display this help message"
+        "(execute) -- Display system uptime"
+        "(get-data) -- Get the data that would be displayed by execute and return as a string")
+      (list))
     
     ;; Display data obtained from get-data
     (define/public (execute)

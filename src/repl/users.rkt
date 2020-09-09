@@ -19,11 +19,11 @@
   (class object%
     (super-new)
 
-    (help-function (list "Print who is currently logged in"
-                         ""
-                         "Methods:"
-                         "(help) -- display this help message"
-                         "(execute) -- display user information"))
+    (help-function 
+      "Print who is currently logged in"
+      (list "(help) -- Display this help message"
+            "(execute) -- Print who is currently logged in")
+      (list))
 
     ;; Perform the "users" program operation
     (define/public (execute)

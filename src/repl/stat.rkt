@@ -125,7 +125,8 @@
                [file-name (second path-parts)])
           (display-output the-path file-name))))
 
-    (help-function (list "Print status of each provided file."
-                                ""
-                                "Methods:"
-                                "(execute FILES) -- display the status of FILES"))))
+    (help-function 
+      "Print status of each provided file."
+      (list "(execute FILES) -- display the status of FILES"
+            "(help) -- display this help message")
+      (list))))

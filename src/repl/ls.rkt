@@ -206,20 +206,14 @@
        (eq? p "..")))
 
     (help-function
-      (list
-        "ls% -- list directory contents" 
-        "-- METHODS --"
-        ""
-        "(exec [dirs : (Listof String]) -- List the contents of a list of directories"
-        "help -- Display this help text"
-        ""
-        "-- PROPERTIES --"
-        "(all properties prefixed with get- or set-)"
-        "print-inodes (bool) -- Whether to print inodes"
-        "long-mode (bool) -- Whether to print in long mode"
-        "hide-implied (bool) -- Whether to hide '.' and '..' entries"
-        "show-colors (bool) -- Whether to show colors (not in repl)"
-        "show-hidden (bool) -- Whether to show hidden directories"))
+      "List directory contents" 
+      (list "(exec DIRS) -- List the contents of a list of directories"
+            "(help) -- Display this help message")
+      (list "print-inodes (bool) -- Whether to print inodes"
+            "long-mode (bool) -- Whether to print in long mode"
+            "hide-implied (bool) -- Whether to hide '.' and '..' entries"
+            "show-colors (bool) -- Whether to show colors (not in repl)"
+            "show-hidden (bool) -- Whether to show hidden directories"))
 
     ;; Main program execution.
     (define/public (execute [dirs : (Listof String)])

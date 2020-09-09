@@ -14,11 +14,11 @@
   (class object%
     (super-new)
 
-    (help-function (list "Output base64-encoded representation of FILES."
-                         ""
-                         "Methods:"
-                         "(execute FILES) -- display the base64-encoded representation of FILES"
-                         "(help) -- display this help message"))
+    (help-function 
+      "Output base64-encoded representation of FILES."
+      (list "(execute FILES) -- Display the base64-encoded representation of FILES"
+            "(help) -- Display this help message")
+      (list))
 
     (: execute (-> (Listof String) Void))
     (define/public (execute files)

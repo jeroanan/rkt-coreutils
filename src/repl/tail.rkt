@@ -15,10 +15,11 @@
   (class object%
     (super-new)
 
-    (help-function (list "Output the end of files."
-                         ""
-                         "Methods:"
-                         "(execute FILES) -- display the last lines of FILES"))
+    (help-function 
+      "Output the end of files."
+      (list "(execute FILES) -- Display the last lines of FILES"
+            "(help) -- Display this help message")
+      (list))
 
     (: file-handler (-> (Listof String) Void))
     (define/private (file-handler file-contents)

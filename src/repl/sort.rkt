@@ -17,10 +17,10 @@
   (class object%
     (super-new)
 
-    (help-function (list "Display the sorted contents of provided FILES."
-                         ""
-                         "Methods:"
-                         "(execute FILES) -- Display the sorted contents of provided FILES"))
+    (help-function 
+      "Display the sorted contents of provided FILES."
+      (list "(execute FILES) -- Display the sorted contents of provided FILES"
+            "(help) -- Display this help message"))
 
     ;; The contents of the files
     (private-string-list-attribute contents (list))

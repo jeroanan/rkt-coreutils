@@ -14,11 +14,11 @@
   (class object%
     (super-new)
 
-    (help-function (list "Concatenate files and print on standard output in reverse."
-                            ""
-                            "Methods:"
-                            "(help) -- display this help message"
-                            "(execute FILES) -- concatenate and print FILES in reverse"))
+    (help-function 
+      "Concatenate files and print on standard output in reverse."
+      (list "(execute FILES) -- Concatenate and print FILES in reverse"
+            "(help) -- Display this help message")
+      (list))
     
     (: file-handler (-> (Listof String) Void))
     (define/private (file-handler file-contents)

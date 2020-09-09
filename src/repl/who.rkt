@@ -5,7 +5,6 @@
 
 (provide who%)
 
-;; includes help-method
 (require "util/help.rkt"
          "typedef/getutmp.rkt"
          "../util/stringutil.rkt"
@@ -26,14 +25,11 @@
     (super-new)
    
     (help-function
-     (list "Print information about users that are currently logged in."
-           ""
-           "Methods:"
-           "(set-show-header <#t|#f>) -- Whether or not to show header. Default #f."
-           "(get-show-header) -- Get value of show-header"
-           ""
-           "(help) -- display this help message"
-           "(execute) -- print information about users that are currently logged in."))
+      "Print information about users that are currently logged in."
+      (list 
+           "(help) -- Display this help message"
+           "(execute) -- Print information about users that are currently logged in.")
+      (list "show-header (bool) -- Whether or not to print header line"))
 
     ;; Whether to show headings above the listing
     (public-boolean-attribute show-header #t)    

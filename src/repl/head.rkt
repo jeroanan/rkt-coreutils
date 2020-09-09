@@ -21,12 +21,11 @@
     ;; The number of lines from each file to print
     (public-integer-attribute number-of-lines 10)
 
-    (help-function (list "Print the first lines of each provided file."
-                         ""
-                         "Methods:"
-                         "(set-number-of-lines NUM) -- set the number of lines to be printed to NUM"
-                         "(get-number-of-lines) -- get the number of lines to be printed"
-                         "(execute FILES) -- display the first lines of FILES"))
+    (help-function 
+      "Print the first lines of each provided file."
+      (list "(execute FILES) -- display the first lines of FILES"
+            "(help) -- Display this help message")
+      (list "number-of-lines (integer) -- the number of lines to be printed"))
 
     ;; This program takes each file provided and calls line-handler within each line therein.
     (line-by-line-processor line-handler)

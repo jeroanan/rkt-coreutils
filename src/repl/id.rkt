@@ -23,11 +23,11 @@
   (class object%
     (super-new)
     
-    (help-function (list "Print user information"
-                               ""
-                               "Methods:"
-                               "(help) -- display this help message"
-                               "(execute) -- display user information"))
+    (help-function 
+      "Print user information"
+      (list "(help) -- display this help message"
+            "(execute) -- display user information")
+      (list))
 
     ;; Main program execution
     (define/public (execute)

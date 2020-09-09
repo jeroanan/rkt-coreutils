@@ -23,10 +23,11 @@
     ;; Is this the first line in the file?
     (private-boolean-attribute first-line? #t)
     
-    (help-function (list "Display uniq lines in FILE"
-                         ""
-                         "Methods:"
-                         "(execute FILE) -- Display uniq lines in FILE"))
+    (help-function 
+      "Display uniq lines in FILE"
+      (list "(execute FILE) -- Display uniq lines in FILE"
+            "(help) -- Display this help message")
+      (list))
 
     ;; Read the file and call process-line with each line.
     (line-by-line-processor process-line)

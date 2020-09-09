@@ -15,9 +15,11 @@
        (displayln "Methods:")
        (for ([ms methods])
             (displayln ms))
-       (displayln "")
-       (displayln "Properties:")
-       (displayln "(all properties prefixed with get- or set-)" )
-       (for ([ps properties])
-            (displayln ps)))]))
+       (when (not (empty? properties))
+         (begin 
+           (displayln "")
+           (displayln "Properties:")
+           (displayln "(all properties prefixed with get- or set-)" )
+           (for ([ps properties])
+                (displayln ps)))))]))
      

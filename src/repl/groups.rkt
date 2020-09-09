@@ -23,11 +23,11 @@
   (class object%
     (super-new)
 
-    (help-function (list "Print the names of the given user's groups"
-                         ""
-                         "Methods:"                         
-                         "(execute user-name) -- Print the user-name's groups" 
-                         "(help) -- display this help message"))
+    (help-function 
+      "Print the names of the given user's groups"
+      (list "(execute user-name) -- Print the user-name's groups" 
+            "(help) -- display this help message")
+      (list))
 
     ;; Main program execution
     (: execute (-> String Void))
