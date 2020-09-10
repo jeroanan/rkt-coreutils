@@ -22,7 +22,7 @@
       (list "(execute) -- Print who is currently logged in"))
 
     ;; Perform the "users" program operation
-    (define/public (execute)
+    (on-execute-with-void
       (let* ([utmp (get-user-process-utmp-entries)]
              [the-users (map (λ (x) (whoentry-user x)) utmp)]
              [output (string-join the-users " ")])

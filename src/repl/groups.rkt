@@ -25,8 +25,7 @@
                    (list "(execute user-name) -- Print the user-name's groups"))
 
     ;; Main program execution
-    (: execute (-> String Void))
-    (define/public (execute user-name)
+    (on-execute-with-string user-name
       (let* ([un (get-username user-name)]             
              [the-groups (get-user-groups un)]             
              [group-names (map (λ ([x : Integer]) (gid->group-name x)) the-groups)])        

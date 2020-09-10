@@ -215,7 +215,7 @@
             "show-hidden (bool) -- Whether to show hidden directories"))
 
     ;; Main program execution.
-    (define/public (execute [dirs : (Listof String)])
+    (on-execute-with-strings dirs
       (for ([p dirs])
         (let* ([dlist (process-entry-list (directory-list p))])
           (for ([f dlist])

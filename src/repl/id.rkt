@@ -26,7 +26,7 @@
       (list "(execute) -- display user information"))
 
     ;; Main program execution
-    (define/public (execute)
+    (on-execute-with-void
       (let* ([uid (get-euid)]
              [pwd (get-pwuid uid)]
              [user-name (send pwd get-username)]

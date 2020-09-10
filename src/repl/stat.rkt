@@ -116,7 +116,7 @@
           (list p-string f-string))))
 
     ;; Main program execution
-    (define/public (execute [files : (Listof String)])
+    (on-execute-with-strings files
       (for ([f files])
         (let* ([path-parts (get-path-parts f)]
                [the-path (first path-parts)]

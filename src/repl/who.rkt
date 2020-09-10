@@ -42,7 +42,7 @@
     (define time-column-width 16)
     
     ;; peform the "who" program execution
-    (define/public (execute)
+    (on-execute-with-void
       (let ([entries (get-user-process-utmp-entries)])
         (when show-header (displayln (get-header)))
         (for ([e entries])

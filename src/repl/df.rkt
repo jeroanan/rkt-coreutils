@@ -35,7 +35,7 @@
     (public-boolean-attribute human-readable #f)
     
     ;; Main program execution
-    (define/public (execute)
+    (on-execute-with-void
       (let* ([mountinfo-entries (get-mountinfo-entries)]
              [distinct-device-ids (get-distinct-device-ids mountinfo-entries)]
              [de-duped-entries (get-entries-for-device-ids mountinfo-entries distinct-device-ids)]

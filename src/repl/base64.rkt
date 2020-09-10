@@ -1,4 +1,4 @@
-#lang s-exp "util/repl-program.rkt""util/repl-program.rkt"
+#lang s-exp "util/repl-program.rkt"
 
 (provide base64%)
 
@@ -15,8 +15,7 @@
       "Output base64-encoded representation of FILES."
       (list "(execute FILES) -- Display the base64-encoded representation of FILES"))
 
-    (: execute (-> (Listof String) Void))
-    (define/public (execute files)
+    (on-execute-with-strings files
       (if (empty? files)
           (process-stdin)
           (process-files files)))

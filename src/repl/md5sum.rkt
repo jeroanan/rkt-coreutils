@@ -17,7 +17,7 @@
     (help-function "Compute and print MD5 message digest"
                    (list "(execute files) -- compute and print MD5 message digest for files"))
     
-    (define/public (execute [files : (Listof String)])
+    (on-execute-with-strings files
       (if (empty? files)
           (process-stdin)
           (process-files files)))      

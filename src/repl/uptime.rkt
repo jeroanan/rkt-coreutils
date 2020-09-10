@@ -30,16 +30,10 @@
 
     (help-function
       "Display system uptime"
-      (list "(execute) -- Display system uptime"
-            "(get-data) -- Get the data that would be displayed by execute and return as a string"))
-    
-    ;; Display data obtained from get-data
-    (define/public (execute)
-      (displayln (get-data)))
+      (list "(execute) -- Display system uptime"))
 
     ;; Main program execution
-    (: get-data (-> String))
-    (define/public (get-data)
+    (on-execute-with-void
       (let* ([f (open-input-file uptime-file #:mode 'text)]
              [c (first (port->lines f))]
              [secs (assert (string->number (first (string-split c " "))) number?)]
@@ -52,15 +46,15 @@
              [uptime-minutes (floor (assert (/ secs-less-days-and-hours seconds-per-minute) real?))]
              [load-avgs (get-load-avgs)]
              [no-of-users (length (get-user-process-utmp-entries))])
-        (format " ~a up ~a days, ~a:~a,  ~a users,  load average: ~a, ~a, ~a"
-                (current-time)
-                (real->integer-string uptime-days)
-                (real->integer-string uptime-hours)
-                (real->integer-string uptime-minutes)
-                no-of-users
-                (first load-avgs)
-                (second load-avgs)
-                (third load-avgs))))
+        (displayln (format " ~a up ~a days, ~a:~a,  ~a users,  load average: ~a, ~a, ~a"
+                           (current-time)
+                           (real->integer-string uptime-days)
+                           (real->integer-string uptime-hours)
+                           (real->integer-string uptime-minutes)
+                           no-of-users
+                           (first load-avgs) 
+                           (second load-avgs)
+                           (third load-avgs)))))
 
     ;; Take a real number (e.g. 39.0) and return the integer portion (e.g. 39) as a string
     (: real->integer-string (-> Real String))
