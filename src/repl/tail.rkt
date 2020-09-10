@@ -1,15 +1,13 @@
-#lang typed/racket/base
+#lang s-exp "util/repl-program.rkt"
 
 ; Copyright 2020 David Wilson
 ; See COPYING for licence details
 
 (provide tail%)
 
-(require typed/racket/class
-         racket/list)
+(require racket/list)
 
-(require "util/help.rkt"
-         "util/file-by-file-processor.rkt")
+(require "util/file-by-file-processor.rkt")
 
 (define tail%
   (class object%

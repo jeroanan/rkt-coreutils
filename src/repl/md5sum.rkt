@@ -1,12 +1,11 @@
-#lang typed/racket/base
+#lang s-exp "util/repl-program.rkt"
 
 ; Copyright 2020 David Wilson
 ; See COPYING for details
 
 (provide md5sum%)
 
-(require typed/racket/class
-         racket/list)
+(require racket/list)
 
 (require/typed file/md5
                [md5 (-> Input-Port Bytes)])
@@ -15,14 +14,8 @@
   (class object%
     (super-new)
 
-    (define (help)
-      (let ([help-strings (list "Compute and print MD5 message digest"
-                                ""
-                                "Methods:"
-                                "(help) -- display this help message"
-                                "(execute files) -- compute and print MD5 message digest for files")])
-        (for ([hs help-strings])
-          (displayln hs))))
+    (help-function "Compute and print MD5 message digest"
+                   (list "(execute files) -- compute and print MD5 message digest for files"))
     
     (define/public (execute [files : (Listof String)])
       (if (empty? files)

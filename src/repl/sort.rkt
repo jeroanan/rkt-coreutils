@@ -1,16 +1,13 @@
-#lang typed/racket/base
+#lang s-exp "util/repl-program.rkt"
 
 ;; Copyright 2020 David Wilson
 ;; See COPYING for licence
 
 (provide sort%)
 
-(require typed/racket/class
-         racket/string)
+(require racket/string)
 
-(require "util/help.rkt"
-         "util/file-by-file-processor.rkt"
-         "util/member.rkt")
+(require "util/file-by-file-processor.rkt")
 
 ;; Sort -- display the sorted contents of provided files.
 (define sort%

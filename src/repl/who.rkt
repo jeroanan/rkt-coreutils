@@ -1,18 +1,15 @@
-#lang typed/racket/base
+#lang s-exp "util/repl-program.rkt"
 
 ;; Copyright 2020 David Wilson
 ;; See COPYING for details
 
 (provide who%)
 
-(require "util/help.rkt"
-         "typedef/getutmp.rkt"
+(require "typedef/getutmp.rkt"
          "../util/stringutil.rkt"
-         "util/getutmp.rkt"
-         "util/member.rkt")
+         "util/getutmp.rkt")
 
-(require typed/racket/class
-         typed/racket/date
+(require typed/racket/date
          racket/format
          racket/string
          racket/list)

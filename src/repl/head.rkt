@@ -1,15 +1,11 @@
-#lang typed/racket/base
+#lang s-exp "util/repl-program.rkt"
 
 ; Copyright 2020 David Wilson
 ; See COPYING for licence details
 
 (provide head%)
 
-(require typed/racket/class)
-
-(require "util/member.rkt"
-         "util/help.rkt"
-         "util/line-by-line-processor.rkt")
+(require "util/line-by-line-processor.rkt")
 
 ;; Head: Print the first lines of the given files
 ;; TODO: It seems that currently only the first file will be dealt with and then we exit. Need to be
@@ -21,11 +17,12 @@
     ;; The number of lines from each file to print
     (public-integer-attribute number-of-lines 10)
 
-    (help-function 
-      "Print the first lines of each provided file."
-      (list "(execute FILES) -- display the first lines of FILES"
-            "(help) -- Display this help message")
-      (list "number-of-lines (integer) -- the number of lines to be printed"))
+    (help-function "Print the first lines of each provided file."
+                   (list 
+                     "(execute FILES) -- display the first lines of FILES"
+                     "(help) -- Display this help message")
+                   (list 
+                     "number-of-lines (integer) -- the number of lines to be printed"))
 
     ;; This program takes each file provided and calls line-handler within each line therein.
     (line-by-line-processor line-handler)

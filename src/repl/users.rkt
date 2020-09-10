@@ -1,16 +1,14 @@
-#lang typed/racket/base
+#lang s-exp "util/repl-program.rkt"
 
 ;; Copyright 2020 David Wilson
 ;; See COPYING for details
 
 (provide users%)
 
-(require typed/racket/class
-         racket/string
+(require racket/string
          racket/struct)
 
-(require "util/getutmp.rkt"
-         "util/help.rkt")
+(require "util/getutmp.rkt")
 
 ;; users% -- emulate the functionality of the coreutils "users" command
 ;; type "man users" at a shell prompt for documentation on the original

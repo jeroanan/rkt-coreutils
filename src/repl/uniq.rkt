@@ -1,15 +1,11 @@
-#lang typed/racket/base
+#lang s-exp "util/repl-program.rkt"
 
 ;; Copyright 2020 David Wilson
 ;; See COPYING for licence
 
 (provide uniq%)
 
-(require typed/racket/class)
-
-(require "util/help.rkt"
-         "util/line-by-line-processor.rkt"
-         "util/member.rkt"
+(require "util/line-by-line-processor.rkt"
          "../util/stringutil.rkt")
 
 ;; Uniq -- display unique consecutive lines in the provided file

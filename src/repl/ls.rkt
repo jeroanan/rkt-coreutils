@@ -1,4 +1,4 @@
-#lang typed/racket/base
+#lang s-exp "util/repl-program.rkt"
 
 ;; Copyright 2020 David Wilson
 ;; See COPYING for details
@@ -6,9 +6,7 @@
 (provide ls%
          ls)
          
-
-(require typed/racket/class
-         racket/bool
+(require racket/bool
          racket/string
          racket/list
          racket/format)
@@ -18,8 +16,6 @@
          "util/fileaccessstr.rkt"         
          "util/human-date.rkt"
          "util/human-size.rkt"
-         "util/member.rkt"
-         "util/help.rkt"
          "../util/stringutil.rkt"
          "util/gidutil.rkt")
 
@@ -64,6 +60,9 @@
           (number->string (send inode get-inode))
           #f))
 
+    (: make-colors-hash (-> (HashTable String String)))
+    (define/private (make-colors-hash) (make-hash))
+
     ;; Populate the ls-colors hashtable with ls colors by looking at the LS_COLORS env. variable.
     ;; Colors in LS_COLORS are key=value, with each KVP separated by a ":".
     (: get-ls-colors (-> (HashTable String String)))
@@ -71,7 +70,7 @@
       (let* ([env-val (environment-variables-ref
                        (current-environment-variables)
                        (string->bytes/utf-8 "LS_COLORS"))]
-             [#{colors-hash : (HashTable String String)} (make-hash)])
+             [colors-hash (make-colors-hash)])
         (if (false? env-val)
             colors-hash
             (let* ([env-string (bytes->string/utf-8 env-val)]

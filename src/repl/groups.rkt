@@ -1,16 +1,14 @@
-#lang typed/racket/base
+#lang s-exp "util/repl-program.rkt"
 
 ;; Copyright 2020 David Wilson
 ;; See COPYING for details
 
 (provide groups%)
 
-(require "util/help.rkt"
-         "typedef/getpwuid.rkt"
+(require "typedef/getpwuid.rkt"
          "util/gidutil.rkt")
 
-(require typed/racket/class
-         racket/string)
+(require racket/string)
 
 (require/typed "libc/unistd.rkt"
                [get-euid (-> Integer)])
@@ -23,9 +21,8 @@
   (class object%
     (super-new)
 
-    (help-function 
-      "Print the names of the given user's groups"
-      (list "(execute user-name) -- Print the user-name's groups"))
+    (help-function "Print the names of the given user's groups"
+                   (list "(execute user-name) -- Print the user-name's groups"))
 
     ;; Main program execution
     (: execute (-> String Void))

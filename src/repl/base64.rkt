@@ -1,14 +1,11 @@
-#lang typed/racket/base
+#lang s-exp "util/repl-program.rkt""util/repl-program.rkt"
 
 (provide base64%)
 
-(require typed/racket/class
-         racket/list)
+(require racket/list)
 
 (require/typed net/base64
                [base64-encode-stream (-> Input-Port Output-Port Void)])
-
-(require "util/help.rkt")
 
 (define base64%
   (class object%

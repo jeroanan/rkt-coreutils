@@ -1,12 +1,11 @@
-#lang typed/racket/base
+#lang s-exp "util/repl-program.rkt"
 
 ; Copyright 2020 David Wilson
 ; See COPYING for details
 
 (provide stat%)
 
-(require typed/racket/class
-         typed/racket/date
+(require typed/racket/date
          racket/list)
 
 (require "util/fileaccessoct.rkt"
@@ -14,8 +13,7 @@
          "typedef/stat.rkt"
          "typedef/getpwuid.rkt"
          "util/gidutil.rkt"
-         "../util/stringutil.rkt"
-         "util/help.rkt")
+         "../util/stringutil.rkt")
 
 (require/typed "libc/stat.rkt"
                [get-stat (-> String String (Instance Stat%))])

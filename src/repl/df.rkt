@@ -1,20 +1,17 @@
-#lang typed/racket/base
+#lang s-exp "util/repl-program.rkt"
 
 ;; Copyright 2020 David Wilson
 ;; See COPYING for licence
 
 (provide df%)
 
-(require typed/racket/class
-         racket/bool
+(require racket/bool
          racket/list
          racket/port
          racket/string)
 
 (require "../util/stringutil.rkt"
-         "util/human-size.rkt"
-         "util/member.rkt"
-         "util/help.rkt")
+         "util/human-size.rkt")
 
 (require/typed "libc/statvfs.rkt"
                [get-statvfs  (-> String Integer)]

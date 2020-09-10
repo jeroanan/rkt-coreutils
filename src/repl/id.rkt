@@ -1,4 +1,4 @@
-#lang typed/racket/base
+#lang s-exp "util/repl-program.rkt"
 
 ; Copyright 2020 David Wilson
 ; See COPYING for details
@@ -6,11 +6,9 @@
 (provide id%)
 
 (require "typedef/getpwuid.rkt"
-         "util/gidutil.rkt"
-         "util/help.rkt")
+         "util/gidutil.rkt")
 
-(require typed/racket/class
-         racket/string)
+(require racket/string)
 
 (require/typed "libc/unistd.rkt"
                [get-euid (-> Integer)])

@@ -1,19 +1,17 @@
-#lang typed/racket/base
+#lang s-exp "util/repl-program.rkt"
 
 ;; Copyright 2020 David Wilson
 ;; See COPYING for licence
 
 (provide uptime%)
 
-(require typed/racket/class
-         typed/racket/date
+(require typed/racket/date
          racket/format
          racket/list
          racket/port
          racket/string)
 
-(require "util/help.rkt"
-         "util/getutmp.rkt")
+(require "util/getutmp.rkt")
 
 (require/typed "libc/stdlib.rkt"
                [get-load-avgs  (-> (Listof Real))])
