@@ -25,9 +25,7 @@
 
     (help-function 
       "Print the names of the given user's groups"
-      (list "(execute user-name) -- Print the user-name's groups" 
-            "(help) -- display this help message")
-      (list))
+      (list "(execute user-name) -- Print the user-name's groups"))
 
     ;; Main program execution
     (: execute (-> String Void))

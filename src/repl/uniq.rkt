@@ -25,9 +25,7 @@
     
     (help-function 
       "Display uniq lines in FILE"
-      (list "(execute FILE) -- Display uniq lines in FILE"
-            "(help) -- Display this help message")
-      (list))
+      (list "(execute FILE) -- Display uniq lines in FILE"))
 
     ;; Read the file and call process-line with each line.
     (line-by-line-processor process-line)

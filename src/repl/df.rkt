@@ -30,8 +30,7 @@
     (help-function
       "Print disk usage information"      
       (list 
-            "(help) -- Display this help message"
-            "(execute) -- Display disk usage information")
+            "(help) -- Display this help message")
       (list
             "human-readable (bool) -- Whether to display sizes in human-readable format"))
 

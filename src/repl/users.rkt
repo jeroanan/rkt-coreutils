@@ -21,9 +21,7 @@
 
     (help-function 
       "Print who is currently logged in"
-      (list "(help) -- Display this help message"
-            "(execute) -- Print who is currently logged in")
-      (list))
+      (list "(execute) -- Print who is currently logged in"))
 
     ;; Perform the "users" program operation
     (define/public (execute)

@@ -32,11 +32,8 @@
 
     (help-function
       "Display system uptime"
-      (list
-        "(help) -- Display this help message"
-        "(execute) -- Display system uptime"
-        "(get-data) -- Get the data that would be displayed by execute and return as a string")
-      (list))
+      (list "(execute) -- Display system uptime"
+            "(get-data) -- Get the data that would be displayed by execute and return as a string"))
     
     ;; Display data obtained from get-data
     (define/public (execute)

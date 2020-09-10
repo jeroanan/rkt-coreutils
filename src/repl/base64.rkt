@@ -16,9 +16,7 @@
 
     (help-function 
       "Output base64-encoded representation of FILES."
-      (list "(execute FILES) -- Display the base64-encoded representation of FILES"
-            "(help) -- Display this help message")
-      (list))
+      (list "(execute FILES) -- Display the base64-encoded representation of FILES"))
 
     (: execute (-> (Listof String) Void))
     (define/public (execute files)

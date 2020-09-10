@@ -127,6 +127,4 @@
 
     (help-function 
       "Print status of each provided file."
-      (list "(execute FILES) -- display the status of FILES"
-            "(help) -- display this help message")
-      (list))))
+      (list "(execute FILES) -- display the status of FILES"))))

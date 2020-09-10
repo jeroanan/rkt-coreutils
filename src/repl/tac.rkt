@@ -16,9 +16,7 @@
 
     (help-function 
       "Concatenate files and print on standard output in reverse."
-      (list "(execute FILES) -- Concatenate and print FILES in reverse"
-            "(help) -- Display this help message")
-      (list))
+      (list "(execute FILES) -- Concatenate and print FILES in reverse"))
     
     (: file-handler (-> (Listof String) Void))
     (define/private (file-handler file-contents)

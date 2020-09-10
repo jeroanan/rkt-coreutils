@@ -17,9 +17,7 @@
 
     (help-function 
       "Output the end of files."
-      (list "(execute FILES) -- Display the last lines of FILES"
-            "(help) -- Display this help message")
-      (list))
+      (list "(execute FILES) -- Display the last lines of FILES"))
 
     (: file-handler (-> (Listof String) Void))
     (define/private (file-handler file-contents)

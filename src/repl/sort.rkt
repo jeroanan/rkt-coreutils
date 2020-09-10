@@ -19,9 +19,7 @@
 
     (help-function 
       "Display the sorted contents of provided FILES."
-      (list "(execute FILES) -- Display the sorted contents of provided FILES"
-            "(help) -- Display this help message")
-      (list))
+      (list "(execute FILES) -- Display the sorted contents of provided FILES"))
 
     ;; The contents of the files
     (private-string-list-attribute contents (list))

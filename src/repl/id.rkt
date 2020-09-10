@@ -25,9 +25,7 @@
     
     (help-function 
       "Print user information"
-      (list "(help) -- display this help message"
-            "(execute) -- display user information")
-      (list))
+      (list "(execute) -- display user information"))
 
     ;; Main program execution
     (define/public (execute)
