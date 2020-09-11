@@ -1,17 +1,16 @@
-#lang typed/racket/base
+#lang s-exp "repl-program.rkt"
 
 ; Copyright 2020 David Wilson
 ; See COPYING for details
 
 (provide line-by-line-processor)
 
-(require typed/racket/class
-         racket/format
+(require racket/format
          racket/list)
 
 (define-syntax-rule (line-by-line-processor line-function)
   (begin 
-    (define/public (execute [files : (Listof String)])
+    (on-execute-with-strings files
       (begin
         (if (empty? files)
             (process-stdin)
