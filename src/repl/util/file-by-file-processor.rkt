@@ -1,4 +1,4 @@
-#lang typed/racket/base
+#lang s-exp "repl-program.rkt"
 
 ; Copyright 2020 David Wilson
 ; See COPYING for licence details
@@ -6,22 +6,19 @@
 (provide file-by-file-processor)
 
 (require racket/list
-         typed/racket/class
          racket/port)
 
 (define-syntax file-by-file-processor
   (syntax-rules ()
     [(file-by-file-processor file-function)
      (begin
-       (: execute (-> (Listof String) Void))
-       (define/public (execute files)
+       (on-execute-with-strings files
          (if (empty? files)
              (_process-stdin file-function)
              (_process-files file-function files))))]
     [(file-by-file-processor file-function finish-function)
      (begin
-       (: execute (-> (Listof String) Void))
-       (define/public (execute files)
+       (on-execute-with-strings files
          (if (empty? files)
              (_process-stdin file-function finish-function)
              (_process-files file-function finish-function files))))]))
@@ -50,4 +47,3 @@
                 [lines (port->lines f)])
            (file-function lines)))
        (finished-function))]))
-  
