@@ -1,4 +1,4 @@
-#lang s-exp "repl-program.rkt"
+#lang s-exp "program/repl-program.rkt"
 
 ; Copyright 2020 David Wilson
 ; See COPYING for details

@@ -1,4 +1,4 @@
-#lang s-exp "util/repl-program.rkt"
+#lang s-exp "util/program/repl-program.rkt"
 
 (provide base64%)
 
