@@ -5,32 +5,28 @@
 
 (provide uniq%)
 
-(require "util/line-by-line-processor.rkt"
+(require "util/program/line-by-line-processor-program.rkt"
          "../util/stringutil.rkt")
 
 ;; Uniq -- display unique consecutive lines in the provided file
-(define uniq%
-  (class object%
-    (super-new)
+(define help-text 
+  (list"Display uniq lines in FILE"
+    "(execute FILE) -- Display uniq lines in FILE"))
 
-    ;; The last line to have been processed
-    (private-string-attribute previous-line "")
+(line-by-line-processor-program uniq% help-text process-line)
 
-    ;; Is this the first line in the file?
-    (private-boolean-attribute first-line? #t)
-    
-    (help-function 
-      "Display uniq lines in FILE"
-      (list "(execute FILE) -- Display uniq lines in FILE"))
+;; Output the line unless it's the same as the previous one.
+(: process-line (-> String Void))
+(define (process-line line)
+  (when (or first-line? (string<>? line previous-line))
+    (begin
+      (set! first-line? #f)
+      (set! previous-line line)
+      (displayln line))))
 
-    ;; Read the file and call process-line with each line.
-    (line-by-line-processor process-line)
+;; The last line to have been processed
+(define previous-line "")
 
-    ;; Output the line unless it's the same as the previous one.
-    (: process-line (-> String Void))
-    (define (process-line line)
-      (when (or first-line? (string<>? line previous-line))
-        (begin
-          (set! first-line? #f)
-          (set! previous-line line)
-          (displayln line))))))
+;; Is this the first line in the file?
+(define first-line? #t)
+
