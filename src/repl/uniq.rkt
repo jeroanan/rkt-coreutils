@@ -12,20 +12,13 @@
   (list"Display uniq lines in FILE"
     "(execute FILE) -- Display uniq lines in FILE"))
 
-(line-by-line-processor-program uniq% help-text process-line)
-
-;; Output the line unless it's the same as the previous one.
-(: process-line (-> String Void))
-(define (process-line line)
-  (when (or first-line? (string<>? line previous-line))
-    (begin
-      (set! first-line? #f)
-      (set! previous-line line)
-      (displayln line))))
-
-;; The last line to have been processed
-(define previous-line "")
-
-;; Is this the first line in the file?
-(define first-line? #t)
-
+(line-by-line-processor-program uniq%
+                                help-text
+                                (λ (x)
+                                  (when (or first-line? (string<>? x previous-line))
+                                    (begin
+                                      (set! first-line? #f)
+                                      (set! previous-line x)
+                                      (displayln x))))
+                                (attribute private string previous-line "")
+                                (attribute private boolean first-line? #t))
