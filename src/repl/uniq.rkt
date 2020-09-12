@@ -1,12 +1,11 @@
-#lang s-exp "util/program/repl-program.rkt"
+#lang s-exp "util/program/line-by-line-processor-program.rkt"
 
 ;; Copyright 2020 David Wilson
 ;; See COPYING for licence
 
 (provide uniq%)
 
-(require "util/program/line-by-line-processor-program.rkt"
-         "../util/stringutil.rkt")
+(require "../util/stringutil.rkt")
 
 ;; Uniq -- display unique consecutive lines in the provided file
 (define help-text 

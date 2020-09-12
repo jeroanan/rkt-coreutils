@@ -1,13 +1,9 @@
-#lang typed/racket/base
+#lang s-exp "util/program/line-by-line-processor-program.rkt"
 
 ; Copyright 2020 David Wilson
 ; See COPYING for details
 
 (provide cat%)
-
-(require typed/racket/class)
-
-(require "util/program/line-by-line-processor-program.rkt")
 
 (define help-text (list "Concatenate files and print on standard output."
                         ""
@@ -15,4 +11,6 @@
                         "(help) -- display this help message"
                         "(execute FILES) -- concatenate and print FILES"))
 
-(line-by-line-processor-program cat% help-text (λ (x) x))
+(line-by-line-processor-program cat%
+                                help-text
+                                (λ (x) (displayln x)))
