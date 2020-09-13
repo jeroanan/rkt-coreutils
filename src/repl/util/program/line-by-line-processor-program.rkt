@@ -26,9 +26,10 @@
 
 (define-syntax (line-by-line-processor-program stx)    
   (syntax-case stx ()
-    [(_ type-name help-text line-handler-body extras ...)
+    [(_ type-name help-text line-handler-body extras ...)    
    
      #'(begin
+         (provide type-name)
          (require "util/help.rkt")
          (define type-name
            (class object%

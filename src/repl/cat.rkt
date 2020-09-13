@@ -3,8 +3,6 @@
 ; Copyright 2020 David Wilson
 ; See COPYING for details
 
-(provide cat%)
-
 (define help-text (list "Concatenate files and print on standard output."
                         ""
                         "Methods:"

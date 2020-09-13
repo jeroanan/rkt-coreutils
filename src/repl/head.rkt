@@ -7,9 +7,6 @@
 ;; TODO: It seems that currently only the first file will be dealt with and then we exit. Need to be
 ;;       able to handle multiple files.
 
-
-(provide head%)
-
 (define help-text (list "Print the first lines of each provided file."
                         ""
                         "Methods"

@@ -3,8 +3,6 @@
 ;; Copyright 2020 David Wilson
 ;; See COPYING for licence
 
-(provide uniq%)
-
 (require "../util/stringutil.rkt")
 
 ;; Uniq -- display unique consecutive lines in the provided file
