@@ -1,7 +1,9 @@
-#lang typed/racket/base
+#lang s-exp "repl-program.rkt"
 
 (provide sha-program)
 
+(provide (all-from-out "repl-program.rkt"))
+         
 (require typed/racket/class
          racket/port
          racket/list)
@@ -9,21 +11,28 @@
 (define-syntax-rule (sha-program description type-name sha-method)
   (begin
     (require/typed sha
-                   [bytes->hex-string (-> Bytes String)])
+                   [bytes->hex-string (-> Bytes String)]
+                   [sha-method  (-> Bytes Bytes)])
+    
+    (provide type-name)
+    
     (define type-name
-      (class object%
+      (class object%       
+        
+        (define help-strings
+          (list (format "Compute and print ~a message digest" description)
+                ""
+                "Methods:"
+                "(help) -- display this help message"
+                (format
+                 "(execute files) -- compute and print ~a message digest for files"
+                 description)))
 
+        (help-function help-strings)
+        
         (super-new)
-        (define/public (help)
-          (let ([help-strings (list (format "Compute and print ~a message digest" description)
-                                    ""
-                                    "Methods:"
-                                    "(help) -- display this help message"
-                                    (format "(execute files) -- compute and print ~a message digest for files" description))])
-            (for ([hs help-strings])
-              (displayln hs))))
-
-        (define/public (execute [files : (Listof String)])
+        
+        (on-execute-with-strings files
           (if (empty? files)
               (process-stdin)
               (process-files files)))
