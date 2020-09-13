@@ -1,14 +1,9 @@
-#lang typed/racket/base
+#lang s-exp "util/program/getusernameprogram.rkt"
 
 ; Copyright 2020 David Wilson
 ; See COPYING for details
 
 (provide whoami%)
-
-;; Include class so instances of whoami% can be made from the repl more easily
-(require typed/racket/class)
-
-(require "util/program/getusernameprogram.rkt")
 
 (require/typed "libc/unistd.rkt"
                [get-euid (-> Integer)])

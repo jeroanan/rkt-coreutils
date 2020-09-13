@@ -1,12 +1,12 @@
-#lang typed/racket
+#lang s-exp "repl-program.rkt"
 
 ; Copyright 2020 David Wilson
 ; See COPYING for details
 
+(provide (all-from-out "repl-program.rkt"))
 (provide get-user-name-program)
 
-(require "../../typedef/getpwuid.rkt"
-         "../help.rkt")
+(require "../../typedef/getpwuid.rkt")
 
 (require/typed "../../libc/pwd.rkt"
                [get-pwuid (-> Number (Instance Getpwuid%))])
@@ -19,7 +19,7 @@
 
     (help-function help-strings)
     
-    (define/public (execute)
+    (on-execute-with-void 
       (let* ([uid (get-uid-func)]
              [getpwuid (get-pwuid uid)])
         (displayln (send getpwuid get-username)))))))
