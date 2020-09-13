@@ -1,24 +1,21 @@
-#lang s-exp "util/program/repl-program.rkt"
+#lang s-exp "util/program/file-by-file-processor-program.rkt"
 
 ; Copyright 2020 David Wilson
 ; See COPYING for licence details
 
-(provide tac%)
+(require racket/port)
 
-(require "util/file-by-file-processor.rkt")
+(define help-text (list "Concatenate files and print on standard output in reverse."
+                        "(execute FILES) -- Concatenate and print FILES in reverse"))
 
-(define tac%
-  (class object%
-    (super-new)
+(file-by-file-processor-program tac%
+                                help-text
+                                file-handler
+                                null)
 
-    (help-function 
-      "Concatenate files and print on standard output in reverse."
-      (list "(execute FILES) -- Concatenate and print FILES in reverse"))
-    
-    (: file-handler (-> (Listof String) Void))
-    (define/private (file-handler file-contents)
-      (let ([reversed (reverse file-contents)])
-        (for ([l reversed])
-          (displayln l))))
-
-    (file-by-file-processor file-handler)))
+(: file-handler (-> String Input-Port Void))
+(define (file-handler filename stream)
+  (let* ([file-contents (port->lines stream)]
+        [reversed (reverse file-contents)])
+    (for ([l reversed])
+      (displayln l))))

@@ -1,4 +1,4 @@
-#lang s-exp "util/program/repl-program.rkt"
+#lang s-exp "util/program/file-by-file-processor-program.rkt"
 
 ; Copyright 2020 David Wilson
 ; See COPYING for details
@@ -10,27 +10,15 @@
 (require/typed file/md5
                [md5 (-> Input-Port Bytes)])
 
-(define md5sum%
-  (class object%
-    (super-new)
+(define help-text (list "Compute and print MD5 message digest"
+                        "(execute files) -- compute and print MD5 message digest for files"))
 
-    (help-function "Compute and print MD5 message digest"
-                   (list "(execute files) -- compute and print MD5 message digest for files"))
-    
-    (on-execute-with-strings files
-      (if (empty? files)
-          (process-stdin)
-          (process-files files)))      
+(file-by-file-processor-program md5sum%
+                                help-text
+                                file-handler
+                                null)
 
-    (: process-files (-> (Listof String) Void))
-    (define/private (process-files files)
-      (for ([f files])
-        (let* ([ip (open-input-file f #:mode 'text)]
-               [the-sum (md5 ip)])
-          (displayln
-           (format "~a ~a" the-sum f)))))
-    
-    (: process-stdin (-> Void))
-    (define/private (process-stdin)
-      (let ([the-sum (md5 (current-input-port))])
-        (displayln (format "~a -" the-sum))))))
+(: file-handler (-> String Input-Port Void))
+(define (file-handler filename stream)  
+  (let ([the-sum (md5 stream)])
+    (displayln (format "~a ~a" the-sum filename))))

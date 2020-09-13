@@ -12,17 +12,7 @@
          racket/format
          racket/list)
 
-(require typed/racket/class)
-
-(define-syntax (attribute stx)
-  (syntax-case stx ()
-    [(_ access data-type name default)     
-     (with-syntax ([declaration
-                    (datum->syntax stx
-                                   (string->symbol (format "~a-~a-attribute"
-                                                           (syntax->datum #'access)
-                                                           (syntax->datum #'data-type))))])
-       #'(declaration name default))]))
+(require "../attribute.rkt")
 
 (define-syntax (line-by-line-processor-program stx)    
   (syntax-case stx ()

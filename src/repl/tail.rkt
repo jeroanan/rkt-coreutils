@@ -1,30 +1,25 @@
-#lang s-exp "util/program/repl-program.rkt"
+#lang s-exp "util/program/file-by-file-processor-program.rkt"
 
 ; Copyright 2020 David Wilson
 ; See COPYING for licence details
 
-(provide tail%)
+(require racket/list
+         racket/port)
 
-(require racket/list)
+(define help-text (list "Output the end of files."
+                        "(execute FILES) -- Display the last lines of FILES"))
 
-(require "util/file-by-file-processor.rkt")
+(file-by-file-processor-program tail%
+                                help-text
+                                file-handler
+                                null)
 
-(define tail%
-  (class object%
-    (super-new)
-
-    (help-function 
-      "Output the end of files."
-      (list "(execute FILES) -- Display the last lines of FILES"))
-
-    (: file-handler (-> (Listof String) Void))
-    (define/private (file-handler file-contents)
-      (let* ([reversed (reverse file-contents)]
-             [take-elements (min 10 (length file-contents))]
-             [top-x (take reversed take-elements)]
-             [output (reverse top-x)])
-        (for ([l output])
-          (displayln l))))
-
-    (file-by-file-processor file-handler)))
-
+(: file-handler (-> String Input-Port Void))
+(define (file-handler filename stream)
+  (let* ([file-contents (port->lines stream)]
+         [reversed (reverse file-contents)]
+         [take-elements (min 10 (length file-contents))]
+         [top-x (take reversed take-elements)]
+         [output (reverse top-x)])
+    (for ([l output])
+      (displayln l))))
