@@ -5,11 +5,12 @@
 
 (provide (all-from-out "repl-program.rkt") 
          line-by-line-processor-program
-         attribute
-         lh)
+         attribute)
 
 (require (for-syntax  racket/list)
-         (for-syntax racket/base))
+         (for-syntax racket/base)
+         racket/format
+         racket/list)
 
 (require typed/racket/class)
 
@@ -23,33 +24,42 @@
                                                            (syntax->datum #'data-type))))])
        #'(declaration name default))]))
 
-(define-syntax (lh stx)
-  (syntax-case stx ()
-    [(_ body ...)
-     #'(begin
-         (: line-handler (-> String Void))
-         (define (line-handler line)
-           body ...))]))
-
 (define-syntax (line-by-line-processor-program stx)    
   (syntax-case stx ()
     [(_ type-name help-text line-handler-body extras ...)
-     
-     
-         #'(begin
-             (require "util/help.rkt"
-                      "util/line-by-line-processor.rkt")
-             (define type-name
-               (class object%
-                 (super-new)
+   
+     #'(begin
+         (require "util/help.rkt")
+         (define type-name
+           (class object%
+             (super-new)
 
-                 (help-function help-text)
+             (help-function help-text)
 
-                 extras ...
+             extras ...
               
-                 (: output-function (-> String Void))
-                 (define (output-function x)
-                   (line-handler-body x))
-              
-                 (line-by-line-processor output-function))))]))
-  
+             (: output-function (-> String Void))
+             (define (output-function x)
+               (line-handler-body x))
+
+
+             (on-execute-with-strings files
+                                      (begin
+                                        (if (empty? files)
+                                            (process-stdin)
+                                            (process-files files))))
+
+             (: process-files (-> (Listof String) Void))
+             (define/private (process-files files)
+               (for ([file-name files])
+                 (let* ([f (open-input-file file-name #:mode 'text )])
+                   (for ([l (in-lines f)])
+                     (output-function l)))))
+
+             (: process-stdin (-> Void))
+             (define/private (process-stdin)
+               (let* ([r (read-line)]
+                      [rs (~a r)])
+                 (when (not (eof-object? r))
+                   (output-function rs)
+                   (process-stdin)))))))]))
