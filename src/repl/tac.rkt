@@ -10,6 +10,7 @@
 
 (file-by-file-processor-program tac%
                                 help-text
+                                #t
                                 file-handler
                                 null)
 

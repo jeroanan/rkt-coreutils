@@ -11,6 +11,7 @@
 
 (file-by-file-processor-program tail%
                                 help-text
+                                #t
                                 file-handler
                                 null)
 

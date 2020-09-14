@@ -13,6 +13,7 @@
 
 (file-by-file-processor-program sort%
                                 help-text
+                                #t
                                 on-process-file
                                 on-finished-processing-files)
 

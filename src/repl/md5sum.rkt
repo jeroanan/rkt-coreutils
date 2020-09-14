@@ -15,6 +15,7 @@
 
 (file-by-file-processor-program md5sum%
                                 help-text
+                                #t
                                 file-handler
                                 null)
 

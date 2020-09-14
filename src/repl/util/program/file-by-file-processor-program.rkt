@@ -9,7 +9,7 @@
 
 (define-syntax (file-by-file-processor-program stx)    
   (syntax-case stx ()
-    [(_ type-name help-text file-handler-body finish-handler-body extras ...)     
+    [(_ type-name help-text read-files? file-handler-body finish-handler-body extras ...)     
      #'(begin
          (require racket/list)
          (provide type-name)
@@ -26,13 +26,20 @@
                                       (if (empty? files)
                                           (process-stdin)
                                           (process-files files)))
-           
+             
              (: process-files (-> (Listof String) Void))
              (define/private (process-files files)
                (for ([f files])
-                 (let* ([ip (open-input-file f #:mode 'text)])
-                        (file-handler-body f ip))
+                 (if read-files?
+                     (read-and-process-file f)
+                     (file-handler-body f null))
                  (unless (null? finish-handler-body) (finish-handler-body))))
+
+             (: read-and-process-file (-> String Void))
+             (define (read-and-process-file filename)
+               (let* ([ip (open-input-file filename #:mode 'text)])
+                   (file-handler-body filename ip)
+                   (close-input-port ip)))               
 
              (: process-stdin (-> Void))
              (define/private (process-stdin)             
