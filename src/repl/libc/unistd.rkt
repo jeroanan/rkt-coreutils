@@ -3,7 +3,10 @@
 ; Copyright 2020 David Wilson
 ; See COPYING for details.
 
-(provide get-euid get-uid get-hostname)
+(provide get-euid
+         get-uid
+         get-hostid
+         get-hostname)
 
 (require ffi/unsafe)
 (require racket/list)
@@ -14,9 +17,15 @@
 
 (c-function _geteuid clib _int "geteuid")
 (c-function _getuid clib _int "getuid")
+(c-function _gethostid clib _long "gethostid")
 
 (define (get-euid) (_geteuid))
 (define (get-uid) (_getuid))
+(define (get-hostid) 
+  (define raw-hostid (_gethostid))
+  (define unsigned (bitwise-and raw-hostid #xffffffff))
+  unsigned)
+
 
 (define _hostname (_bytes/len _hostname-len))
 
