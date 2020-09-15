@@ -11,22 +11,6 @@
          racket/bool
          racket/class)
 
-(define (_bytes/len n)
-  (make-ctype (make-array-type _byte n)
-              ;; see https://github.com/dyoo/ffi-tutorial
-
-              ;; ->c
-              (lambda (v)
-                (unless (and (bytes? v) (= (bytes-length v) n))
-                  (raise-argument-error '_chars/bytes 
-                                        (format "bytes of length ~a" n)
-                                        v))
-                v)
-
-              ;; ->racket
-              (lambda (v)
-                (make-sized-byte-string v n))))
-
 (define _pid_t _int32)
 (define _int32_t _int32)
 (define _ut_user_t (_bytes/len 32))
