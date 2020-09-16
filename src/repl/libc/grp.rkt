@@ -42,7 +42,7 @@
 (define (get-getgrgid gid)
   (new getgrgid% [gid gid]))
 
-(define-runtime-path lib-path (build-path "src" "lib" "getgrouplist"))
+(define-runtime-path lib-path (build-path ".." ".." ".." "lib" "getgrouplist"))
 (define clib (ffi-lib lib-path))
 
 (c-function get-groups clib _int "getgroups" _string _int _int)

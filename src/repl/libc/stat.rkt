@@ -22,7 +22,8 @@
          racket/runtime-path
          (for-syntax racket/base))
 
-(define-runtime-path lib-path (build-path "src" "lib" "stat"))
+(define-runtime-path lib-path (build-path ".." ".." ".." "lib" "stat"))
+(define clib (ffi-lib lib-path))
 
 (define stat%
   (class object%
@@ -48,7 +49,6 @@
     (define _blksize_t _long)
     (define _blkcnt_t _long)
     
-    (define clib (ffi-lib lib-path))
     (c-function stat clib _int "getstat" _string)
     (c-function _get-dev clib _dev_t "get_dev")
     (c-function _get-ino clib _ino_t "get_ino")

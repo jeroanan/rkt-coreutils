@@ -10,7 +10,8 @@ HDOCS=docs/html
 MDDOCS=docs/md
 SCRIBDIR=scribblings
 
-CSRCDIR=src/repl/libc/src
+CSRCDIR=src/c
+LIBDIR=lib
 
 DOCDEPS=$(AUTHSCRBL) $(CWSCRBL)
 
@@ -19,27 +20,27 @@ all: make-all clibs docs
 make-all: 
 	$(RACO) make src/*.rkt
 
-clibs: $(CSRCDIR)/lib/getstatvfs.so \
-	$(CSRCDIR)/lib/getgrouplist.so \
-	$(CSRCDIR)/lib/stat.so
+clibs: $(LIBDIR)/getstatvfs.so \
+	$(LIBDIR)/getgrouplist.so \
+	$(LIBDIR)/stat.so
 
-$(CSRCDIR)/lib/getstatvfs.so: $(CSRCDIR)/lib/getstatvfs.o 
-	gcc $(CSRCDIR)/lib/getstatvfs.o -shared -o $(CSRCDIR)/lib/getstatvfs.so
+$(LIBDIR)/getstatvfs.so: $(LIBDIR)/getstatvfs.o 
+	gcc $(LIBDIR)/getstatvfs.o -shared -o $(LIBDIR)/getstatvfs.so
 
-$(CSRCDIR)/lib/getstatvfs.o: $(CSRCDIR)/getstatvfs.c
-	gcc -c -fPIC $(CSRCDIR)/getstatvfs.c -o $(CSRCDIR)/lib/getstatvfs.o
+$(LIBDIR)/getstatvfs.o: $(CSRCDIR)/getstatvfs.c
+	gcc -c -fPIC $(CSRCDIR)/getstatvfs.c -o $(LIBDIR)/getstatvfs.o
 
-$(CSRCDIR)/lib/getgrouplist.so: $(CSRCDIR)/lib/getgrouplist.o 
-	gcc $(CSRCDIR)/lib/getgrouplist.o -shared -o $(CSRCDIR)/lib/getgrouplist.so
+$(LIBDIR)/getgrouplist.so: $(LIBDIR)/getgrouplist.o 
+	gcc $(LIBDIR)/getgrouplist.o -shared -o $(LIBDIR)/getgrouplist.so
 
-$(CSRCDIR)/lib/getgrouplist.o: $(CSRCDIR)/getgrouplist.c
-	gcc -c -fPIC $(CSRCDIR)/getgrouplist.c -o $(CSRCDIR)/lib/getgrouplist.o
+$(LIBDIR)/getgrouplist.o: $(CSRCDIR)/getgrouplist.c
+	gcc -c -fPIC $(CSRCDIR)/getgrouplist.c -o $(LIBDIR)/getgrouplist.o
 
-$(CSRCDIR)/lib/stat.so: $(CSRCDIR)/lib/stat.o 
-	gcc $(CSRCDIR)/lib/stat.o -shared -o $(CSRCDIR)/lib/stat.so
+$(LIBDIR)/stat.so: $(LIBDIR)/stat.o 
+	gcc $(LIBDIR)/stat.o -shared -o $(LIBDIR)/stat.so
 
-$(CSRCDIR)/lib/stat.o: $(CSRCDIR)/stat.c
-	gcc -c -fPIC $(CSRCDIR)/stat.c -o $(CSRCDIR)/lib/stat.o
+$(LIBDIR)/stat.o: $(CSRCDIR)/stat.c
+	gcc -c -fPIC $(CSRCDIR)/stat.c -o $(LIBDIR)/stat.o
 
 
 docs: docs-html docs-md
@@ -378,10 +379,10 @@ launchers:
 	./make-launchers.sh
 
 clean:
-	rm -rf docs/; find . -type d -name compiled -prune -exec rm -rf {} \;; rm -rf $(CSRCDIR)/lib
+	rm -rf docs/; find . -type d -name compiled -prune -exec rm -rf {} \;; rm -rf $(LIBDIR)
 
 deploy:
 	cp -f compiled/* $(DEPDIR)
 
 $(shell mkdir -p compiled)
-$(shell mkdir -p $(CSRCDIR)/lib)
+$(shell mkdir -p $(LIBDIR))

@@ -18,7 +18,7 @@
 (define _fsblkcnt_t _int)
 (define _fsfilcnt_t _ulong)
 
-(define-runtime-path lib-path (build-path "src" "lib" "getstatvfs"))
+(define-runtime-path lib-path (build-path ".." ".." ".." "lib" "getstatvfs"))
 (define clib (ffi-lib lib-path))
 
 (c-function get-statvfs clib _int "getstatvfs" _string)
