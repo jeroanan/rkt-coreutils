@@ -5,3 +5,14 @@ demods/
 *.o
 *.so
 a.out
+src/c/gnulib/Makefile
+src/c/gnulib/config.h
+src/c/gnulib/config.log
+src/c/gnulib/config.status
+src/c/gnulib/gllib/.deps/
+src/c/gnulib/gllib/Makefile
+src/c/gnulib/glm4/Makefile
+src/c/gnulib/stamp-h1
+src/c/gnulib/gllib/libgnu.a
+src/c/gnulib/gllib/sys/
+src/c/gnulib/gllib/unistd.h

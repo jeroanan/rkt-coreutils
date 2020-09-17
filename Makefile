@@ -12,10 +12,11 @@ SCRIBDIR=scribblings
 
 CSRCDIR=src/c
 LIBDIR=lib
+GNULIBDIR=$(CSRCDIR)/gnulib
 
 DOCDEPS=$(AUTHSCRBL) $(CWSCRBL)
 
-all: make-all clibs docs
+all: make-all clibs docs gnulib
 
 make-all: 
 	$(RACO) make src/*.rkt
@@ -42,6 +43,16 @@ $(LIBDIR)/stat.so: $(LIBDIR)/stat.o
 $(LIBDIR)/stat.o: $(CSRCDIR)/stat.c
 	gcc -c -fPIC $(CSRCDIR)/stat.c -o $(LIBDIR)/stat.o
 
+gnulib: $(GNULIBDIR)/Makefile make-gnulib $(LIBDIR)/gnulib.so
+
+$(GNULIBDIR)/Makefile:
+	cd $(GNULIBDIR) && ./configure
+
+make-gnulib:
+	cd $(GNULIBDIR) && make
+
+$(LIBDIR)/gnulib.so: $(GNULIBDIR)/gllib/%.o:
+	$(CC) $(GNULIBDIR)/gllib/*.o -shared -o $(LIBDIR)/gnulib.so
 
 docs: docs-html docs-md
 
@@ -378,8 +389,13 @@ $(MDDOCS)/who.md: \
 launchers:
 	./make-launchers.sh
 
-clean:
+clean: clean-rkt clean-gnulib
+
+clean-rkt:
 	rm -rf docs/; find . -type d -name compiled -prune -exec rm -rf {} \;; rm -rf $(LIBDIR)
+
+clean-gnulib:
+	cd $(GNULIBDIR) && make clean
 
 deploy:
 	cp -f compiled/* $(DEPDIR)
