@@ -10,18 +10,15 @@
     (super-new)
 
     (help-function "Print the given string until stopped"
-                   (list "(execute STRING) -- Print STRING until stopped"))
+                   (list "(execute STRING) -- Print STRING until stopped")
+                   (list "repeated-string (string) -- The string to print"))
 
-    (on-execute-with-string s
-      (do-yes s))))
+    (public-string-attribute repeated-string "y")
+
+    (on-execute-with-void
+      (do-yes repeated-string))))
 
 (: do-yes (-> String Void))
 (define (do-yes s)
   (displayln s)
   (do-yes s))
-
-
-
-
-
-
