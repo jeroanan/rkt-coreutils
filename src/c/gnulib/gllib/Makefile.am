@@ -57,17 +57,453 @@ HAVE_INCLUDE_NEXT = (__GNUC__ || __clang__ || 60000000 <= __DECC_VER)
 
 ## end   gnulib module absolute-header
 
+## begin gnulib module alloca-opt
+
+BUILT_SOURCES += $(ALLOCA_H)
+
+# We need the following in order to create <alloca.h> when the system
+# doesn't have one that works with the given compiler.
+if GL_GENERATE_ALLOCA_H
+alloca.h: alloca.in.h $(top_builddir)/config.status
+	$(AM_V_GEN)rm -f $@-t $@ && \
+	{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */'; \
+	  sed -e 's|@''HAVE_ALLOCA_H''@|$(HAVE_ALLOCA_H)|g' < $(srcdir)/alloca.in.h; \
+	} > $@-t && \
+	mv -f $@-t $@
+else
+alloca.h: $(top_builddir)/config.status
+	rm -f $@
+endif
+MOSTLYCLEANFILES += alloca.h alloca.h-t
+
+EXTRA_DIST += alloca.in.h
+
+## end   gnulib module alloca-opt
+
+## begin gnulib module argmatch
+
+libgnu_a_SOURCES += argmatch.c
+
+EXTRA_DIST += argmatch.h
+
+## end   gnulib module argmatch
+
+## begin gnulib module assure
+
+
+EXTRA_DIST += assure.h
+
+## end   gnulib module assure
+
+## begin gnulib module attribute
+
+
+EXTRA_DIST += attribute.h
+
+## end   gnulib module attribute
+
+## begin gnulib module basename-lgpl
+
+libgnu_a_SOURCES += basename-lgpl.c
+
+EXTRA_DIST += basename-lgpl.h
+
+## end   gnulib module basename-lgpl
+
+## begin gnulib module binary-io
+
+libgnu_a_SOURCES += binary-io.h binary-io.c
+
+## end   gnulib module binary-io
+
 ## begin gnulib module c-ctype
 
 libgnu_a_SOURCES += c-ctype.h c-ctype.c
 
 ## end   gnulib module c-ctype
 
+## begin gnulib module c-strcase
+
+libgnu_a_SOURCES += c-strcase.h c-strcasecmp.c c-strncasecmp.c
+
+## end   gnulib module c-strcase
+
+## begin gnulib module c-strcaseeq
+
+
+EXTRA_DIST += c-strcaseeq.h
+
+## end   gnulib module c-strcaseeq
+
+## begin gnulib module cloexec
+
+libgnu_a_SOURCES += cloexec.c
+
+EXTRA_DIST += cloexec.h
+
+## end   gnulib module cloexec
+
+## begin gnulib module close
+
+
+EXTRA_DIST += close.c
+
+EXTRA_libgnu_a_SOURCES += close.c
+
+## end   gnulib module close
+
+## begin gnulib module dup2
+
+
+EXTRA_DIST += dup2.c
+
+EXTRA_libgnu_a_SOURCES += dup2.c
+
+## end   gnulib module dup2
+
+## begin gnulib module errno
+
+BUILT_SOURCES += $(ERRNO_H)
+
+# We need the following in order to create <errno.h> when the system
+# doesn't have one that is POSIX compliant.
+if GL_GENERATE_ERRNO_H
+errno.h: errno.in.h $(top_builddir)/config.status
+	$(AM_V_GEN)rm -f $@-t $@ && \
+	{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */' && \
+	  sed -e 's|@''GUARD_PREFIX''@|GL|g' \
+	      -e 's|@''INCLUDE_NEXT''@|$(INCLUDE_NEXT)|g' \
+	      -e 's|@''PRAGMA_SYSTEM_HEADER''@|@PRAGMA_SYSTEM_HEADER@|g' \
+	      -e 's|@''PRAGMA_COLUMNS''@|@PRAGMA_COLUMNS@|g' \
+	      -e 's|@''NEXT_ERRNO_H''@|$(NEXT_ERRNO_H)|g' \
+	      -e 's|@''EMULTIHOP_HIDDEN''@|$(EMULTIHOP_HIDDEN)|g' \
+	      -e 's|@''EMULTIHOP_VALUE''@|$(EMULTIHOP_VALUE)|g' \
+	      -e 's|@''ENOLINK_HIDDEN''@|$(ENOLINK_HIDDEN)|g' \
+	      -e 's|@''ENOLINK_VALUE''@|$(ENOLINK_VALUE)|g' \
+	      -e 's|@''EOVERFLOW_HIDDEN''@|$(EOVERFLOW_HIDDEN)|g' \
+	      -e 's|@''EOVERFLOW_VALUE''@|$(EOVERFLOW_VALUE)|g' \
+	      < $(srcdir)/errno.in.h; \
+	} > $@-t && \
+	mv $@-t $@
+else
+errno.h: $(top_builddir)/config.status
+	rm -f $@
+endif
+MOSTLYCLEANFILES += errno.h errno.h-t
+
+EXTRA_DIST += errno.in.h
+
+## end   gnulib module errno
+
+## begin gnulib module error
+
+
+EXTRA_DIST += error.c error.h
+
+EXTRA_libgnu_a_SOURCES += error.c
+
+## end   gnulib module error
+
+## begin gnulib module exitfail
+
+libgnu_a_SOURCES += exitfail.c
+
+EXTRA_DIST += exitfail.h
+
+## end   gnulib module exitfail
+
+## begin gnulib module fcntl
+
+
+EXTRA_DIST += fcntl.c
+
+EXTRA_libgnu_a_SOURCES += fcntl.c
+
+## end   gnulib module fcntl
+
+## begin gnulib module fcntl-h
+
+BUILT_SOURCES += fcntl.h
+
+# We need the following in order to create <fcntl.h> when the system
+# doesn't have one that works with the given compiler.
+fcntl.h: fcntl.in.h $(top_builddir)/config.status $(CXXDEFS_H) $(ARG_NONNULL_H) $(WARN_ON_USE_H)
+	$(AM_V_GEN)rm -f $@-t $@ && \
+	{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */'; \
+	  sed -e 's|@''GUARD_PREFIX''@|GL|g' \
+	      -e 's|@''INCLUDE_NEXT''@|$(INCLUDE_NEXT)|g' \
+	      -e 's|@''PRAGMA_SYSTEM_HEADER''@|@PRAGMA_SYSTEM_HEADER@|g' \
+	      -e 's|@''PRAGMA_COLUMNS''@|@PRAGMA_COLUMNS@|g' \
+	      -e 's|@''NEXT_FCNTL_H''@|$(NEXT_FCNTL_H)|g' \
+	      -e 's/@''GNULIB_CREAT''@/$(GNULIB_CREAT)/g' \
+	      -e 's/@''GNULIB_FCNTL''@/$(GNULIB_FCNTL)/g' \
+	      -e 's/@''GNULIB_NONBLOCKING''@/$(GNULIB_NONBLOCKING)/g' \
+	      -e 's/@''GNULIB_OPEN''@/$(GNULIB_OPEN)/g' \
+	      -e 's/@''GNULIB_OPENAT''@/$(GNULIB_OPENAT)/g' \
+	      -e 's|@''HAVE_FCNTL''@|$(HAVE_FCNTL)|g' \
+	      -e 's|@''HAVE_OPENAT''@|$(HAVE_OPENAT)|g' \
+	      -e 's|@''REPLACE_CREAT''@|$(REPLACE_CREAT)|g' \
+	      -e 's|@''REPLACE_FCNTL''@|$(REPLACE_FCNTL)|g' \
+	      -e 's|@''REPLACE_OPEN''@|$(REPLACE_OPEN)|g' \
+	      -e 's|@''REPLACE_OPENAT''@|$(REPLACE_OPENAT)|g' \
+	      -e '/definitions of _GL_FUNCDECL_RPL/r $(CXXDEFS_H)' \
+	      -e '/definition of _GL_ARG_NONNULL/r $(ARG_NONNULL_H)' \
+	      -e '/definition of _GL_WARN_ON_USE/r $(WARN_ON_USE_H)' \
+	      < $(srcdir)/fcntl.in.h; \
+	} > $@-t && \
+	mv $@-t $@
+MOSTLYCLEANFILES += fcntl.h fcntl.h-t
+
+EXTRA_DIST += fcntl.in.h
+
+## end   gnulib module fcntl-h
+
+## begin gnulib module fd-hook
+
+libgnu_a_SOURCES += fd-hook.c
+
+EXTRA_DIST += fd-hook.h
+
+## end   gnulib module fd-hook
+
+## begin gnulib module filename
+
+
+EXTRA_DIST += filename.h
+
+## end   gnulib module filename
+
+## begin gnulib module fstat
+
+
+EXTRA_DIST += fstat.c stat-w32.c stat-w32.h
+
+EXTRA_libgnu_a_SOURCES += fstat.c stat-w32.c
+
+## end   gnulib module fstat
+
+## begin gnulib module getdtablesize
+
+
+EXTRA_DIST += getdtablesize.c
+
+EXTRA_libgnu_a_SOURCES += getdtablesize.c
+
+## end   gnulib module getdtablesize
+
+## begin gnulib module getprogname
+
+libgnu_a_SOURCES += getprogname.h getprogname.c
+
+## end   gnulib module getprogname
+
+## begin gnulib module gettext-h
+
+libgnu_a_SOURCES += gettext.h
+
+## end   gnulib module gettext-h
+
+## begin gnulib module hard-locale
+
+libgnu_a_SOURCES += hard-locale.c
+
+EXTRA_DIST += hard-locale.h
+
+## end   gnulib module hard-locale
+
+## begin gnulib module human
+
+libgnu_a_SOURCES += human.c
+
+EXTRA_DIST += human.h
+
+## end   gnulib module human
+
+## begin gnulib module intprops
+
+
+EXTRA_DIST += intprops.h
+
+## end   gnulib module intprops
+
+## begin gnulib module inttypes-incomplete
+
+BUILT_SOURCES += inttypes.h
+
+# We need the following in order to create <inttypes.h> when the system
+# doesn't have one that works with the given compiler.
+inttypes.h: inttypes.in.h $(top_builddir)/config.status $(CXXDEFS_H) $(WARN_ON_USE_H) $(ARG_NONNULL_H)
+	$(AM_V_GEN)rm -f $@-t $@ && \
+	{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */'; \
+	  sed -e 's/@''HAVE_INTTYPES_H''@/$(HAVE_INTTYPES_H)/g' \
+	      -e 's|@''INCLUDE_NEXT''@|$(INCLUDE_NEXT)|g' \
+	      -e 's|@''PRAGMA_SYSTEM_HEADER''@|@PRAGMA_SYSTEM_HEADER@|g' \
+	      -e 's|@''PRAGMA_COLUMNS''@|@PRAGMA_COLUMNS@|g' \
+	      -e 's|@''NEXT_INTTYPES_H''@|$(NEXT_INTTYPES_H)|g' \
+	      -e 's/@''APPLE_UNIVERSAL_BUILD''@/$(APPLE_UNIVERSAL_BUILD)/g' \
+	      -e 's/@''PRIPTR_PREFIX''@/$(PRIPTR_PREFIX)/g' \
+	      -e 's/@''GNULIB_IMAXABS''@/$(GNULIB_IMAXABS)/g' \
+	      -e 's/@''GNULIB_IMAXDIV''@/$(GNULIB_IMAXDIV)/g' \
+	      -e 's/@''GNULIB_STRTOIMAX''@/$(GNULIB_STRTOIMAX)/g' \
+	      -e 's/@''GNULIB_STRTOUMAX''@/$(GNULIB_STRTOUMAX)/g' \
+	      -e 's/@''HAVE_DECL_IMAXABS''@/$(HAVE_DECL_IMAXABS)/g' \
+	      -e 's/@''HAVE_DECL_IMAXDIV''@/$(HAVE_DECL_IMAXDIV)/g' \
+	      -e 's/@''HAVE_DECL_STRTOIMAX''@/$(HAVE_DECL_STRTOIMAX)/g' \
+	      -e 's/@''HAVE_DECL_STRTOUMAX''@/$(HAVE_DECL_STRTOUMAX)/g' \
+	      -e 's/@''HAVE_IMAXDIV_T''@/$(HAVE_IMAXDIV_T)/g' \
+	      -e 's/@''REPLACE_STRTOIMAX''@/$(REPLACE_STRTOIMAX)/g' \
+	      -e 's/@''REPLACE_STRTOUMAX''@/$(REPLACE_STRTOUMAX)/g' \
+	      -e 's/@''INT32_MAX_LT_INTMAX_MAX''@/$(INT32_MAX_LT_INTMAX_MAX)/g' \
+	      -e 's/@''INT64_MAX_EQ_LONG_MAX''@/$(INT64_MAX_EQ_LONG_MAX)/g' \
+	      -e 's/@''UINT32_MAX_LT_UINTMAX_MAX''@/$(UINT32_MAX_LT_UINTMAX_MAX)/g' \
+	      -e 's/@''UINT64_MAX_EQ_ULONG_MAX''@/$(UINT64_MAX_EQ_ULONG_MAX)/g' \
+	      -e '/definitions of _GL_FUNCDECL_RPL/r $(CXXDEFS_H)' \
+	      -e '/definition of _GL_ARG_NONNULL/r $(ARG_NONNULL_H)' \
+	      -e '/definition of _GL_WARN_ON_USE/r $(WARN_ON_USE_H)' \
+	      < $(srcdir)/inttypes.in.h; \
+	} > $@-t && \
+	mv $@-t $@
+MOSTLYCLEANFILES += inttypes.h inttypes.h-t
+
+EXTRA_DIST += inttypes.in.h
+
+## end   gnulib module inttypes-incomplete
+
+## begin gnulib module limits-h
+
+BUILT_SOURCES += $(LIMITS_H)
+
+# We need the following in order to create <limits.h> when the system
+# doesn't have one that is compatible with GNU.
+if GL_GENERATE_LIMITS_H
+limits.h: limits.in.h $(top_builddir)/config.status
+	$(AM_V_GEN)rm -f $@-t $@ && \
+	{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */' && \
+	  sed -e 's|@''GUARD_PREFIX''@|GL|g' \
+	      -e 's|@''INCLUDE_NEXT''@|$(INCLUDE_NEXT)|g' \
+	      -e 's|@''PRAGMA_SYSTEM_HEADER''@|@PRAGMA_SYSTEM_HEADER@|g' \
+	      -e 's|@''PRAGMA_COLUMNS''@|@PRAGMA_COLUMNS@|g' \
+	      -e 's|@''NEXT_LIMITS_H''@|$(NEXT_LIMITS_H)|g' \
+	      < $(srcdir)/limits.in.h; \
+	} > $@-t && \
+	mv $@-t $@
+else
+limits.h: $(top_builddir)/config.status
+	rm -f $@
+endif
+MOSTLYCLEANFILES += limits.h limits.h-t
+
+EXTRA_DIST += limits.in.h
+
+## end   gnulib module limits-h
+
+## begin gnulib module localcharset
+
+libgnu_a_SOURCES += localcharset.c
+
+EXTRA_DIST += localcharset.h
+
+## end   gnulib module localcharset
+
+## begin gnulib module locale
+
+BUILT_SOURCES += locale.h
+
+# We need the following in order to create <locale.h> when the system
+# doesn't have one that provides all definitions.
+locale.h: locale.in.h $(top_builddir)/config.status $(CXXDEFS_H) $(ARG_NONNULL_H) $(WARN_ON_USE_H)
+	$(AM_V_GEN)rm -f $@-t $@ && \
+	{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */' && \
+	  sed -e 's|@''GUARD_PREFIX''@|GL|g' \
+	      -e 's|@''INCLUDE_NEXT''@|$(INCLUDE_NEXT)|g' \
+	      -e 's|@''PRAGMA_SYSTEM_HEADER''@|@PRAGMA_SYSTEM_HEADER@|g' \
+	      -e 's|@''PRAGMA_COLUMNS''@|@PRAGMA_COLUMNS@|g' \
+	      -e 's|@''NEXT_LOCALE_H''@|$(NEXT_LOCALE_H)|g' \
+	      -e 's/@''GNULIB_LOCALECONV''@/$(GNULIB_LOCALECONV)/g' \
+	      -e 's/@''GNULIB_SETLOCALE''@/$(GNULIB_SETLOCALE)/g' \
+	      -e 's/@''GNULIB_SETLOCALE_NULL''@/$(GNULIB_SETLOCALE_NULL)/g' \
+	      -e 's/@''GNULIB_DUPLOCALE''@/$(GNULIB_DUPLOCALE)/g' \
+	      -e 's/@''GNULIB_LOCALENAME''@/$(GNULIB_LOCALENAME)/g' \
+	      -e 's|@''HAVE_NEWLOCALE''@|$(HAVE_NEWLOCALE)|g' \
+	      -e 's|@''HAVE_DUPLOCALE''@|$(HAVE_DUPLOCALE)|g' \
+	      -e 's|@''HAVE_FREELOCALE''@|$(HAVE_FREELOCALE)|g' \
+	      -e 's|@''HAVE_XLOCALE_H''@|$(HAVE_XLOCALE_H)|g' \
+	      -e 's|@''REPLACE_LOCALECONV''@|$(REPLACE_LOCALECONV)|g' \
+	      -e 's|@''REPLACE_SETLOCALE''@|$(REPLACE_SETLOCALE)|g' \
+	      -e 's|@''REPLACE_NEWLOCALE''@|$(REPLACE_NEWLOCALE)|g' \
+	      -e 's|@''REPLACE_DUPLOCALE''@|$(REPLACE_DUPLOCALE)|g' \
+	      -e 's|@''REPLACE_FREELOCALE''@|$(REPLACE_FREELOCALE)|g' \
+	      -e 's|@''REPLACE_STRUCT_LCONV''@|$(REPLACE_STRUCT_LCONV)|g' \
+	      -e '/definitions of _GL_FUNCDECL_RPL/r $(CXXDEFS_H)' \
+	      -e '/definition of _GL_ARG_NONNULL/r $(ARG_NONNULL_H)' \
+	      -e '/definition of _GL_WARN_ON_USE/r $(WARN_ON_USE_H)' \
+	      < $(srcdir)/locale.in.h; \
+	} > $@-t && \
+	mv $@-t $@
+MOSTLYCLEANFILES += locale.h locale.h-t
+
+EXTRA_DIST += locale.in.h
+
+## end   gnulib module locale
+
+## begin gnulib module localeconv
+
+
+EXTRA_DIST += localeconv.c
+
+EXTRA_libgnu_a_SOURCES += localeconv.c
+
+## end   gnulib module localeconv
+
+## begin gnulib module malloca
+
+libgnu_a_SOURCES += malloca.c
+
+EXTRA_DIST += malloca.h
+
+## end   gnulib module malloca
+
+## begin gnulib module mbrtowc
+
+
+EXTRA_DIST += lc-charset-dispatch.c lc-charset-dispatch.h mbrtowc-impl-utf8.h mbrtowc-impl.h mbrtowc.c mbtowc-lock.c mbtowc-lock.h windows-initguard.h
+
+EXTRA_libgnu_a_SOURCES += lc-charset-dispatch.c mbrtowc.c mbtowc-lock.c
+
+## end   gnulib module mbrtowc
+
+## begin gnulib module mbsinit
+
+
+EXTRA_DIST += mbsinit.c
+
+EXTRA_libgnu_a_SOURCES += mbsinit.c
+
+## end   gnulib module mbsinit
+
 ## begin gnulib module minmax
 
 libgnu_a_SOURCES += minmax.h
 
 ## end   gnulib module minmax
+
+## begin gnulib module msvc-inval
+
+
+EXTRA_DIST += msvc-inval.c msvc-inval.h
+
+EXTRA_libgnu_a_SOURCES += msvc-inval.c
+
+## end   gnulib module msvc-inval
+
+## begin gnulib module msvc-nothrow
+
+
+EXTRA_DIST += msvc-nothrow.c msvc-nothrow.h
+
+EXTRA_libgnu_a_SOURCES += msvc-nothrow.c
+
+## end   gnulib module msvc-nothrow
 
 ## begin gnulib module nproc
 
@@ -76,6 +512,76 @@ libgnu_a_SOURCES += nproc.c
 EXTRA_DIST += nproc.h
 
 ## end   gnulib module nproc
+
+## begin gnulib module open
+
+
+EXTRA_DIST += open.c
+
+EXTRA_libgnu_a_SOURCES += open.c
+
+## end   gnulib module open
+
+## begin gnulib module pathmax
+
+
+EXTRA_DIST += pathmax.h
+
+## end   gnulib module pathmax
+
+## begin gnulib module quote
+
+
+EXTRA_DIST += quote.h
+
+## end   gnulib module quote
+
+## begin gnulib module quotearg
+
+libgnu_a_SOURCES += quotearg.c
+
+EXTRA_DIST += quote.h quotearg.h
+
+## end   gnulib module quotearg
+
+## begin gnulib module read
+
+
+EXTRA_DIST += read.c
+
+EXTRA_libgnu_a_SOURCES += read.c
+
+## end   gnulib module read
+
+## begin gnulib module safe-read
+
+libgnu_a_SOURCES += safe-read.c
+
+EXTRA_DIST += safe-read.h sys-limits.h
+
+## end   gnulib module safe-read
+
+## begin gnulib module setlocale-null
+
+libgnu_a_SOURCES += setlocale_null.c
+
+EXTRA_DIST += setlocale-lock.c setlocale_null.h windows-initguard.h
+
+EXTRA_libgnu_a_SOURCES += setlocale-lock.c
+
+## end   gnulib module setlocale-null
+
+## begin gnulib module snippet/_Noreturn
+
+# Because this Makefile snippet defines a variable used by other
+# gnulib Makefile snippets, it must be present in all makefiles that
+# need it. This is ensured by the applicability 'all' defined above.
+
+_NORETURN_H=$(srcdir)/_Noreturn.h
+
+EXTRA_DIST += _Noreturn.h
+
+## end   gnulib module snippet/_Noreturn
 
 ## begin gnulib module snippet/arg-nonnull
 
@@ -112,6 +618,23 @@ WARN_ON_USE_H=$(srcdir)/warn-on-use.h
 EXTRA_DIST += warn-on-use.h
 
 ## end   gnulib module snippet/warn-on-use
+
+## begin gnulib module stat
+
+
+EXTRA_DIST += stat-w32.c stat-w32.h stat.c
+
+EXTRA_libgnu_a_SOURCES += stat-w32.c stat.c
+
+## end   gnulib module stat
+
+## begin gnulib module stat-time
+
+libgnu_a_SOURCES += stat-time.c
+
+EXTRA_DIST += stat-time.h
+
+## end   gnulib module stat-time
 
 ## begin gnulib module stdbool
 
@@ -167,6 +690,521 @@ EXTRA_DIST += stddef.in.h
 
 ## end   gnulib module stddef
 
+## begin gnulib module stdint
+
+BUILT_SOURCES += $(STDINT_H)
+
+# We need the following in order to create <stdint.h> when the system
+# doesn't have one that works with the given compiler.
+if GL_GENERATE_STDINT_H
+stdint.h: stdint.in.h $(top_builddir)/config.status
+	$(AM_V_GEN)rm -f $@-t $@ && \
+	{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */'; \
+	  sed -e 's|@''GUARD_PREFIX''@|GL|g' \
+	      -e 's/@''HAVE_STDINT_H''@/$(HAVE_STDINT_H)/g' \
+	      -e 's|@''INCLUDE_NEXT''@|$(INCLUDE_NEXT)|g' \
+	      -e 's|@''PRAGMA_SYSTEM_HEADER''@|@PRAGMA_SYSTEM_HEADER@|g' \
+	      -e 's|@''PRAGMA_COLUMNS''@|@PRAGMA_COLUMNS@|g' \
+	      -e 's|@''NEXT_STDINT_H''@|$(NEXT_STDINT_H)|g' \
+	      -e 's/@''HAVE_C99_STDINT_H''@/$(HAVE_C99_STDINT_H)/g' \
+	      -e 's/@''HAVE_SYS_TYPES_H''@/$(HAVE_SYS_TYPES_H)/g' \
+	      -e 's/@''HAVE_INTTYPES_H''@/$(HAVE_INTTYPES_H)/g' \
+	      -e 's/@''HAVE_SYS_INTTYPES_H''@/$(HAVE_SYS_INTTYPES_H)/g' \
+	      -e 's/@''HAVE_SYS_BITYPES_H''@/$(HAVE_SYS_BITYPES_H)/g' \
+	      -e 's/@''HAVE_WCHAR_H''@/$(HAVE_WCHAR_H)/g' \
+	      -e 's/@''APPLE_UNIVERSAL_BUILD''@/$(APPLE_UNIVERSAL_BUILD)/g' \
+	      -e 's/@''BITSIZEOF_PTRDIFF_T''@/$(BITSIZEOF_PTRDIFF_T)/g' \
+	      -e 's/@''PTRDIFF_T_SUFFIX''@/$(PTRDIFF_T_SUFFIX)/g' \
+	      -e 's/@''BITSIZEOF_SIG_ATOMIC_T''@/$(BITSIZEOF_SIG_ATOMIC_T)/g' \
+	      -e 's/@''HAVE_SIGNED_SIG_ATOMIC_T''@/$(HAVE_SIGNED_SIG_ATOMIC_T)/g' \
+	      -e 's/@''SIG_ATOMIC_T_SUFFIX''@/$(SIG_ATOMIC_T_SUFFIX)/g' \
+	      -e 's/@''BITSIZEOF_SIZE_T''@/$(BITSIZEOF_SIZE_T)/g' \
+	      -e 's/@''SIZE_T_SUFFIX''@/$(SIZE_T_SUFFIX)/g' \
+	      -e 's/@''BITSIZEOF_WCHAR_T''@/$(BITSIZEOF_WCHAR_T)/g' \
+	      -e 's/@''HAVE_SIGNED_WCHAR_T''@/$(HAVE_SIGNED_WCHAR_T)/g' \
+	      -e 's/@''WCHAR_T_SUFFIX''@/$(WCHAR_T_SUFFIX)/g' \
+	      -e 's/@''BITSIZEOF_WINT_T''@/$(BITSIZEOF_WINT_T)/g' \
+	      -e 's/@''HAVE_SIGNED_WINT_T''@/$(HAVE_SIGNED_WINT_T)/g' \
+	      -e 's/@''WINT_T_SUFFIX''@/$(WINT_T_SUFFIX)/g' \
+	      -e 's/@''GNULIB_OVERRIDES_WINT_T''@/$(GNULIB_OVERRIDES_WINT_T)/g' \
+	      < $(srcdir)/stdint.in.h; \
+	} > $@-t && \
+	mv $@-t $@
+else
+stdint.h: $(top_builddir)/config.status
+	rm -f $@
+endif
+MOSTLYCLEANFILES += stdint.h stdint.h-t
+
+EXTRA_DIST += stdint.in.h
+
+## end   gnulib module stdint
+
+## begin gnulib module stdio
+
+BUILT_SOURCES += stdio.h
+
+# We need the following in order to create <stdio.h> when the system
+# doesn't have one that works with the given compiler.
+stdio.h: stdio.in.h $(top_builddir)/config.status $(CXXDEFS_H) $(ARG_NONNULL_H) $(WARN_ON_USE_H)
+	$(AM_V_GEN)rm -f $@-t $@ && \
+	{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */' && \
+	  sed -e 's|@''GUARD_PREFIX''@|GL|g' \
+	      -e 's|@''INCLUDE_NEXT''@|$(INCLUDE_NEXT)|g' \
+	      -e 's|@''PRAGMA_SYSTEM_HEADER''@|@PRAGMA_SYSTEM_HEADER@|g' \
+	      -e 's|@''PRAGMA_COLUMNS''@|@PRAGMA_COLUMNS@|g' \
+	      -e 's|@''NEXT_STDIO_H''@|$(NEXT_STDIO_H)|g' \
+	      -e 's/@''GNULIB_DPRINTF''@/$(GNULIB_DPRINTF)/g' \
+	      -e 's/@''GNULIB_FCLOSE''@/$(GNULIB_FCLOSE)/g' \
+	      -e 's/@''GNULIB_FDOPEN''@/$(GNULIB_FDOPEN)/g' \
+	      -e 's/@''GNULIB_FFLUSH''@/$(GNULIB_FFLUSH)/g' \
+	      -e 's/@''GNULIB_FGETC''@/$(GNULIB_FGETC)/g' \
+	      -e 's/@''GNULIB_FGETS''@/$(GNULIB_FGETS)/g' \
+	      -e 's/@''GNULIB_FOPEN''@/$(GNULIB_FOPEN)/g' \
+	      -e 's/@''GNULIB_FPRINTF''@/$(GNULIB_FPRINTF)/g' \
+	      -e 's/@''GNULIB_FPRINTF_POSIX''@/$(GNULIB_FPRINTF_POSIX)/g' \
+	      -e 's/@''GNULIB_FPURGE''@/$(GNULIB_FPURGE)/g' \
+	      -e 's/@''GNULIB_FPUTC''@/$(GNULIB_FPUTC)/g' \
+	      -e 's/@''GNULIB_FPUTS''@/$(GNULIB_FPUTS)/g' \
+	      -e 's/@''GNULIB_FREAD''@/$(GNULIB_FREAD)/g' \
+	      -e 's/@''GNULIB_FREOPEN''@/$(GNULIB_FREOPEN)/g' \
+	      -e 's/@''GNULIB_FSCANF''@/$(GNULIB_FSCANF)/g' \
+	      -e 's/@''GNULIB_FSEEK''@/$(GNULIB_FSEEK)/g' \
+	      -e 's/@''GNULIB_FSEEKO''@/$(GNULIB_FSEEKO)/g' \
+	      -e 's/@''GNULIB_FTELL''@/$(GNULIB_FTELL)/g' \
+	      -e 's/@''GNULIB_FTELLO''@/$(GNULIB_FTELLO)/g' \
+	      -e 's/@''GNULIB_FWRITE''@/$(GNULIB_FWRITE)/g' \
+	      -e 's/@''GNULIB_GETC''@/$(GNULIB_GETC)/g' \
+	      -e 's/@''GNULIB_GETCHAR''@/$(GNULIB_GETCHAR)/g' \
+	      -e 's/@''GNULIB_GETDELIM''@/$(GNULIB_GETDELIM)/g' \
+	      -e 's/@''GNULIB_GETLINE''@/$(GNULIB_GETLINE)/g' \
+	      -e 's/@''GNULIB_OBSTACK_PRINTF''@/$(GNULIB_OBSTACK_PRINTF)/g' \
+	      -e 's/@''GNULIB_OBSTACK_PRINTF_POSIX''@/$(GNULIB_OBSTACK_PRINTF_POSIX)/g' \
+	      -e 's/@''GNULIB_PCLOSE''@/$(GNULIB_PCLOSE)/g' \
+	      -e 's/@''GNULIB_PERROR''@/$(GNULIB_PERROR)/g' \
+	      -e 's/@''GNULIB_POPEN''@/$(GNULIB_POPEN)/g' \
+	      -e 's/@''GNULIB_PRINTF''@/$(GNULIB_PRINTF)/g' \
+	      -e 's/@''GNULIB_PRINTF_POSIX''@/$(GNULIB_PRINTF_POSIX)/g' \
+	      -e 's/@''GNULIB_PUTC''@/$(GNULIB_PUTC)/g' \
+	      -e 's/@''GNULIB_PUTCHAR''@/$(GNULIB_PUTCHAR)/g' \
+	      -e 's/@''GNULIB_PUTS''@/$(GNULIB_PUTS)/g' \
+	      -e 's/@''GNULIB_REMOVE''@/$(GNULIB_REMOVE)/g' \
+	      -e 's/@''GNULIB_RENAME''@/$(GNULIB_RENAME)/g' \
+	      -e 's/@''GNULIB_RENAMEAT''@/$(GNULIB_RENAMEAT)/g' \
+	      -e 's/@''GNULIB_SCANF''@/$(GNULIB_SCANF)/g' \
+	      -e 's/@''GNULIB_SNPRINTF''@/$(GNULIB_SNPRINTF)/g' \
+	      -e 's/@''GNULIB_SPRINTF_POSIX''@/$(GNULIB_SPRINTF_POSIX)/g' \
+	      -e 's/@''GNULIB_STDIO_H_NONBLOCKING''@/$(GNULIB_STDIO_H_NONBLOCKING)/g' \
+	      -e 's/@''GNULIB_STDIO_H_SIGPIPE''@/$(GNULIB_STDIO_H_SIGPIPE)/g' \
+	      -e 's/@''GNULIB_TMPFILE''@/$(GNULIB_TMPFILE)/g' \
+	      -e 's/@''GNULIB_VASPRINTF''@/$(GNULIB_VASPRINTF)/g' \
+	      -e 's/@''GNULIB_VDPRINTF''@/$(GNULIB_VDPRINTF)/g' \
+	      -e 's/@''GNULIB_VFPRINTF''@/$(GNULIB_VFPRINTF)/g' \
+	      -e 's/@''GNULIB_VFPRINTF_POSIX''@/$(GNULIB_VFPRINTF_POSIX)/g' \
+	      -e 's/@''GNULIB_VFSCANF''@/$(GNULIB_VFSCANF)/g' \
+	      -e 's/@''GNULIB_VSCANF''@/$(GNULIB_VSCANF)/g' \
+	      -e 's/@''GNULIB_VPRINTF''@/$(GNULIB_VPRINTF)/g' \
+	      -e 's/@''GNULIB_VPRINTF_POSIX''@/$(GNULIB_VPRINTF_POSIX)/g' \
+	      -e 's/@''GNULIB_VSNPRINTF''@/$(GNULIB_VSNPRINTF)/g' \
+	      -e 's/@''GNULIB_VSPRINTF_POSIX''@/$(GNULIB_VSPRINTF_POSIX)/g' \
+	      < $(srcdir)/stdio.in.h | \
+	  sed -e 's|@''HAVE_DECL_FPURGE''@|$(HAVE_DECL_FPURGE)|g' \
+	      -e 's|@''HAVE_DECL_FSEEKO''@|$(HAVE_DECL_FSEEKO)|g' \
+	      -e 's|@''HAVE_DECL_FTELLO''@|$(HAVE_DECL_FTELLO)|g' \
+	      -e 's|@''HAVE_DECL_GETDELIM''@|$(HAVE_DECL_GETDELIM)|g' \
+	      -e 's|@''HAVE_DECL_GETLINE''@|$(HAVE_DECL_GETLINE)|g' \
+	      -e 's|@''HAVE_DECL_OBSTACK_PRINTF''@|$(HAVE_DECL_OBSTACK_PRINTF)|g' \
+	      -e 's|@''HAVE_DECL_SNPRINTF''@|$(HAVE_DECL_SNPRINTF)|g' \
+	      -e 's|@''HAVE_DECL_VSNPRINTF''@|$(HAVE_DECL_VSNPRINTF)|g' \
+	      -e 's|@''HAVE_DPRINTF''@|$(HAVE_DPRINTF)|g' \
+	      -e 's|@''HAVE_FSEEKO''@|$(HAVE_FSEEKO)|g' \
+	      -e 's|@''HAVE_FTELLO''@|$(HAVE_FTELLO)|g' \
+	      -e 's|@''HAVE_PCLOSE''@|$(HAVE_PCLOSE)|g' \
+	      -e 's|@''HAVE_POPEN''@|$(HAVE_POPEN)|g' \
+	      -e 's|@''HAVE_RENAMEAT''@|$(HAVE_RENAMEAT)|g' \
+	      -e 's|@''HAVE_VASPRINTF''@|$(HAVE_VASPRINTF)|g' \
+	      -e 's|@''HAVE_VDPRINTF''@|$(HAVE_VDPRINTF)|g' \
+	      -e 's|@''REPLACE_DPRINTF''@|$(REPLACE_DPRINTF)|g' \
+	      -e 's|@''REPLACE_FCLOSE''@|$(REPLACE_FCLOSE)|g' \
+	      -e 's|@''REPLACE_FDOPEN''@|$(REPLACE_FDOPEN)|g' \
+	      -e 's|@''REPLACE_FFLUSH''@|$(REPLACE_FFLUSH)|g' \
+	      -e 's|@''REPLACE_FOPEN''@|$(REPLACE_FOPEN)|g' \
+	      -e 's|@''REPLACE_FPRINTF''@|$(REPLACE_FPRINTF)|g' \
+	      -e 's|@''REPLACE_FPURGE''@|$(REPLACE_FPURGE)|g' \
+	      -e 's|@''REPLACE_FREOPEN''@|$(REPLACE_FREOPEN)|g' \
+	      -e 's|@''REPLACE_FSEEK''@|$(REPLACE_FSEEK)|g' \
+	      -e 's|@''REPLACE_FSEEKO''@|$(REPLACE_FSEEKO)|g' \
+	      -e 's|@''REPLACE_FTELL''@|$(REPLACE_FTELL)|g' \
+	      -e 's|@''REPLACE_FTELLO''@|$(REPLACE_FTELLO)|g' \
+	      -e 's|@''REPLACE_GETDELIM''@|$(REPLACE_GETDELIM)|g' \
+	      -e 's|@''REPLACE_GETLINE''@|$(REPLACE_GETLINE)|g' \
+	      -e 's|@''REPLACE_OBSTACK_PRINTF''@|$(REPLACE_OBSTACK_PRINTF)|g' \
+	      -e 's|@''REPLACE_PERROR''@|$(REPLACE_PERROR)|g' \
+	      -e 's|@''REPLACE_POPEN''@|$(REPLACE_POPEN)|g' \
+	      -e 's|@''REPLACE_PRINTF''@|$(REPLACE_PRINTF)|g' \
+	      -e 's|@''REPLACE_REMOVE''@|$(REPLACE_REMOVE)|g' \
+	      -e 's|@''REPLACE_RENAME''@|$(REPLACE_RENAME)|g' \
+	      -e 's|@''REPLACE_RENAMEAT''@|$(REPLACE_RENAMEAT)|g' \
+	      -e 's|@''REPLACE_SNPRINTF''@|$(REPLACE_SNPRINTF)|g' \
+	      -e 's|@''REPLACE_SPRINTF''@|$(REPLACE_SPRINTF)|g' \
+	      -e 's|@''REPLACE_STDIO_READ_FUNCS''@|$(REPLACE_STDIO_READ_FUNCS)|g' \
+	      -e 's|@''REPLACE_STDIO_WRITE_FUNCS''@|$(REPLACE_STDIO_WRITE_FUNCS)|g' \
+	      -e 's|@''REPLACE_TMPFILE''@|$(REPLACE_TMPFILE)|g' \
+	      -e 's|@''REPLACE_VASPRINTF''@|$(REPLACE_VASPRINTF)|g' \
+	      -e 's|@''REPLACE_VDPRINTF''@|$(REPLACE_VDPRINTF)|g' \
+	      -e 's|@''REPLACE_VFPRINTF''@|$(REPLACE_VFPRINTF)|g' \
+	      -e 's|@''REPLACE_VPRINTF''@|$(REPLACE_VPRINTF)|g' \
+	      -e 's|@''REPLACE_VSNPRINTF''@|$(REPLACE_VSNPRINTF)|g' \
+	      -e 's|@''REPLACE_VSPRINTF''@|$(REPLACE_VSPRINTF)|g' \
+	      -e 's|@''ASM_SYMBOL_PREFIX''@|$(ASM_SYMBOL_PREFIX)|g' \
+	      -e '/definitions of _GL_FUNCDECL_RPL/r $(CXXDEFS_H)' \
+	      -e '/definition of _GL_ARG_NONNULL/r $(ARG_NONNULL_H)' \
+	      -e '/definition of _GL_WARN_ON_USE/r $(WARN_ON_USE_H)'; \
+	} > $@-t && \
+	mv $@-t $@
+MOSTLYCLEANFILES += stdio.h stdio.h-t
+
+EXTRA_DIST += stdio.in.h
+
+## end   gnulib module stdio
+
+## begin gnulib module stdlib
+
+BUILT_SOURCES += stdlib.h
+
+# We need the following in order to create <stdlib.h> when the system
+# doesn't have one that works with the given compiler.
+stdlib.h: stdlib.in.h $(top_builddir)/config.status $(CXXDEFS_H) \
+  $(_NORETURN_H) $(ARG_NONNULL_H) $(WARN_ON_USE_H)
+	$(AM_V_GEN)rm -f $@-t $@ && \
+	{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */' && \
+	  sed -e 's|@''GUARD_PREFIX''@|GL|g' \
+	      -e 's|@''INCLUDE_NEXT''@|$(INCLUDE_NEXT)|g' \
+	      -e 's|@''PRAGMA_SYSTEM_HEADER''@|@PRAGMA_SYSTEM_HEADER@|g' \
+	      -e 's|@''PRAGMA_COLUMNS''@|@PRAGMA_COLUMNS@|g' \
+	      -e 's|@''NEXT_STDLIB_H''@|$(NEXT_STDLIB_H)|g' \
+	      -e 's/@''GNULIB__EXIT''@/$(GNULIB__EXIT)/g' \
+	      -e 's/@''GNULIB_ATOLL''@/$(GNULIB_ATOLL)/g' \
+	      -e 's/@''GNULIB_CALLOC_POSIX''@/$(GNULIB_CALLOC_POSIX)/g' \
+	      -e 's/@''GNULIB_CANONICALIZE_FILE_NAME''@/$(GNULIB_CANONICALIZE_FILE_NAME)/g' \
+	      -e 's/@''GNULIB_GETLOADAVG''@/$(GNULIB_GETLOADAVG)/g' \
+	      -e 's/@''GNULIB_GETSUBOPT''@/$(GNULIB_GETSUBOPT)/g' \
+	      -e 's/@''GNULIB_GRANTPT''@/$(GNULIB_GRANTPT)/g' \
+	      -e 's/@''GNULIB_MALLOC_POSIX''@/$(GNULIB_MALLOC_POSIX)/g' \
+	      -e 's/@''GNULIB_MBTOWC''@/$(GNULIB_MBTOWC)/g' \
+	      -e 's/@''GNULIB_MKDTEMP''@/$(GNULIB_MKDTEMP)/g' \
+	      -e 's/@''GNULIB_MKOSTEMP''@/$(GNULIB_MKOSTEMP)/g' \
+	      -e 's/@''GNULIB_MKOSTEMPS''@/$(GNULIB_MKOSTEMPS)/g' \
+	      -e 's/@''GNULIB_MKSTEMP''@/$(GNULIB_MKSTEMP)/g' \
+	      -e 's/@''GNULIB_MKSTEMPS''@/$(GNULIB_MKSTEMPS)/g' \
+	      -e 's/@''GNULIB_POSIX_OPENPT''@/$(GNULIB_POSIX_OPENPT)/g' \
+	      -e 's/@''GNULIB_PTSNAME''@/$(GNULIB_PTSNAME)/g' \
+	      -e 's/@''GNULIB_PTSNAME_R''@/$(GNULIB_PTSNAME_R)/g' \
+	      -e 's/@''GNULIB_PUTENV''@/$(GNULIB_PUTENV)/g' \
+	      -e 's/@''GNULIB_QSORT_R''@/$(GNULIB_QSORT_R)/g' \
+	      -e 's/@''GNULIB_RANDOM''@/$(GNULIB_RANDOM)/g' \
+	      -e 's/@''GNULIB_RANDOM_R''@/$(GNULIB_RANDOM_R)/g' \
+	      -e 's/@''GNULIB_REALLOC_POSIX''@/$(GNULIB_REALLOC_POSIX)/g' \
+	      -e 's/@''GNULIB_REALLOCARRAY''@/$(GNULIB_REALLOCARRAY)/g' \
+	      -e 's/@''GNULIB_REALPATH''@/$(GNULIB_REALPATH)/g' \
+	      -e 's/@''GNULIB_RPMATCH''@/$(GNULIB_RPMATCH)/g' \
+	      -e 's/@''GNULIB_SECURE_GETENV''@/$(GNULIB_SECURE_GETENV)/g' \
+	      -e 's/@''GNULIB_SETENV''@/$(GNULIB_SETENV)/g' \
+	      -e 's/@''GNULIB_STRTOD''@/$(GNULIB_STRTOD)/g' \
+	      -e 's/@''GNULIB_STRTOLD''@/$(GNULIB_STRTOLD)/g' \
+	      -e 's/@''GNULIB_STRTOLL''@/$(GNULIB_STRTOLL)/g' \
+	      -e 's/@''GNULIB_STRTOULL''@/$(GNULIB_STRTOULL)/g' \
+	      -e 's/@''GNULIB_SYSTEM_POSIX''@/$(GNULIB_SYSTEM_POSIX)/g' \
+	      -e 's/@''GNULIB_UNLOCKPT''@/$(GNULIB_UNLOCKPT)/g' \
+	      -e 's/@''GNULIB_UNSETENV''@/$(GNULIB_UNSETENV)/g' \
+	      -e 's/@''GNULIB_WCTOMB''@/$(GNULIB_WCTOMB)/g' \
+	      < $(srcdir)/stdlib.in.h | \
+	  sed -e 's|@''HAVE__EXIT''@|$(HAVE__EXIT)|g' \
+	      -e 's|@''HAVE_ATOLL''@|$(HAVE_ATOLL)|g' \
+	      -e 's|@''HAVE_CANONICALIZE_FILE_NAME''@|$(HAVE_CANONICALIZE_FILE_NAME)|g' \
+	      -e 's|@''HAVE_DECL_GETLOADAVG''@|$(HAVE_DECL_GETLOADAVG)|g' \
+	      -e 's|@''HAVE_GETSUBOPT''@|$(HAVE_GETSUBOPT)|g' \
+	      -e 's|@''HAVE_GRANTPT''@|$(HAVE_GRANTPT)|g' \
+	      -e 's|@''HAVE_INITSTATE''@|$(HAVE_INITSTATE)|g' \
+	      -e 's|@''HAVE_DECL_INITSTATE''@|$(HAVE_DECL_INITSTATE)|g' \
+	      -e 's|@''HAVE_MBTOWC''@|$(HAVE_MBTOWC)|g' \
+	      -e 's|@''HAVE_MKDTEMP''@|$(HAVE_MKDTEMP)|g' \
+	      -e 's|@''HAVE_MKOSTEMP''@|$(HAVE_MKOSTEMP)|g' \
+	      -e 's|@''HAVE_MKOSTEMPS''@|$(HAVE_MKOSTEMPS)|g' \
+	      -e 's|@''HAVE_MKSTEMP''@|$(HAVE_MKSTEMP)|g' \
+	      -e 's|@''HAVE_MKSTEMPS''@|$(HAVE_MKSTEMPS)|g' \
+	      -e 's|@''HAVE_POSIX_OPENPT''@|$(HAVE_POSIX_OPENPT)|g' \
+	      -e 's|@''HAVE_PTSNAME''@|$(HAVE_PTSNAME)|g' \
+	      -e 's|@''HAVE_PTSNAME_R''@|$(HAVE_PTSNAME_R)|g' \
+	      -e 's|@''HAVE_QSORT_R''@|$(HAVE_QSORT_R)|g' \
+	      -e 's|@''HAVE_RANDOM''@|$(HAVE_RANDOM)|g' \
+	      -e 's|@''HAVE_RANDOM_H''@|$(HAVE_RANDOM_H)|g' \
+	      -e 's|@''HAVE_RANDOM_R''@|$(HAVE_RANDOM_R)|g' \
+	      -e 's|@''HAVE_REALLOCARRAY''@|$(HAVE_REALLOCARRAY)|g' \
+	      -e 's|@''HAVE_REALPATH''@|$(HAVE_REALPATH)|g' \
+	      -e 's|@''HAVE_RPMATCH''@|$(HAVE_RPMATCH)|g' \
+	      -e 's|@''HAVE_SECURE_GETENV''@|$(HAVE_SECURE_GETENV)|g' \
+	      -e 's|@''HAVE_DECL_SETENV''@|$(HAVE_DECL_SETENV)|g' \
+	      -e 's|@''HAVE_SETSTATE''@|$(HAVE_SETSTATE)|g' \
+	      -e 's|@''HAVE_DECL_SETSTATE''@|$(HAVE_DECL_SETSTATE)|g' \
+	      -e 's|@''HAVE_STRTOD''@|$(HAVE_STRTOD)|g' \
+	      -e 's|@''HAVE_STRTOLD''@|$(HAVE_STRTOLD)|g' \
+	      -e 's|@''HAVE_STRTOLL''@|$(HAVE_STRTOLL)|g' \
+	      -e 's|@''HAVE_STRTOULL''@|$(HAVE_STRTOULL)|g' \
+	      -e 's|@''HAVE_STRUCT_RANDOM_DATA''@|$(HAVE_STRUCT_RANDOM_DATA)|g' \
+	      -e 's|@''HAVE_SYS_LOADAVG_H''@|$(HAVE_SYS_LOADAVG_H)|g' \
+	      -e 's|@''HAVE_UNLOCKPT''@|$(HAVE_UNLOCKPT)|g' \
+	      -e 's|@''HAVE_DECL_UNSETENV''@|$(HAVE_DECL_UNSETENV)|g' \
+	      -e 's|@''REPLACE_CALLOC''@|$(REPLACE_CALLOC)|g' \
+	      -e 's|@''REPLACE_CANONICALIZE_FILE_NAME''@|$(REPLACE_CANONICALIZE_FILE_NAME)|g' \
+	      -e 's|@''REPLACE_INITSTATE''@|$(REPLACE_INITSTATE)|g' \
+	      -e 's|@''REPLACE_MALLOC''@|$(REPLACE_MALLOC)|g' \
+	      -e 's|@''REPLACE_MBTOWC''@|$(REPLACE_MBTOWC)|g' \
+	      -e 's|@''REPLACE_MKSTEMP''@|$(REPLACE_MKSTEMP)|g' \
+	      -e 's|@''REPLACE_PTSNAME''@|$(REPLACE_PTSNAME)|g' \
+	      -e 's|@''REPLACE_PTSNAME_R''@|$(REPLACE_PTSNAME_R)|g' \
+	      -e 's|@''REPLACE_PUTENV''@|$(REPLACE_PUTENV)|g' \
+	      -e 's|@''REPLACE_QSORT_R''@|$(REPLACE_QSORT_R)|g' \
+	      -e 's|@''REPLACE_RANDOM''@|$(REPLACE_RANDOM)|g' \
+	      -e 's|@''REPLACE_RANDOM_R''@|$(REPLACE_RANDOM_R)|g' \
+	      -e 's|@''REPLACE_REALLOC''@|$(REPLACE_REALLOC)|g' \
+	      -e 's|@''REPLACE_REALPATH''@|$(REPLACE_REALPATH)|g' \
+	      -e 's|@''REPLACE_SETENV''@|$(REPLACE_SETENV)|g' \
+	      -e 's|@''REPLACE_SETSTATE''@|$(REPLACE_SETSTATE)|g' \
+	      -e 's|@''REPLACE_STRTOD''@|$(REPLACE_STRTOD)|g' \
+	      -e 's|@''REPLACE_STRTOLD''@|$(REPLACE_STRTOLD)|g' \
+	      -e 's|@''REPLACE_UNSETENV''@|$(REPLACE_UNSETENV)|g' \
+	      -e 's|@''REPLACE_WCTOMB''@|$(REPLACE_WCTOMB)|g' \
+	      -e '/definitions of _GL_FUNCDECL_RPL/r $(CXXDEFS_H)' \
+	      -e '/definition of _Noreturn/r $(_NORETURN_H)' \
+	      -e '/definition of _GL_ARG_NONNULL/r $(ARG_NONNULL_H)' \
+	      -e '/definition of _GL_WARN_ON_USE/r $(WARN_ON_USE_H)'; \
+	} > $@-t && \
+	mv $@-t $@
+MOSTLYCLEANFILES += stdlib.h stdlib.h-t
+
+EXTRA_DIST += stdlib.in.h
+
+## end   gnulib module stdlib
+
+## begin gnulib module streq
+
+
+EXTRA_DIST += streq.h
+
+## end   gnulib module streq
+
+## begin gnulib module strerror
+
+
+EXTRA_DIST += strerror.c
+
+EXTRA_libgnu_a_SOURCES += strerror.c
+
+## end   gnulib module strerror
+
+## begin gnulib module strerror-override
+
+
+EXTRA_DIST += strerror-override.c strerror-override.h
+
+EXTRA_libgnu_a_SOURCES += strerror-override.c
+
+## end   gnulib module strerror-override
+
+## begin gnulib module string
+
+BUILT_SOURCES += string.h
+
+# We need the following in order to create <string.h> when the system
+# doesn't have one that works with the given compiler.
+string.h: string.in.h $(top_builddir)/config.status $(CXXDEFS_H) $(ARG_NONNULL_H) $(WARN_ON_USE_H)
+	$(AM_V_GEN)rm -f $@-t $@ && \
+	{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */' && \
+	  sed -e 's|@''GUARD_PREFIX''@|GL|g' \
+	      -e 's|@''INCLUDE_NEXT''@|$(INCLUDE_NEXT)|g' \
+	      -e 's|@''PRAGMA_SYSTEM_HEADER''@|@PRAGMA_SYSTEM_HEADER@|g' \
+	      -e 's|@''PRAGMA_COLUMNS''@|@PRAGMA_COLUMNS@|g' \
+	      -e 's|@''NEXT_STRING_H''@|$(NEXT_STRING_H)|g' \
+	      -e 's/@''GNULIB_EXPLICIT_BZERO''@/$(GNULIB_EXPLICIT_BZERO)/g' \
+	      -e 's/@''GNULIB_FFSL''@/$(GNULIB_FFSL)/g' \
+	      -e 's/@''GNULIB_FFSLL''@/$(GNULIB_FFSLL)/g' \
+	      -e 's/@''GNULIB_MBSLEN''@/$(GNULIB_MBSLEN)/g' \
+	      -e 's/@''GNULIB_MBSNLEN''@/$(GNULIB_MBSNLEN)/g' \
+	      -e 's/@''GNULIB_MBSCHR''@/$(GNULIB_MBSCHR)/g' \
+	      -e 's/@''GNULIB_MBSRCHR''@/$(GNULIB_MBSRCHR)/g' \
+	      -e 's/@''GNULIB_MBSSTR''@/$(GNULIB_MBSSTR)/g' \
+	      -e 's/@''GNULIB_MBSCASECMP''@/$(GNULIB_MBSCASECMP)/g' \
+	      -e 's/@''GNULIB_MBSNCASECMP''@/$(GNULIB_MBSNCASECMP)/g' \
+	      -e 's/@''GNULIB_MBSPCASECMP''@/$(GNULIB_MBSPCASECMP)/g' \
+	      -e 's/@''GNULIB_MBSCASESTR''@/$(GNULIB_MBSCASESTR)/g' \
+	      -e 's/@''GNULIB_MBSCSPN''@/$(GNULIB_MBSCSPN)/g' \
+	      -e 's/@''GNULIB_MBSPBRK''@/$(GNULIB_MBSPBRK)/g' \
+	      -e 's/@''GNULIB_MBSSPN''@/$(GNULIB_MBSSPN)/g' \
+	      -e 's/@''GNULIB_MBSSEP''@/$(GNULIB_MBSSEP)/g' \
+	      -e 's/@''GNULIB_MBSTOK_R''@/$(GNULIB_MBSTOK_R)/g' \
+	      -e 's/@''GNULIB_MEMCHR''@/$(GNULIB_MEMCHR)/g' \
+	      -e 's/@''GNULIB_MEMMEM''@/$(GNULIB_MEMMEM)/g' \
+	      -e 's/@''GNULIB_MEMPCPY''@/$(GNULIB_MEMPCPY)/g' \
+	      -e 's/@''GNULIB_MEMRCHR''@/$(GNULIB_MEMRCHR)/g' \
+	      -e 's/@''GNULIB_RAWMEMCHR''@/$(GNULIB_RAWMEMCHR)/g' \
+	      -e 's/@''GNULIB_STPCPY''@/$(GNULIB_STPCPY)/g' \
+	      -e 's/@''GNULIB_STPNCPY''@/$(GNULIB_STPNCPY)/g' \
+	      -e 's/@''GNULIB_STRCHRNUL''@/$(GNULIB_STRCHRNUL)/g' \
+	      -e 's/@''GNULIB_STRDUP''@/$(GNULIB_STRDUP)/g' \
+	      -e 's/@''GNULIB_STRNCAT''@/$(GNULIB_STRNCAT)/g' \
+	      -e 's/@''GNULIB_STRNDUP''@/$(GNULIB_STRNDUP)/g' \
+	      -e 's/@''GNULIB_STRNLEN''@/$(GNULIB_STRNLEN)/g' \
+	      -e 's/@''GNULIB_STRPBRK''@/$(GNULIB_STRPBRK)/g' \
+	      -e 's/@''GNULIB_STRSEP''@/$(GNULIB_STRSEP)/g' \
+	      -e 's/@''GNULIB_STRSTR''@/$(GNULIB_STRSTR)/g' \
+	      -e 's/@''GNULIB_STRCASESTR''@/$(GNULIB_STRCASESTR)/g' \
+	      -e 's/@''GNULIB_STRTOK_R''@/$(GNULIB_STRTOK_R)/g' \
+	      -e 's/@''GNULIB_STRERROR''@/$(GNULIB_STRERROR)/g' \
+	      -e 's/@''GNULIB_STRERROR_R''@/$(GNULIB_STRERROR_R)/g' \
+	      -e 's/@''GNULIB_STRERRORNAME_NP''@/$(GNULIB_STRERRORNAME_NP)/g' \
+	      -e 's/@''GNULIB_SIGABBREV_NP''@/$(GNULIB_SIGABBREV_NP)/g' \
+	      -e 's/@''GNULIB_SIGDESCR_NP''@/$(GNULIB_SIGDESCR_NP)/g' \
+	      -e 's/@''GNULIB_STRSIGNAL''@/$(GNULIB_STRSIGNAL)/g' \
+	      -e 's/@''GNULIB_STRVERSCMP''@/$(GNULIB_STRVERSCMP)/g' \
+	      < $(srcdir)/string.in.h | \
+	  sed -e 's|@''HAVE_EXPLICIT_BZERO''@|$(HAVE_EXPLICIT_BZERO)|g' \
+	      -e 's|@''HAVE_FFSL''@|$(HAVE_FFSL)|g' \
+	      -e 's|@''HAVE_FFSLL''@|$(HAVE_FFSLL)|g' \
+	      -e 's|@''HAVE_MBSLEN''@|$(HAVE_MBSLEN)|g' \
+	      -e 's|@''HAVE_DECL_MEMMEM''@|$(HAVE_DECL_MEMMEM)|g' \
+	      -e 's|@''HAVE_MEMPCPY''@|$(HAVE_MEMPCPY)|g' \
+	      -e 's|@''HAVE_DECL_MEMRCHR''@|$(HAVE_DECL_MEMRCHR)|g' \
+	      -e 's|@''HAVE_RAWMEMCHR''@|$(HAVE_RAWMEMCHR)|g' \
+	      -e 's|@''HAVE_STPCPY''@|$(HAVE_STPCPY)|g' \
+	      -e 's|@''HAVE_STPNCPY''@|$(HAVE_STPNCPY)|g' \
+	      -e 's|@''HAVE_STRCHRNUL''@|$(HAVE_STRCHRNUL)|g' \
+	      -e 's|@''HAVE_DECL_STRDUP''@|$(HAVE_DECL_STRDUP)|g' \
+	      -e 's|@''HAVE_DECL_STRNDUP''@|$(HAVE_DECL_STRNDUP)|g' \
+	      -e 's|@''HAVE_DECL_STRNLEN''@|$(HAVE_DECL_STRNLEN)|g' \
+	      -e 's|@''HAVE_STRPBRK''@|$(HAVE_STRPBRK)|g' \
+	      -e 's|@''HAVE_STRSEP''@|$(HAVE_STRSEP)|g' \
+	      -e 's|@''HAVE_STRCASESTR''@|$(HAVE_STRCASESTR)|g' \
+	      -e 's|@''HAVE_DECL_STRTOK_R''@|$(HAVE_DECL_STRTOK_R)|g' \
+	      -e 's|@''HAVE_DECL_STRERROR_R''@|$(HAVE_DECL_STRERROR_R)|g' \
+	      -e 's|@''HAVE_STRERRORNAME_NP''@|$(HAVE_STRERRORNAME_NP)|g' \
+	      -e 's|@''HAVE_SIGABBREV_NP''@|$(HAVE_SIGABBREV_NP)|g' \
+	      -e 's|@''HAVE_SIGDESCR_NP''@|$(HAVE_SIGDESCR_NP)|g' \
+	      -e 's|@''HAVE_DECL_STRSIGNAL''@|$(HAVE_DECL_STRSIGNAL)|g' \
+	      -e 's|@''HAVE_STRVERSCMP''@|$(HAVE_STRVERSCMP)|g' \
+	      -e 's|@''REPLACE_MEMCHR''@|$(REPLACE_MEMCHR)|g' \
+	      -e 's|@''REPLACE_MEMMEM''@|$(REPLACE_MEMMEM)|g' \
+	      -e 's|@''REPLACE_STPNCPY''@|$(REPLACE_STPNCPY)|g' \
+	      -e 's|@''REPLACE_STRCHRNUL''@|$(REPLACE_STRCHRNUL)|g' \
+	      -e 's|@''REPLACE_STRDUP''@|$(REPLACE_STRDUP)|g' \
+	      -e 's|@''REPLACE_STRNCAT''@|$(REPLACE_STRNCAT)|g' \
+	      -e 's|@''REPLACE_STRNDUP''@|$(REPLACE_STRNDUP)|g' \
+	      -e 's|@''REPLACE_STRNLEN''@|$(REPLACE_STRNLEN)|g' \
+	      -e 's|@''REPLACE_STRSTR''@|$(REPLACE_STRSTR)|g' \
+	      -e 's|@''REPLACE_STRCASESTR''@|$(REPLACE_STRCASESTR)|g' \
+	      -e 's|@''REPLACE_STRTOK_R''@|$(REPLACE_STRTOK_R)|g' \
+	      -e 's|@''REPLACE_STRERROR''@|$(REPLACE_STRERROR)|g' \
+	      -e 's|@''REPLACE_STRERROR_R''@|$(REPLACE_STRERROR_R)|g' \
+	      -e 's|@''REPLACE_STRERRORNAME_NP''@|$(REPLACE_STRERRORNAME_NP)|g' \
+	      -e 's|@''REPLACE_STRSIGNAL''@|$(REPLACE_STRSIGNAL)|g' \
+	      -e 's|@''UNDEFINE_STRTOK_R''@|$(UNDEFINE_STRTOK_R)|g' \
+	      -e '/definitions of _GL_FUNCDECL_RPL/r $(CXXDEFS_H)' \
+	      -e '/definition of _GL_ARG_NONNULL/r $(ARG_NONNULL_H)' \
+	      -e '/definition of _GL_WARN_ON_USE/r $(WARN_ON_USE_H)'; \
+	      < $(srcdir)/string.in.h; \
+	} > $@-t && \
+	mv $@-t $@
+MOSTLYCLEANFILES += string.h string.h-t
+
+EXTRA_DIST += string.in.h
+
+## end   gnulib module string
+
+## begin gnulib module strtoull
+
+
+EXTRA_DIST += strtol.c strtoul.c strtoull.c
+
+EXTRA_libgnu_a_SOURCES += strtol.c strtoul.c strtoull.c
+
+## end   gnulib module strtoull
+
+## begin gnulib module strtoumax
+
+
+EXTRA_DIST += strtoimax.c strtoumax.c
+
+EXTRA_libgnu_a_SOURCES += strtoimax.c strtoumax.c
+
+## end   gnulib module strtoumax
+
+## begin gnulib module sys_stat
+
+BUILT_SOURCES += sys/stat.h
+
+# We need the following in order to create <sys/stat.h> when the system
+# has one that is incomplete.
+sys/stat.h: sys_stat.in.h $(top_builddir)/config.status $(CXXDEFS_H) $(ARG_NONNULL_H) $(WARN_ON_USE_H)
+	$(AM_V_at)$(MKDIR_P) sys
+	$(AM_V_GEN)rm -f $@-t $@ && \
+	{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */'; \
+	  sed -e 's|@''GUARD_PREFIX''@|GL|g' \
+	      -e 's|@''INCLUDE_NEXT''@|$(INCLUDE_NEXT)|g' \
+	      -e 's|@''PRAGMA_SYSTEM_HEADER''@|@PRAGMA_SYSTEM_HEADER@|g' \
+	      -e 's|@''PRAGMA_COLUMNS''@|@PRAGMA_COLUMNS@|g' \
+	      -e 's|@''NEXT_SYS_STAT_H''@|$(NEXT_SYS_STAT_H)|g' \
+	      -e 's|@''WINDOWS_64_BIT_ST_SIZE''@|$(WINDOWS_64_BIT_ST_SIZE)|g' \
+	      -e 's|@''WINDOWS_STAT_TIMESPEC''@|$(WINDOWS_STAT_TIMESPEC)|g' \
+	      -e 's/@''GNULIB_FCHMODAT''@/$(GNULIB_FCHMODAT)/g' \
+	      -e 's/@''GNULIB_FSTAT''@/$(GNULIB_FSTAT)/g' \
+	      -e 's/@''GNULIB_FSTATAT''@/$(GNULIB_FSTATAT)/g' \
+	      -e 's/@''GNULIB_FUTIMENS''@/$(GNULIB_FUTIMENS)/g' \
+	      -e 's/@''GNULIB_GETUMASK''@/$(GNULIB_GETUMASK)/g' \
+	      -e 's/@''GNULIB_LCHMOD''@/$(GNULIB_LCHMOD)/g' \
+	      -e 's/@''GNULIB_LSTAT''@/$(GNULIB_LSTAT)/g' \
+	      -e 's/@''GNULIB_MKDIRAT''@/$(GNULIB_MKDIRAT)/g' \
+	      -e 's/@''GNULIB_MKFIFO''@/$(GNULIB_MKFIFO)/g' \
+	      -e 's/@''GNULIB_MKFIFOAT''@/$(GNULIB_MKFIFOAT)/g' \
+	      -e 's/@''GNULIB_MKNOD''@/$(GNULIB_MKNOD)/g' \
+	      -e 's/@''GNULIB_MKNODAT''@/$(GNULIB_MKNODAT)/g' \
+	      -e 's/@''GNULIB_STAT''@/$(GNULIB_STAT)/g' \
+	      -e 's/@''GNULIB_UTIMENSAT''@/$(GNULIB_UTIMENSAT)/g' \
+	      -e 's/@''GNULIB_OVERRIDES_STRUCT_STAT''@/$(GNULIB_OVERRIDES_STRUCT_STAT)/g' \
+	      -e 's|@''HAVE_FCHMODAT''@|$(HAVE_FCHMODAT)|g' \
+	      -e 's|@''HAVE_FSTATAT''@|$(HAVE_FSTATAT)|g' \
+	      -e 's|@''HAVE_FUTIMENS''@|$(HAVE_FUTIMENS)|g' \
+	      -e 's|@''HAVE_GETUMASK''@|$(HAVE_GETUMASK)|g' \
+	      -e 's|@''HAVE_LCHMOD''@|$(HAVE_LCHMOD)|g' \
+	      -e 's|@''HAVE_LSTAT''@|$(HAVE_LSTAT)|g' \
+	      -e 's|@''HAVE_MKDIRAT''@|$(HAVE_MKDIRAT)|g' \
+	      -e 's|@''HAVE_MKFIFO''@|$(HAVE_MKFIFO)|g' \
+	      -e 's|@''HAVE_MKFIFOAT''@|$(HAVE_MKFIFOAT)|g' \
+	      -e 's|@''HAVE_MKNOD''@|$(HAVE_MKNOD)|g' \
+	      -e 's|@''HAVE_MKNODAT''@|$(HAVE_MKNODAT)|g' \
+	      -e 's|@''HAVE_UTIMENSAT''@|$(HAVE_UTIMENSAT)|g' \
+	      -e 's|@''REPLACE_FCHMODAT''@|$(REPLACE_FCHMODAT)|g' \
+	      -e 's|@''REPLACE_FSTAT''@|$(REPLACE_FSTAT)|g' \
+	      -e 's|@''REPLACE_FSTATAT''@|$(REPLACE_FSTATAT)|g' \
+	      -e 's|@''REPLACE_FUTIMENS''@|$(REPLACE_FUTIMENS)|g' \
+	      -e 's|@''REPLACE_LSTAT''@|$(REPLACE_LSTAT)|g' \
+	      -e 's|@''REPLACE_MKDIR''@|$(REPLACE_MKDIR)|g' \
+	      -e 's|@''REPLACE_MKFIFO''@|$(REPLACE_MKFIFO)|g' \
+	      -e 's|@''REPLACE_MKNOD''@|$(REPLACE_MKNOD)|g' \
+	      -e 's|@''REPLACE_STAT''@|$(REPLACE_STAT)|g' \
+	      -e 's|@''REPLACE_UTIMENSAT''@|$(REPLACE_UTIMENSAT)|g' \
+	      -e '/definitions of _GL_FUNCDECL_RPL/r $(CXXDEFS_H)' \
+	      -e '/definition of _GL_ARG_NONNULL/r $(ARG_NONNULL_H)' \
+	      -e '/definition of _GL_WARN_ON_USE/r $(WARN_ON_USE_H)' \
+	      < $(srcdir)/sys_stat.in.h; \
+	} > $@-t && \
+	mv $@-t $@
+MOSTLYCLEANFILES += sys/stat.h sys/stat.h-t
+MOSTLYCLEANDIRS += sys
+
+EXTRA_DIST += sys_stat.in.h
+
+## end   gnulib module sys_stat
+
 ## begin gnulib module sys_types
 
 BUILT_SOURCES += sys/types.h
@@ -192,6 +1230,60 @@ MOSTLYCLEANFILES += sys/types.h sys/types.h-t
 EXTRA_DIST += sys_types.in.h
 
 ## end   gnulib module sys_types
+
+## begin gnulib module time
+
+BUILT_SOURCES += time.h
+
+# We need the following in order to create <time.h> when the system
+# doesn't have one that works with the given compiler.
+time.h: time.in.h $(top_builddir)/config.status $(CXXDEFS_H) $(ARG_NONNULL_H) $(WARN_ON_USE_H)
+	$(AM_V_GEN)rm -f $@-t $@ && \
+	{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */' && \
+	  sed -e 's|@''GUARD_PREFIX''@|GL|g' \
+	      -e 's|@''INCLUDE_NEXT''@|$(INCLUDE_NEXT)|g' \
+	      -e 's|@''PRAGMA_SYSTEM_HEADER''@|@PRAGMA_SYSTEM_HEADER@|g' \
+	      -e 's|@''PRAGMA_COLUMNS''@|@PRAGMA_COLUMNS@|g' \
+	      -e 's|@''NEXT_TIME_H''@|$(NEXT_TIME_H)|g' \
+	      -e 's/@''GNULIB_CTIME''@/$(GNULIB_CTIME)/g' \
+	      -e 's/@''GNULIB_LOCALTIME''@/$(GNULIB_LOCALTIME)/g' \
+	      -e 's/@''GNULIB_MKTIME''@/$(GNULIB_MKTIME)/g' \
+	      -e 's/@''GNULIB_NANOSLEEP''@/$(GNULIB_NANOSLEEP)/g' \
+	      -e 's/@''GNULIB_STRFTIME''@/$(GNULIB_STRFTIME)/g' \
+	      -e 's/@''GNULIB_STRPTIME''@/$(GNULIB_STRPTIME)/g' \
+	      -e 's/@''GNULIB_TIMEGM''@/$(GNULIB_TIMEGM)/g' \
+	      -e 's/@''GNULIB_TIME_R''@/$(GNULIB_TIME_R)/g' \
+	      -e 's/@''GNULIB_TIME_RZ''@/$(GNULIB_TIME_RZ)/g' \
+	      -e 's/@''GNULIB_TZSET''@/$(GNULIB_TZSET)/g' \
+	      -e 's|@''HAVE_DECL_LOCALTIME_R''@|$(HAVE_DECL_LOCALTIME_R)|g' \
+	      -e 's|@''HAVE_NANOSLEEP''@|$(HAVE_NANOSLEEP)|g' \
+	      -e 's|@''HAVE_STRPTIME''@|$(HAVE_STRPTIME)|g' \
+	      -e 's|@''HAVE_TIMEGM''@|$(HAVE_TIMEGM)|g' \
+	      -e 's|@''HAVE_TIMEZONE_T''@|$(HAVE_TIMEZONE_T)|g' \
+	      -e 's|@''REPLACE_CTIME''@|$(REPLACE_CTIME)|g' \
+	      -e 's|@''REPLACE_GMTIME''@|$(REPLACE_GMTIME)|g' \
+	      -e 's|@''REPLACE_LOCALTIME''@|$(REPLACE_LOCALTIME)|g' \
+	      -e 's|@''REPLACE_LOCALTIME_R''@|$(REPLACE_LOCALTIME_R)|g' \
+	      -e 's|@''REPLACE_MKTIME''@|$(REPLACE_MKTIME)|g' \
+	      -e 's|@''REPLACE_NANOSLEEP''@|$(REPLACE_NANOSLEEP)|g' \
+	      -e 's|@''REPLACE_STRFTIME''@|$(REPLACE_STRFTIME)|g' \
+	      -e 's|@''REPLACE_TIMEGM''@|$(REPLACE_TIMEGM)|g' \
+	      -e 's|@''REPLACE_TZSET''@|$(REPLACE_TZSET)|g' \
+	      -e 's|@''PTHREAD_H_DEFINES_STRUCT_TIMESPEC''@|$(PTHREAD_H_DEFINES_STRUCT_TIMESPEC)|g' \
+	      -e 's|@''SYS_TIME_H_DEFINES_STRUCT_TIMESPEC''@|$(SYS_TIME_H_DEFINES_STRUCT_TIMESPEC)|g' \
+	      -e 's|@''TIME_H_DEFINES_STRUCT_TIMESPEC''@|$(TIME_H_DEFINES_STRUCT_TIMESPEC)|g' \
+	      -e 's|@''UNISTD_H_DEFINES_STRUCT_TIMESPEC''@|$(UNISTD_H_DEFINES_STRUCT_TIMESPEC)|g' \
+	      -e '/definitions of _GL_FUNCDECL_RPL/r $(CXXDEFS_H)' \
+	      -e '/definition of _GL_ARG_NONNULL/r $(ARG_NONNULL_H)' \
+	      -e '/definition of _GL_WARN_ON_USE/r $(WARN_ON_USE_H)' \
+	      < $(srcdir)/time.in.h; \
+	} > $@-t && \
+	mv $@-t $@
+MOSTLYCLEANFILES += time.h time.h-t
+
+EXTRA_DIST += time.in.h
+
+## end   gnulib module time
 
 ## begin gnulib module unistd
 
@@ -360,6 +1452,231 @@ MOSTLYCLEANFILES += unistd.h unistd.h-t
 EXTRA_DIST += unistd.in.h
 
 ## end   gnulib module unistd
+
+## begin gnulib module verify
+
+
+EXTRA_DIST += verify.h
+
+## end   gnulib module verify
+
+## begin gnulib module wchar
+
+BUILT_SOURCES += wchar.h
+
+# We need the following in order to create <wchar.h> when the system
+# version does not work standalone.
+wchar.h: wchar.in.h $(top_builddir)/config.status $(CXXDEFS_H) $(ARG_NONNULL_H) $(WARN_ON_USE_H)
+	$(AM_V_GEN)rm -f $@-t $@ && \
+	{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */'; \
+	  sed -e 's|@''GUARD_PREFIX''@|GL|g' \
+	      -e 's|@''INCLUDE_NEXT''@|$(INCLUDE_NEXT)|g' \
+	      -e 's|@''PRAGMA_SYSTEM_HEADER''@|@PRAGMA_SYSTEM_HEADER@|g' \
+	      -e 's|@''PRAGMA_COLUMNS''@|@PRAGMA_COLUMNS@|g' \
+	      -e 's|@''HAVE_FEATURES_H''@|$(HAVE_FEATURES_H)|g' \
+	      -e 's|@''NEXT_WCHAR_H''@|$(NEXT_WCHAR_H)|g' \
+	      -e 's|@''HAVE_WCHAR_H''@|$(HAVE_WCHAR_H)|g' \
+	      -e 's/@''HAVE_CRTDEFS_H''@/$(HAVE_CRTDEFS_H)/g' \
+	      -e 's/@''GNULIB_OVERRIDES_WINT_T''@/$(GNULIB_OVERRIDES_WINT_T)/g' \
+	      -e 's/@''GNULIB_BTOWC''@/$(GNULIB_BTOWC)/g' \
+	      -e 's/@''GNULIB_WCTOB''@/$(GNULIB_WCTOB)/g' \
+	      -e 's/@''GNULIB_MBSINIT''@/$(GNULIB_MBSINIT)/g' \
+	      -e 's/@''GNULIB_MBRTOWC''@/$(GNULIB_MBRTOWC)/g' \
+	      -e 's/@''GNULIB_MBRLEN''@/$(GNULIB_MBRLEN)/g' \
+	      -e 's/@''GNULIB_MBSRTOWCS''@/$(GNULIB_MBSRTOWCS)/g' \
+	      -e 's/@''GNULIB_MBSNRTOWCS''@/$(GNULIB_MBSNRTOWCS)/g' \
+	      -e 's/@''GNULIB_WCRTOMB''@/$(GNULIB_WCRTOMB)/g' \
+	      -e 's/@''GNULIB_WCSRTOMBS''@/$(GNULIB_WCSRTOMBS)/g' \
+	      -e 's/@''GNULIB_WCSNRTOMBS''@/$(GNULIB_WCSNRTOMBS)/g' \
+	      -e 's/@''GNULIB_WCWIDTH''@/$(GNULIB_WCWIDTH)/g' \
+	      -e 's/@''GNULIB_WMEMCHR''@/$(GNULIB_WMEMCHR)/g' \
+	      -e 's/@''GNULIB_WMEMCMP''@/$(GNULIB_WMEMCMP)/g' \
+	      -e 's/@''GNULIB_WMEMCPY''@/$(GNULIB_WMEMCPY)/g' \
+	      -e 's/@''GNULIB_WMEMMOVE''@/$(GNULIB_WMEMMOVE)/g' \
+	      -e 's/@''GNULIB_WMEMPCPY''@/$(GNULIB_WMEMPCPY)/g' \
+	      -e 's/@''GNULIB_WMEMSET''@/$(GNULIB_WMEMSET)/g' \
+	      -e 's/@''GNULIB_WCSLEN''@/$(GNULIB_WCSLEN)/g' \
+	      -e 's/@''GNULIB_WCSNLEN''@/$(GNULIB_WCSNLEN)/g' \
+	      -e 's/@''GNULIB_WCSCPY''@/$(GNULIB_WCSCPY)/g' \
+	      -e 's/@''GNULIB_WCPCPY''@/$(GNULIB_WCPCPY)/g' \
+	      -e 's/@''GNULIB_WCSNCPY''@/$(GNULIB_WCSNCPY)/g' \
+	      -e 's/@''GNULIB_WCPNCPY''@/$(GNULIB_WCPNCPY)/g' \
+	      -e 's/@''GNULIB_WCSCAT''@/$(GNULIB_WCSCAT)/g' \
+	      -e 's/@''GNULIB_WCSNCAT''@/$(GNULIB_WCSNCAT)/g' \
+	      -e 's/@''GNULIB_WCSCMP''@/$(GNULIB_WCSCMP)/g' \
+	      -e 's/@''GNULIB_WCSNCMP''@/$(GNULIB_WCSNCMP)/g' \
+	      -e 's/@''GNULIB_WCSCASECMP''@/$(GNULIB_WCSCASECMP)/g' \
+	      -e 's/@''GNULIB_WCSNCASECMP''@/$(GNULIB_WCSNCASECMP)/g' \
+	      -e 's/@''GNULIB_WCSCOLL''@/$(GNULIB_WCSCOLL)/g' \
+	      -e 's/@''GNULIB_WCSXFRM''@/$(GNULIB_WCSXFRM)/g' \
+	      -e 's/@''GNULIB_WCSDUP''@/$(GNULIB_WCSDUP)/g' \
+	      -e 's/@''GNULIB_WCSCHR''@/$(GNULIB_WCSCHR)/g' \
+	      -e 's/@''GNULIB_WCSRCHR''@/$(GNULIB_WCSRCHR)/g' \
+	      -e 's/@''GNULIB_WCSCSPN''@/$(GNULIB_WCSCSPN)/g' \
+	      -e 's/@''GNULIB_WCSSPN''@/$(GNULIB_WCSSPN)/g' \
+	      -e 's/@''GNULIB_WCSPBRK''@/$(GNULIB_WCSPBRK)/g' \
+	      -e 's/@''GNULIB_WCSSTR''@/$(GNULIB_WCSSTR)/g' \
+	      -e 's/@''GNULIB_WCSTOK''@/$(GNULIB_WCSTOK)/g' \
+	      -e 's/@''GNULIB_WCSWIDTH''@/$(GNULIB_WCSWIDTH)/g' \
+	      -e 's/@''GNULIB_WCSFTIME''@/$(GNULIB_WCSFTIME)/g' \
+	      < $(srcdir)/wchar.in.h | \
+	  sed -e 's|@''HAVE_WINT_T''@|$(HAVE_WINT_T)|g' \
+	      -e 's|@''HAVE_BTOWC''@|$(HAVE_BTOWC)|g' \
+	      -e 's|@''HAVE_MBSINIT''@|$(HAVE_MBSINIT)|g' \
+	      -e 's|@''HAVE_MBRTOWC''@|$(HAVE_MBRTOWC)|g' \
+	      -e 's|@''HAVE_MBRLEN''@|$(HAVE_MBRLEN)|g' \
+	      -e 's|@''HAVE_MBSRTOWCS''@|$(HAVE_MBSRTOWCS)|g' \
+	      -e 's|@''HAVE_MBSNRTOWCS''@|$(HAVE_MBSNRTOWCS)|g' \
+	      -e 's|@''HAVE_WCRTOMB''@|$(HAVE_WCRTOMB)|g' \
+	      -e 's|@''HAVE_WCSRTOMBS''@|$(HAVE_WCSRTOMBS)|g' \
+	      -e 's|@''HAVE_WCSNRTOMBS''@|$(HAVE_WCSNRTOMBS)|g' \
+	      -e 's|@''HAVE_WMEMCHR''@|$(HAVE_WMEMCHR)|g' \
+	      -e 's|@''HAVE_WMEMCMP''@|$(HAVE_WMEMCMP)|g' \
+	      -e 's|@''HAVE_WMEMCPY''@|$(HAVE_WMEMCPY)|g' \
+	      -e 's|@''HAVE_WMEMMOVE''@|$(HAVE_WMEMMOVE)|g' \
+	      -e 's|@''HAVE_WMEMPCPY''@|$(HAVE_WMEMPCPY)|g' \
+	      -e 's|@''HAVE_WMEMSET''@|$(HAVE_WMEMSET)|g' \
+	      -e 's|@''HAVE_WCSLEN''@|$(HAVE_WCSLEN)|g' \
+	      -e 's|@''HAVE_WCSNLEN''@|$(HAVE_WCSNLEN)|g' \
+	      -e 's|@''HAVE_WCSCPY''@|$(HAVE_WCSCPY)|g' \
+	      -e 's|@''HAVE_WCPCPY''@|$(HAVE_WCPCPY)|g' \
+	      -e 's|@''HAVE_WCSNCPY''@|$(HAVE_WCSNCPY)|g' \
+	      -e 's|@''HAVE_WCPNCPY''@|$(HAVE_WCPNCPY)|g' \
+	      -e 's|@''HAVE_WCSCAT''@|$(HAVE_WCSCAT)|g' \
+	      -e 's|@''HAVE_WCSNCAT''@|$(HAVE_WCSNCAT)|g' \
+	      -e 's|@''HAVE_WCSCMP''@|$(HAVE_WCSCMP)|g' \
+	      -e 's|@''HAVE_WCSNCMP''@|$(HAVE_WCSNCMP)|g' \
+	      -e 's|@''HAVE_WCSCASECMP''@|$(HAVE_WCSCASECMP)|g' \
+	      -e 's|@''HAVE_WCSNCASECMP''@|$(HAVE_WCSNCASECMP)|g' \
+	      -e 's|@''HAVE_WCSCOLL''@|$(HAVE_WCSCOLL)|g' \
+	      -e 's|@''HAVE_WCSXFRM''@|$(HAVE_WCSXFRM)|g' \
+	      -e 's|@''HAVE_WCSDUP''@|$(HAVE_WCSDUP)|g' \
+	      -e 's|@''HAVE_WCSCHR''@|$(HAVE_WCSCHR)|g' \
+	      -e 's|@''HAVE_WCSRCHR''@|$(HAVE_WCSRCHR)|g' \
+	      -e 's|@''HAVE_WCSCSPN''@|$(HAVE_WCSCSPN)|g' \
+	      -e 's|@''HAVE_WCSSPN''@|$(HAVE_WCSSPN)|g' \
+	      -e 's|@''HAVE_WCSPBRK''@|$(HAVE_WCSPBRK)|g' \
+	      -e 's|@''HAVE_WCSSTR''@|$(HAVE_WCSSTR)|g' \
+	      -e 's|@''HAVE_WCSTOK''@|$(HAVE_WCSTOK)|g' \
+	      -e 's|@''HAVE_WCSWIDTH''@|$(HAVE_WCSWIDTH)|g' \
+	      -e 's|@''HAVE_WCSFTIME''@|$(HAVE_WCSFTIME)|g' \
+	      -e 's|@''HAVE_DECL_WCTOB''@|$(HAVE_DECL_WCTOB)|g' \
+	      -e 's|@''HAVE_DECL_WCWIDTH''@|$(HAVE_DECL_WCWIDTH)|g' \
+	  | \
+	  sed -e 's|@''REPLACE_MBSTATE_T''@|$(REPLACE_MBSTATE_T)|g' \
+	      -e 's|@''REPLACE_BTOWC''@|$(REPLACE_BTOWC)|g' \
+	      -e 's|@''REPLACE_WCTOB''@|$(REPLACE_WCTOB)|g' \
+	      -e 's|@''REPLACE_MBSINIT''@|$(REPLACE_MBSINIT)|g' \
+	      -e 's|@''REPLACE_MBRTOWC''@|$(REPLACE_MBRTOWC)|g' \
+	      -e 's|@''REPLACE_MBRLEN''@|$(REPLACE_MBRLEN)|g' \
+	      -e 's|@''REPLACE_MBSRTOWCS''@|$(REPLACE_MBSRTOWCS)|g' \
+	      -e 's|@''REPLACE_MBSNRTOWCS''@|$(REPLACE_MBSNRTOWCS)|g' \
+	      -e 's|@''REPLACE_WCRTOMB''@|$(REPLACE_WCRTOMB)|g' \
+	      -e 's|@''REPLACE_WCSRTOMBS''@|$(REPLACE_WCSRTOMBS)|g' \
+	      -e 's|@''REPLACE_WCSNRTOMBS''@|$(REPLACE_WCSNRTOMBS)|g' \
+	      -e 's|@''REPLACE_WCWIDTH''@|$(REPLACE_WCWIDTH)|g' \
+	      -e 's|@''REPLACE_WCSWIDTH''@|$(REPLACE_WCSWIDTH)|g' \
+	      -e 's|@''REPLACE_WCSFTIME''@|$(REPLACE_WCSFTIME)|g' \
+	      -e 's|@''REPLACE_WCSTOK''@|$(REPLACE_WCSTOK)|g' \
+	      -e '/definitions of _GL_FUNCDECL_RPL/r $(CXXDEFS_H)' \
+	      -e '/definition of _GL_ARG_NONNULL/r $(ARG_NONNULL_H)' \
+	      -e '/definition of _GL_WARN_ON_USE/r $(WARN_ON_USE_H)'; \
+	} > $@-t && \
+	mv $@-t $@
+MOSTLYCLEANFILES += wchar.h wchar.h-t
+
+EXTRA_DIST += wchar.in.h
+
+## end   gnulib module wchar
+
+## begin gnulib module wctype-h
+
+BUILT_SOURCES += wctype.h
+libgnu_a_SOURCES += wctype-h.c
+
+# We need the following in order to create <wctype.h> when the system
+# doesn't have one that works with the given compiler.
+wctype.h: wctype.in.h $(top_builddir)/config.status $(CXXDEFS_H) $(WARN_ON_USE_H)
+	$(AM_V_GEN)rm -f $@-t $@ && \
+	{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */'; \
+	  sed -e 's|@''GUARD_PREFIX''@|GL|g' \
+	      -e 's/@''HAVE_WCTYPE_H''@/$(HAVE_WCTYPE_H)/g' \
+	      -e 's|@''INCLUDE_NEXT''@|$(INCLUDE_NEXT)|g' \
+	      -e 's|@''PRAGMA_SYSTEM_HEADER''@|@PRAGMA_SYSTEM_HEADER@|g' \
+	      -e 's|@''PRAGMA_COLUMNS''@|@PRAGMA_COLUMNS@|g' \
+	      -e 's|@''NEXT_WCTYPE_H''@|$(NEXT_WCTYPE_H)|g' \
+	      -e 's/@''HAVE_CRTDEFS_H''@/$(HAVE_CRTDEFS_H)/g' \
+	      -e 's/@''GNULIB_OVERRIDES_WINT_T''@/$(GNULIB_OVERRIDES_WINT_T)/g' \
+	      -e 's/@''GNULIB_ISWBLANK''@/$(GNULIB_ISWBLANK)/g' \
+	      -e 's/@''GNULIB_ISWDIGIT''@/$(GNULIB_ISWDIGIT)/g' \
+	      -e 's/@''GNULIB_ISWXDIGIT''@/$(GNULIB_ISWXDIGIT)/g' \
+	      -e 's/@''GNULIB_WCTYPE''@/$(GNULIB_WCTYPE)/g' \
+	      -e 's/@''GNULIB_ISWCTYPE''@/$(GNULIB_ISWCTYPE)/g' \
+	      -e 's/@''GNULIB_WCTRANS''@/$(GNULIB_WCTRANS)/g' \
+	      -e 's/@''GNULIB_TOWCTRANS''@/$(GNULIB_TOWCTRANS)/g' \
+	      -e 's/@''HAVE_ISWBLANK''@/$(HAVE_ISWBLANK)/g' \
+	      -e 's/@''HAVE_ISWCNTRL''@/$(HAVE_ISWCNTRL)/g' \
+	      -e 's/@''HAVE_WCTYPE_T''@/$(HAVE_WCTYPE_T)/g' \
+	      -e 's/@''HAVE_WCTRANS_T''@/$(HAVE_WCTRANS_T)/g' \
+	      -e 's/@''HAVE_WINT_T''@/$(HAVE_WINT_T)/g' \
+	      -e 's/@''REPLACE_ISWBLANK''@/$(REPLACE_ISWBLANK)/g' \
+	      -e 's/@''REPLACE_ISWDIGIT''@/$(REPLACE_ISWDIGIT)/g' \
+	      -e 's/@''REPLACE_ISWXDIGIT''@/$(REPLACE_ISWXDIGIT)/g' \
+	      -e 's/@''REPLACE_ISWCNTRL''@/$(REPLACE_ISWCNTRL)/g' \
+	      -e 's/@''REPLACE_TOWLOWER''@/$(REPLACE_TOWLOWER)/g' \
+	      -e '/definitions of _GL_FUNCDECL_RPL/r $(CXXDEFS_H)' \
+	      -e '/definition of _GL_WARN_ON_USE/r $(WARN_ON_USE_H)' \
+	      < $(srcdir)/wctype.in.h; \
+	} > $@-t && \
+	mv $@-t $@
+MOSTLYCLEANFILES += wctype.h wctype.h-t
+
+EXTRA_DIST += wctype.in.h
+
+## end   gnulib module wctype-h
+
+## begin gnulib module xalloc
+
+libgnu_a_SOURCES += xmalloc.c
+
+EXTRA_DIST += xalloc.h
+
+## end   gnulib module xalloc
+
+## begin gnulib module xalloc-die
+
+libgnu_a_SOURCES += xalloc-die.c
+
+EXTRA_DIST += xalloc.h
+
+## end   gnulib module xalloc-die
+
+## begin gnulib module xalloc-oversized
+
+
+EXTRA_DIST += xalloc-oversized.h
+
+## end   gnulib module xalloc-oversized
+
+## begin gnulib module xbinary-io
+
+libgnu_a_SOURCES += xbinary-io.h xbinary-io.c
+
+## end   gnulib module xbinary-io
+
+## begin gnulib module xstrtol
+
+libgnu_a_SOURCES += xstrtol.c xstrtoul.c
+
+EXTRA_DIST += xstrtol.h
+
+## end   gnulib module xstrtol
+
+## begin gnulib module xstrtoumax
+
+libgnu_a_SOURCES += xstrtoumax.c
+
+## end   gnulib module xstrtoumax
 
 
 mostlyclean-local: mostlyclean-generic
