@@ -16,14 +16,15 @@ GNULIBDIR=$(CSRCDIR)/gnulib
 
 DOCDEPS=$(AUTHSCRBL) $(CWSCRBL)
 
-all: make-all clibs docs gnulib
+all: make-all gnulib clibs docs 
 
 make-all: 
 	$(RACO) make src/*.rkt
 
 clibs: $(LIBDIR)/getstatvfs.so \
 	$(LIBDIR)/getgrouplist.so \
-	$(LIBDIR)/stat.so
+	$(LIBDIR)/stat.so \
+	$(LIBDIR)/sum.so
 
 $(LIBDIR)/getstatvfs.so: $(LIBDIR)/getstatvfs.o 
 	gcc $(LIBDIR)/getstatvfs.o -shared -o $(LIBDIR)/getstatvfs.so
@@ -42,6 +43,9 @@ $(LIBDIR)/stat.so: $(LIBDIR)/stat.o
 
 $(LIBDIR)/stat.o: $(CSRCDIR)/stat.c
 	gcc -c -fPIC $(CSRCDIR)/stat.c -o $(LIBDIR)/stat.o
+
+$(LIBDIR)/sum.so: $(CSRCDIR)/sum.c
+	gcc $(CSRCDIR)/sum.c $(CSRCDIR)/fadvise/fadvise.o $(GNULIBDIR)/gllib/*.o -shared -o $(LIBDIR)/sum.so -I$(GNULIBDIR)/gllib -I$(CSRCDIR)/fadvise
 
 gnulib: $(GNULIBDIR)/Makefile make-gnulib $(LIBDIR)/gnulib.so
 

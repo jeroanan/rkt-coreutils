@@ -27,7 +27,7 @@ static bool have_read_stdin;
   quotearg_n_style_colon (0, shell_escape_quoting_style, arg)
      
 static bool
-bsd_sum_file (const char *file, int print_name)
+bsd_sum_file (const char *file, char *sum)
 {
   FILE *fp;
   int checksum = 0;	/* The checksum mod 2^16. */
@@ -76,11 +76,8 @@ bsd_sum_file (const char *file, int print_name)
       return false;
     }
 
-  printf ("%05d %5s", checksum,
+  sprintf (sum, "%05d %5s", checksum,
           human_readable (total_bytes, hbuf, human_ceiling, 1, 1024));
-  if (print_name > 1)
-    printf (" %s", file);
-  putchar ('\n');
 
   return true;
 }
@@ -91,7 +88,7 @@ bsd_sum_file (const char *file, int print_name)
    Return true if successful.  */
 
 static bool
-sysv_sum_file (const char *file, int print_name)
+sysv_sum_file (const char *file, char *sum)
 {
   int fd;
   unsigned char buf[8192];
@@ -150,11 +147,8 @@ sysv_sum_file (const char *file, int print_name)
   r = (s & 0xffff) + ((s & 0xffffffff) >> 16);
   checksum = (r & 0xffff) + (r >> 16);
 
-  printf ("%d %s", checksum,
+  sprintf (sum, "%d %s", checksum,
           human_readable (total_bytes, hbuf, human_ceiling, 1, 512));
-  if (print_name)
-    printf (" %s", file);
-  putchar ('\n');
 
   return true;
 }
