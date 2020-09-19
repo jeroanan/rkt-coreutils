@@ -26,7 +26,7 @@ static bool have_read_stdin;
 #define quotef(arg) \
   quotearg_n_style_colon (0, shell_escape_quoting_style, arg)
      
-static bool
+bool
 bsd_sum_file (const char *file, char *sum)
 {
   FILE *fp;
@@ -87,7 +87,7 @@ bsd_sum_file (const char *file, char *sum)
    If PRINT_NAME is >0, print FILE next to the checksum and size.
    Return true if successful.  */
 
-static bool
+bool
 sysv_sum_file (const char *file, char *sum)
 {
   int fd;

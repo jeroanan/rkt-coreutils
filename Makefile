@@ -44,8 +44,11 @@ $(LIBDIR)/stat.so: $(LIBDIR)/stat.o
 $(LIBDIR)/stat.o: $(CSRCDIR)/stat.c
 	gcc -c -fPIC $(CSRCDIR)/stat.c -o $(LIBDIR)/stat.o
 
-$(LIBDIR)/sum.so: $(CSRCDIR)/sum.c
-	gcc $(CSRCDIR)/sum.c $(CSRCDIR)/fadvise/fadvise.o $(GNULIBDIR)/gllib/*.o -shared -o $(LIBDIR)/sum.so -I$(GNULIBDIR)/gllib -I$(CSRCDIR)/fadvise
+$(LIBDIR)/sum.so: $(LIBDIR)/sum.o
+	gcc $(LIBDIR)/sum.o $(CSRCDIR)/fadvise/fadvise.o $(GNULIBDIR)/gllib/*.o -shared -o $(LIBDIR)/sum.so -I$(GNULIBDIR)/gllib -I$(CSRCDIR)/fadvise
+
+$(LIBDIR)/sum.o: $(CSRCDIR)/sum.c
+	gcc -c -fPIC $(CSRCDIR)/sum.c -o $(LIBDIR)/sum.o -I$(GNULIBDIR)/gllib -I$(CSRCDIR)/fadvise #$(CSRCDIR)/fadvise/fadvise.o $(GNULIBDIR)/gllib/*.o -shared -o $(LIBDIR)/sum.so -I$(GNULIBDIR)/gllib -I$(CSRCDIR)/fadvise
 
 gnulib: $(GNULIBDIR)/Makefile make-gnulib $(LIBDIR)/gnulib.so
 
