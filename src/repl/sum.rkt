@@ -3,8 +3,6 @@
 ; Copyright 2020 David Wilson
 ; See COPYING for details
 
-(provide sum%)
-
 (require/typed "libc/sum.rkt"
                [get-bsd-sum (-> String (Listof (U String Integer)))]
                [get-sysv-sum (-> String (Listof(U String Integer)))])
@@ -24,8 +22,7 @@
                                 #f
                                 (λ (filename ip)
                                    (displayln (get-sum filename)))
-                                (λ ()
-                                   (void))
+                                null
                                 (define/public (set-bsd-mode)
                                   (set! current-mode bsd-mode))
 

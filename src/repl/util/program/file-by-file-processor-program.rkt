@@ -40,15 +40,12 @@
              (define (read-and-process-file filename)
                (let* ([ip (open-input-file filename #:mode 'text)])
                  (file-handler-body filename ip)
-                   ;(file-handler-body filename ip)                 
                  (close-input-port ip)))
 
              (: process-file (-> String Void))
              (define (process-file filename)
                (let ([ip (current-input-port)])
                  (file-handler-body filename ip)))
-               
-               
 
              (: process-stdin (-> Void))
              (define/private (process-stdin)             
