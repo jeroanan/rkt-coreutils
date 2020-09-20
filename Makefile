@@ -16,7 +16,7 @@ GNULIBDIR=$(CSRCDIR)/gnulib
 
 DOCDEPS=$(AUTHSCRBL) $(CWSCRBL)
 
-all: make-all gnulib clibs docs 
+all: make-all gnulib clibs 
 
 make-all: 
 	$(RACO) make src/*.rkt
@@ -44,11 +44,14 @@ $(LIBDIR)/stat.so: $(LIBDIR)/stat.o
 $(LIBDIR)/stat.o: $(CSRCDIR)/stat.c
 	gcc -c -fPIC $(CSRCDIR)/stat.c -o $(LIBDIR)/stat.o
 
-$(LIBDIR)/sum.so: $(LIBDIR)/sum.o
-	gcc $(LIBDIR)/sum.o $(CSRCDIR)/fadvise/fadvise.o $(GNULIBDIR)/gllib/*.o -shared -o $(LIBDIR)/sum.so -I$(GNULIBDIR)/gllib -I$(CSRCDIR)/fadvise
+$(LIBDIR)/sum.so: $(LIBDIR)/sum.o $(LIBDIR)/fadvise.o
+	gcc $(LIBDIR)/sum.o $(LIBDIR)/fadvise.o $(GNULIBDIR)/gllib/*.o -shared -o $(LIBDIR)/sum.so -I$(GNULIBDIR)/gllib -I$(CSRCDIR)/fadvise
 
 $(LIBDIR)/sum.o: $(CSRCDIR)/sum.c
 	gcc -c -fPIC $(CSRCDIR)/sum.c -o $(LIBDIR)/sum.o -I$(GNULIBDIR)/gllib -I$(CSRCDIR)/fadvise #$(CSRCDIR)/fadvise/fadvise.o $(GNULIBDIR)/gllib/*.o -shared -o $(LIBDIR)/sum.so -I$(GNULIBDIR)/gllib -I$(CSRCDIR)/fadvise
+
+$(LIBDIR)/fadvise.o: $(CSRCDIR)/fadvise/fadvise.c
+	gcc -c -fPIC $(CSRCDIR)/fadvise/fadvise.c -o $(LIBDIR)/fadvise.o
 
 gnulib: $(GNULIBDIR)/Makefile make-gnulib $(LIBDIR)/gnulib.so
 
@@ -56,10 +59,10 @@ $(GNULIBDIR)/Makefile:
 	cd $(GNULIBDIR) && ./configure
 
 make-gnulib:
-	cd $(GNULIBDIR) && make
+	cd $(GNULIBDIR) && make CFLAGS='-fPIC'
 
 $(LIBDIR)/gnulib.so: $(GNULIBDIR)/gllib/%.o:
-	$(CC) $(GNULIBDIR)/gllib/*.o -shared -o $(LIBDIR)/gnulib.so
+	$(CC) -fPIC $(GNULIBDIR)/gllib/*.o -shared -o $(LIBDIR)/gnulib.so
 
 docs: docs-html docs-md
 
