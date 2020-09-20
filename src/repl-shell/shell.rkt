@@ -36,6 +36,25 @@
               default-func)
 
             (define (help-func)
+              (send name-obj help))))]
+    [(_ mod-path name class)
+     (with-syntax ([help-func 
+                     (datum->syntax #'name
+                                    (string->symbol 
+                                      (format "~a-help"
+                                              (syntax->datum #'name))))]
+                   [name-obj
+                     (datum->syntax #'name
+                                    (string->symbol 
+                                      (format "~a-obj"
+                                              (syntax->datum #'name))))])
+        #'(begin
+            (require mod-path)
+            (provide help-func name-obj)
+
+            (define name-obj (new class))
+            
+            (define (help-func)
               (send name-obj help))))]))
 
 
@@ -63,8 +82,10 @@
 
 (shell-command "../repl/groups.rkt"
                groups
-               groups%
-               (execute-command groups))
+               groups%)
+(provide groups)
+(define (groups user-id)
+  (send groups-obj execute user-id))
 
 (shell-command "../repl/id.rkt"
                id
