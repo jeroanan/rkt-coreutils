@@ -25,7 +25,7 @@
 
 #include <stdio.h>
 #include <fcntl.h>
-#include "ignore-value.h"
+#include "../gnulib/gllib/ignore-value.h"
 
 void
 fdadvise (int fd, off_t offset, off_t len, fadvice_t advice)

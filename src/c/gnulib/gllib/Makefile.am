@@ -319,6 +319,13 @@ EXTRA_DIST += human.h
 
 ## end   gnulib module human
 
+## begin gnulib module ignore-value
+
+
+EXTRA_DIST += ignore-value.h
+
+## end   gnulib module ignore-value
+
 ## begin gnulib module intprops
 
 

@@ -20,22 +20,10 @@
 
 #if defined _WIN32 && ! defined __CYGWIN__
 
-/* Attempt to make <windows.h> define FILE_ID_INFO.
-   But ensure that the redefinition of _WIN32_WINNT does not make us assume
-   Windows Vista or newer when building for an older version of Windows.  */
-#if HAVE_SDKDDKVER_H
-# include <sdkddkver.h>
-# if _WIN32_WINNT >= _WIN32_WINNT_VISTA
-#  define WIN32_ASSUME_VISTA 1
-# else
-#  define WIN32_ASSUME_VISTA 0
-# endif
-# if !defined _WIN32_WINNT || (_WIN32_WINNT < _WIN32_WINNT_WIN8)
-#  undef _WIN32_WINNT
-#  define _WIN32_WINNT _WIN32_WINNT_WIN8
-# endif
-#else
-# define WIN32_ASSUME_VISTA (_WIN32_WINNT >= _WIN32_WINNT_VISTA)
+/* Ensure that <windows.h> defines FILE_ID_INFO.  */
+#if !defined _WIN32_WINNT || (_WIN32_WINNT < _WIN32_WINNT_WIN8)
+# undef _WIN32_WINNT
+# define _WIN32_WINNT _WIN32_WINNT_WIN8
 #endif
 
 #include <sys/types.h>
@@ -58,12 +46,7 @@
 #undef GetFinalPathNameByHandle
 #define GetFinalPathNameByHandle GetFinalPathNameByHandleA
 
-/* Older mingw headers do not define VOLUME_NAME_NONE.  */
-#ifndef VOLUME_NAME_NONE
-# define VOLUME_NAME_NONE 4
-#endif
-
-#if !WIN32_ASSUME_VISTA
+#if !(_WIN32_WINNT >= _WIN32_WINNT_VISTA)
 
 /* Avoid warnings from gcc -Wcast-function-type.  */
 # define GetProcAddress \
@@ -166,7 +149,7 @@ _gl_fstat_by_handle (HANDLE h, const char *path, struct stat *buf)
   DWORD type = GetFileType (h);
   if (type == FILE_TYPE_DISK)
     {
-#if !WIN32_ASSUME_VISTA
+#if !(_WIN32_WINNT >= _WIN32_WINNT_VISTA)
       if (!initialized)
         initialize ();
 #endif
