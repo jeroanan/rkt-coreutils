@@ -8,7 +8,6 @@
 (define help-text (list "Display path for given FILES"
                         "(exec FILES) -- Display path for given FILES"))
   
-  
 (file-by-file-processor-program realpath%
                                 help-text
                                 #f
