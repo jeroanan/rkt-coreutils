@@ -399,7 +399,10 @@ launchers:
 clean: clean-rkt clean-gnulib
 
 clean-rkt:
-	rm -rf docs/; find . -type d -name compiled -prune -exec rm -rf {} \;; rm -rf $(LIBDIR)
+	 find . -type d -name compiled -prune -exec rm -rf {} \;; rm -rf $(LIBDIR)
+
+clean-docs:
+	rm -rf docs/;
 
 clean-gnulib:
 	cd $(GNULIBDIR) && make clean
