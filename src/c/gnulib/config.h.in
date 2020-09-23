@@ -210,9 +210,6 @@
 /* Define to 1 if you have the `sched_getaffinity_np' function. */
 #undef HAVE_SCHED_GETAFFINITY_NP
 
-/* Define to 1 if you have the <sdkddkver.h> header file. */
-#undef HAVE_SDKDDKVER_H
-
 /* Define to 1 if you have the `setdtablesize' function. */
 #undef HAVE_SETDTABLESIZE
 
