@@ -53,6 +53,10 @@
             (provide help-func name-obj)
 
             (define name-obj (new class))
+
+            (provide name)
+            (define (name param)
+              (send name-obj execute param))
             
             (define (help-func)
               (send name-obj help))))]))
@@ -75,6 +79,18 @@
                                              (syntax->datum #'name))))])
                  #'name-obj)]))
 
+(shell-command "../repl/base64.rkt"
+               base64
+               base64%)
+
+(shell-command "../repl/basename.rkt"
+               basename
+               basename%)
+
+(shell-command "../repl/cat.rkt"
+               cat
+               cat%)
+
 (shell-command "../repl/df.rkt"
                df
                df%
@@ -83,34 +99,107 @@
 (shell-command "../repl/groups.rkt"
                groups
                groups%)
-(provide groups)
-(define (groups user-id)
-  (send groups-obj execute user-id))
+
+(shell-command "../repl/head.rkt"
+               head
+               head%)
+
+(shell-command "../repl/hostid.rkt"
+               hostid
+               hostid%
+               (execute-command hostid))
+
+(shell-command "../repl/hostname.rkt"
+               hostname
+               hostname%
+               (execute-command hostname))
 
 (shell-command "../repl/id.rkt"
                id
                id%
                (execute-command id))
 
-(shell-command "../repl/ls.rkt"
-               ls 
-               ls% 
-               (execute-command ls (list (path->string (current-directory)))))
-
 (shell-command "../repl/logname.rkt"
                logname
                logname%
                (execute-command logname))
 
-(shell-command "../repl/users.rkt"
-               users
-               users%
-               (execute-command users))
+(shell-command "../repl/ls.rkt"
+               ls 
+               ls% 
+               (execute-command ls (list (path->string (current-directory)))))
+
+(shell-command "../repl/md5sum.rkt"
+               md5sum
+               md5sum%)
+               
+(shell-command "../repl/nl.rkt"
+               nl
+               nl%)
+               
+(shell-command "../repl/nproc.rkt"
+               nproc
+               nproc%
+               (execute-command nproc))
+
+(shell-command "../repl/realpath.rkt"
+               realpath
+               realpath%)
+               
+(shell-command "../repl/sha1sum.rkt"
+               sha1sum
+               sha1sum%)
+               
+(shell-command "../repl/sha224sum.rkt"
+               sha224sum
+               sha224sum%)
+               
+(shell-command "../repl/sha256sum.rkt"
+               sha256sum
+               sha256sum%)
+               
+(shell-command "../repl/sha384sum.rkt"
+               sha384sum
+               sha384sum%)
+               
+(shell-command "../repl/sha512sum.rkt"
+               sha512sum
+               sha512sum%)
+               
+(shell-command "../repl/sort.rkt"
+               sort
+               sort%)
+
+(shell-command "../repl/stat.rkt"
+               stat
+               stat%)
+
+(shell-command "../repl/sum.rkt"
+               sum
+               sum%)
+
+(shell-command "../repl/tac.rkt"
+               tac
+               tac%)
+
+(shell-command "../repl/tty.rkt"
+               tty
+               tty%
+               (execute-command tty))
+
+(shell-command "../repl/uniq.rkt"
+               uniq
+               uniq%)
 
 (shell-command "../repl/uptime.rkt"
                uptime
                uptime%
                (execute-command uptime))
+
+(shell-command "../repl/users.rkt"
+               users
+               users%
+               (execute-command users))
 
 (shell-command "../repl/who.rkt"
                who 
@@ -121,4 +210,9 @@
                whoami
                whoami%
                (execute-command whoami))
+
+(shell-command "../repl/yes.rkt"
+               yes
+               yes%
+               (execute-command yes))
 
