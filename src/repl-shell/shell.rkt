@@ -1,5 +1,28 @@
 #lang racket
 
+(provide o-n)
+(define-syntax (o-n stx)
+  (syntax-case stx ()
+    [(_ name)
+     (with-syntax ([name-obj
+                    (datum->syntax #'name
+                                   (string->symbol 
+                                     (format "~a-obj"
+                                             (syntax->datum #'name))))])
+                  #'name-obj)]))
+
+
+(define-syntax (help-func stx)
+  (syntax-case stx ()
+    [(_ name)
+     (with-syntax ([func-name 
+                     (datum->syntax #'name
+                                    (string->symbol 
+                                      (format "~a-help"
+                                              (syntax->datum #'name))))])
+                  #'(define (func-name)
+                    (send (obj-name help))))]))
+
 (define-syntax (shell-command stx)
   (syntax-case stx ()
     ;; Add a shell command. Parameters:
@@ -20,23 +43,22 @@
                      (datum->syntax #'name
                                     (string->symbol 
                                       (format "~a-help"
-                                              (syntax->datum #'name))))]
-                   [name-obj
-                     (datum->syntax #'name
-                                    (string->symbol 
-                                      (format "~a-obj"
                                               (syntax->datum #'name))))])
+                   ;[name-obj
+                    ; (datum->syntax #'name (string->symbol 
+                    ;                  (format "~a-obj"
+                    ;                          (syntax->datum #'name))))])
         #'(begin
             (require mod-path)
-            (provide name help-func name-obj)
+            (provide name help-func (o-n name))
 
-            (define name-obj (new class))
+            (define (o-n name) (new class))
             
             (define (name) 
               default-func)
 
             (define (help-func)
-              (send name-obj help))))]
+              (send (o-n name) help))))]
     [(_ mod-path name class)
      (with-syntax ([help-func 
                      (datum->syntax #'name
@@ -65,9 +87,9 @@
 (define-syntax (execute-command stx)
   (syntax-case stx ()
     [(_ name)
-     #'(send (name-obj name) execute)]
+     #'(send (o-n name) execute)]
     [(_ name param)
-     #'(send (name-obj name) execute param)]))
+     #'(send (o-n name) execute param)]))
 
 (define-syntax (name-obj stx)
   (syntax-case stx ()
