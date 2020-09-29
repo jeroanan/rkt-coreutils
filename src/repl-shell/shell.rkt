@@ -38,6 +38,9 @@
             (define (help-func)
               (send name-obj help))))]
     [(_ mod-path name class)
+     ;; Same as above but without default-func Instead, a function is 
+     ;; provided that takes a single argument and passes that arguent 
+     ;; to the object's execute function.
      (with-syntax ([help-func 
                      (datum->syntax #'name
                                     (string->symbol 
@@ -181,7 +184,6 @@
 (shell-command "../repl/tac.rkt"
                tac
                tac%)
-
 (shell-command "../repl/tty.rkt"
                tty
                tty%
