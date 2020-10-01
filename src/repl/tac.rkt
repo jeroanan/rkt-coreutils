@@ -14,7 +14,6 @@
                                 file-handler
                                 null)
 
-(: file-handler (-> String Input-Port Void))
 (define (file-handler filename stream)
   (let* ([file-contents (port->lines stream)]
         [reversed (reverse file-contents)])

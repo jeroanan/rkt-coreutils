@@ -6,7 +6,7 @@
 (provide ls%
          ls)
          
-(require racket/bool
+(require racket/bool         
          racket/string
          racket/list
          racket/format)
@@ -17,13 +17,9 @@
          "util/human-date.rkt"
          "util/human-size.rkt"
          "../util/stringutil.rkt"
-         "util/gidutil.rkt")
-
-(require/typed "libc/stat.rkt"
-               [get-stat (-> String String (Instance Stat%))])
-
-(require/typed "libc/pwd.rkt"
-               [get-pwuid (-> Number (Instance Getpwuid%))])
+         "util/gidutil.rkt"
+         "libc/stat.rkt"
+         "libc/pwd.rkt")
 
 ;; ls - list directories
 ;; TODO: add help method
@@ -49,23 +45,19 @@
     (public-boolean-attribute show-hidden #f)
 
     ;; If long mode is enabled then execute the given function. Otherwise return false.
-    (: when-long-mode (-> (-> String) (U String Boolean)))
     (define/private (when-long-mode x)
       (if long-mode (x) #f))
 
     ;; If showing inode no. then get inode ready for display. Otherwise return false.
-    (: get-inode-for-print (-> (Instance Stat%) (U String Boolean)))
-    (define/private (get-inode-for-print [inode : (Instance Stat%)])
+    (define/private (get-inode-for-print inode)
       (if print-inodes
           (number->string (send inode get-inode))
           #f))
 
-    (: make-colors-hash (-> (HashTable String String)))
     (define/private (make-colors-hash) (make-hash))
 
     ;; Populate the ls-colors hashtable with ls colors by looking at the LS_COLORS env. variable.
     ;; Colors in LS_COLORS are key=value, with each KVP separated by a ":".
-    (: get-ls-colors (-> (HashTable String String)))
     (define/private (get-ls-colors)
       (let* ([env-val (environment-variables-ref
                        (current-environment-variables)
@@ -83,14 +75,12 @@
               colors-hash))))
 
     ;; The hash table of colors populated by get-ls-colors.
-    (: ls-colors (HashTable String String))
     (define ls-colors (get-ls-colors))
 
     ;; This macro makes a function that when executed will color the given string based on the color
     ;; value found in the ls-colors hashtable.
     (define-syntax-rule (make-colorizer name hr)
       (begin
-        (: name (-> String String))
         (define/private (name entry-name)
           (let ([color-code (hash-ref ls-colors  hr)]
                 [default-color (hash-ref ls-colors "rs")])
@@ -104,14 +94,12 @@
     (make-colorizer colorize-pipe "pi")
 
     ;; Is the given inode executable by the inode owner, owner group or by others?
-    (: is-executable? (-> (Instance Stat%) Boolean))
     (define/private (is-executable? stat)
       (or (send stat get-owner-has-x?)
           (send stat get-group-has-x?)
           (send stat get-other-has-x?)))                
 
     ;; Dispatch to colorizing function based on the type of inode
-    (: colorize-filename (-> String (Instance Stat%) String))
     (define/private (colorize-filename filename stat)      
       (cond
         [(not show-colors) filename]
@@ -123,22 +111,16 @@
         [(send stat get-is-character-device?) (colorize-character-device filename)]
         [else filename]))
 
-    ;; Try to make any value into an integer
-    (define-syntax-rule (anything->integer val)
-      (assert val exact-integer?))
-
     ;; Make a list of anything into a list of strings
     (define-syntax-rule (any-list->string-list the-list)
       (map (λ (p) (~a p)) the-list))
 
     ;; Take an inode and prepare its size for output
-    (: get-size-string (-> (Instance Stat%) String))
     (define/private (get-size-string stat)
-      (let ([raw-size (anything->integer (send stat get-size))])
+      (let ([raw-size (send stat get-size)])
         (right-aligned-string (human-readable-byte-size raw-size) 4)))
 
     ;; Prepare a directory entry for output.
-    (: format-entry (-> Path Path String))
     (define/private (format-entry path filename)
       (let* ([filename-string (path->string filename)]
              [full-path (build-path path filename)] 
@@ -156,7 +138,7 @@
              [size (when-long-mode (λ () (get-size-string stat)))]
              [mtime
               (when-long-mode (λ () (unix-seconds->human-date
-                                     (anything->integer (send stat get-modified-time)))))]
+                                     (send stat get-modified-time))))]
              [outp-filename (colorize-filename filename-string stat)]
          
              [outp-list (list
@@ -173,24 +155,21 @@
         outp-string))
 
     ;; Addd "." and ".." entries to the listing if enabled.
-    (: add-implied (-> (Listof String) (Listof String)))
     (define/private (add-implied es)
       (if (not hide-implied)
           (append (list "." "..") es)
           es))
 
     ;; If we are hiding hidden entries then take them out of the listing.
-    (: filter-hidden (-> (Listof String) (Listof String)))
     (define (filter-hidden es)  
-      (define (weed-hidden [f : String])
+      (define (weed-hidden f)
         (not (string-prefix? f ".")))
       (if show-hidden
           es
-          (filter (lambda ([x : String]) (weed-hidden x)) es)))
+          (filter (lambda (x) (weed-hidden x)) es)))
 
     ;; Take a list of inodes, add implied entries and take out hidden ones as necessary and then add
     ;; default soritng.
-    (: process-entry-list (-> (Listof Path) (Listof String)))
     (define/private (process-entry-list es)
       (let* ([path-strings (any-list->string-list es)]
              [sorted (sort path-strings string-ci<?)])

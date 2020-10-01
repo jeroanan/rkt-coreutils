@@ -1,8 +1,10 @@
-#lang typed/racket
+#lang racket/base
+
+(require (for-syntax racket/base)
+         racket/class)
 
 (provide help-function)
 
-(: print-methods (-> (Listof String) Void))
 (define (print-methods methods)
   (displayln "Methods:")
   (for ([m methods])

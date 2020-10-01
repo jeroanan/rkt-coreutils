@@ -2,8 +2,7 @@
 
 (provide hostid%)
 
-(require/typed "libc/unistd.rkt"
-               [get-hostid (-> Integer)])
+(require "libc/unistd.rkt")
 
 (define hostid%
   (class object%

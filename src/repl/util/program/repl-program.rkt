@@ -1,17 +1,17 @@
-#lang typed/racket/base
+#lang racket/base
 
 ; Copyright 2020 David Wilson
 ; See COPYING for details
+(require racket/class)
 
-(provide (all-from-out typed/racket/base)
-         (except-out (all-from-out typed/racket/class) define/public)
+(provide (all-from-out racket/base)
+         (all-from-out racket/class)
          (all-from-out "../help.rkt")
          (all-from-out "../member.rkt")
          on-execute-with-string
          on-execute-with-strings
          on-execute-with-void)
 
-(require typed/racket/class)
 (require "../help.rkt"
          "../member.rkt")
 
@@ -23,7 +23,6 @@
 
 (define-syntax-rule (on-execute-with-type type param-name s)
   (begin
-    (: execute (-> type Void))
     (define/public (execute param-name)
       s)))
 

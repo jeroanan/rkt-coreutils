@@ -1,30 +1,27 @@
-#lang typed/racket/base
+#lang racket/base
 
 ; Copyright 2020 David Wilson
 ; See COPYING for details
 
 (require racket/cmdline
          racket/list
-         typed/racket/class)
+         typed/racket/class
+         racket/date)
 
 (require "util/version.rkt"
          "repl/stat.rkt")
 
-(require/typed racket/date
-               [date-display-format ( -> Symbol Void)]
-               [date->string (-> date Boolean String)])
-
 (define the-files (make-parameter (list "")))
 
-(define (get-path [filename : String])
+(define (get-path filename)
   (path->complete-path (string->path filename)))
 
-(define (set-the-files [s : (Pairof Any (Listof Any))])
-  (let ([#{strings : (Listof String)} (map (λ (x) (format "~a" x)) s)])
+(define (set-the-files s)
+  (let ([strings (map (λ (x) (format "~a" x)) s)])
     (the-files strings)))
 
 (define (get-the-files)
-  (map (λ ([x : String]) (format "~a" x)) (the-files)))
+  (map (λ (x) (format "~a" x)) (the-files)))
 
 (command-line
   #:argv (current-command-line-arguments)

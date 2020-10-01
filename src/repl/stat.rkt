@@ -13,16 +13,12 @@
          "typedef/stat.rkt"
          "typedef/getpwuid.rkt"
          "util/gidutil.rkt"
-         "../util/stringutil.rkt")
-
-(require/typed "libc/stat.rkt"
-               [get-stat (-> String String (Instance Stat%))])
-
-(require/typed "libc/pwd.rkt"
-               [get-pwuid (-> Number (Instance Getpwuid%))])
+         "../util/stringutil.rkt"
+         "libc/stat.rkt"
+         "libc/pwd.rkt")
 
 ;; Take an instance of Stat% and return a string representing the inode type
-(define (get-file-type-string [stat : (Instance Stat%)])
+(define (get-file-type-string stat)
   (cond
     [(send stat get-is-regular-file?) "regular file"]
     [(send stat get-is-directory?) "directory"]
@@ -30,34 +26,34 @@
     [else ""]))
 
 ;; Take an instance of Stat% and return a hex and dec representation of the device no.
-(define (get-device-string [stat : (Instance Stat%)])
+(define (get-device-string stat)
   (let* ([dev-no (send stat get-dev)]
          [dev-no-decimal (number->string dev-no)]
          [dev-no-hex (number->string dev-no 16)])
     (format "~ah/~ad" dev-no-hex dev-no-decimal)))
 
 ;; Take an instance of Stat% and return octal and string representatinos of its access mode
-(define (get-access-string [stat : (Instance Stat%)])
+(define (get-access-string stat)
   (let ([access-oct (get-mode-oct-str stat)]
         [access-str (get-mode-str stat)])
     (format "(~a/~a)" access-oct access-str)))
 
 ;; Take an instance of Stat% and return the uid and associated username
-(define (get-uid-string [stat : (Instance Stat%)])
+(define (get-uid-string stat)
   (let* ([uid (send stat get-uid)]
          [p (get-pwuid uid)]
          [username (send p get-username)])
     (format "(~a/~a)" uid username)))
 
 ;; Take an instance of Stat% and return the gid and associated group name
-(define (get-gid-string [stat : (Instance Stat%)])
+(define (get-gid-string stat)
   (let* ([gid (send stat get-gid)]
          [groupname (gid->group-name gid)])
     (format "(~a/~a)" gid groupname)))
 
 ;; Define a function that gets the given time property from an instance of Stat%
 (define-syntax-rule (file-time-getter name time-prop)
-  (define (name [stat : (Instance Stat%)])
+  (define (name stat)
     (let ([the-time (send stat time-prop)])
       (date-display-format 'iso-8601)
       (date->string (seconds->date the-time) #t))))
@@ -72,7 +68,7 @@
     (super-new)
 
     ;; Display formatted output
-    (define (display-output [the-path : String] [the-file : String])
+    (define (display-output the-path the-file)
       (let* ([s (get-stat the-path the-file)]
              [output-elements (list (list ;Line 1
                                      (list "File" the-file))
@@ -107,7 +103,7 @@
           (displayln ""))))
 
     ;; Takes a string representation of a filename with path and returns the path and filename parts.
-    (define (get-path-parts [the-file : String])
+    (define (get-path-parts the-file)
       (let-values ([(p f _) (split-path the-file)])        
         (let ([p-string (if (eq? p 'relative)
                             (path->string (current-directory))

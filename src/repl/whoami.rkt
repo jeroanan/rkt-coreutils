@@ -5,8 +5,7 @@
 
 (provide whoami%)
 
-(require/typed "libc/unistd.rkt"
-               [get-euid (-> Integer)])
+(require "libc/unistd.rkt")
 
 (define help-strings (list "Print effective userid"
                                ""

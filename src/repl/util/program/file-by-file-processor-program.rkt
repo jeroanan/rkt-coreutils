@@ -28,7 +28,6 @@
                                           (process-stdin)
                                           (process-files files)))
              
-             (: process-files (-> (Listof String) Void))
              (define/private (process-files files)
                (for ([f files])
                  (if read-files?
@@ -36,17 +35,14 @@
                      (process-file f))
                  (unless (null? finish-handler-body) (finish-handler-body))))
 
-             (: read-and-process-file (-> String Void))
              (define (read-and-process-file filename)
                (let* ([ip (open-input-file filename #:mode 'text)])
                  (file-handler-body filename ip)
                  (close-input-port ip)))
 
-             (: process-file (-> String Void))
              (define (process-file filename)
                (let ([ip (current-input-port)])
                  (file-handler-body filename ip)))
 
-             (: process-stdin (-> Void))
              (define/private (process-stdin)             
                (file-handler-body "-" (current-input-port))))))]))

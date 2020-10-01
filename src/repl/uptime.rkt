@@ -5,16 +5,14 @@
 
 (provide uptime%)
 
-(require typed/racket/date
+(require racket/date
          racket/format
          racket/list
          racket/port
          racket/string)
 
-(require "util/getutmp.rkt")
-
-(require/typed "libc/stdlib.rkt"
-               [get-load-avgs  (-> (Listof Real))])
+(require "util/getutmp.rkt"
+         "libc/stdlib.rkt")
 
 ;; The file in GNU/Linux that holds the uptime number.
 (define uptime-file "/proc/uptime")
@@ -36,14 +34,14 @@
     (on-execute-with-void
       (let* ([f (open-input-file uptime-file #:mode 'text)]
              [c (first (port->lines f))]
-             [secs (assert (string->number (first (string-split c " "))) number?)]
-             [uptime-days (floor (assert (/ secs seconds-per-day) real?))]
+             [secs (string->number (first (string-split c " ")))]
+             [uptime-days (floor (/ secs seconds-per-day))]
              [uptime-days-secs (* uptime-days seconds-per-day)]
              [secs-less-days (- secs uptime-days-secs)]
-             [uptime-hours  (floor (assert (/ secs-less-days seconds-per-hour) real?))]
+             [uptime-hours  (floor (/ secs-less-days seconds-per-hour))]
              [uptime-hours-secs (* uptime-hours 3600)]
              [secs-less-days-and-hours (- secs uptime-days-secs uptime-hours-secs)]
-             [uptime-minutes (floor (assert (/ secs-less-days-and-hours seconds-per-minute) real?))]
+             [uptime-minutes (floor (/ secs-less-days-and-hours seconds-per-minute))]
              [load-avgs (get-load-avgs)]
              [no-of-users (length (get-user-process-utmp-entries))])
         (displayln (format " ~a up ~a days, ~a:~a,  ~a users,  load average: ~a, ~a, ~a"
@@ -57,7 +55,6 @@
                            (third load-avgs)))))
 
     ;; Take a real number (e.g. 39.0) and return the integer portion (e.g. 39) as a string
-    (: real->integer-string (-> Real String))
     (define/private (real->integer-string real-in)
       (let* ([s (number->string real-in)]
              [sp (string-split s ".")])
@@ -66,7 +63,6 @@
             (first sp))))
 
     ;; Get the current time part of the current date.
-    (: current-time (-> String))
     (define/private (current-time)
       (let* ([d (current-date)]
              [h (date-hour d)]
@@ -75,7 +71,6 @@
         (format "~a:~a:~a" (pad-zero h) (pad-zero m) (pad-zero s))))
 
     ;; If the given number is single-digit prefix it with a zero
-    (: pad-zero (-> Integer String))
     (define/private (pad-zero num-in)
       (let ([s (number->string num-in)])
         (if (< num-in 10) 

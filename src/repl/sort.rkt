@@ -18,13 +18,11 @@
                                 on-finished-processing-files)
 
 ;; Process a file. Add its contents to the contents field.
-(: on-process-file (-> String Input-Port Void))
 (define (on-process-file filename stream)
   (let ([lines (port->lines stream)])
     (set! contents (append contents lines))))
 
 ;; Finished reading all files. Sort their accumulated contents and display the result.
-(: on-finished-processing-files (-> Void))
 (define (on-finished-processing-files)
   (let ([sorted-contents (sort contents sort-func)])
     (for ([l sorted-contents])
@@ -33,7 +31,6 @@
 
 ;; The custom sorting function. Trim each string of everything other than alphanumeric characters
 ;; and do a case-insensitive sort on the result.
-(: sort-func (-> String String Boolean))
 (define (sort-func str-a str-b)
   (let* ([r #rx"[^A-Za-z0-9]*"]
          [str-a-trim (string-trim str-a r #:right? #f)]

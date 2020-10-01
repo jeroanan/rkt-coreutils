@@ -5,9 +5,7 @@
 
 (provide nproc%)
 
-(require/typed "libc/nproc.rkt"
-               [ get-number-of-processors (-> Integer)])
-
+(require "libc/nproc.rkt")
 
 ;; nproc - Print number of processing units
 (define nproc%
@@ -19,5 +17,3 @@
 
     (on-execute-with-void 
       (displayln (get-number-of-processors)))))
-    
-

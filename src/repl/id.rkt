@@ -10,11 +10,8 @@
 
 (require racket/string)
 
-(require/typed "libc/unistd.rkt"
-               [get-euid (-> Integer)])
-
-(require/typed "libc/pwd.rkt"
-               [get-pwuid (-> Integer (Instance Getpwuid%))])
+(require "libc/unistd.rkt"
+         "libc/pwd.rkt")
 
 ;; id - Print user information
 (define id%
@@ -42,13 +39,11 @@
         (displayln output)))
 
     ;;; Joins list of group ids into a comma-separated list of formatted groups
-    (: format-groups (-> (Listof Integer) String))
     (define/private (format-groups gids)
       (let ([formatted-entries (map format-group gids)])
         (string-join formatted-entries ",")))
 
     ;; Take a groupid and format it with its name.
-    (: format-group (-> Integer String))
     (define (format-group gid)
       (let ([group-name (gid->group-name gid)])
         (format "~a(~a)" gid group-name)))))

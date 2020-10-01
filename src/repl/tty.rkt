@@ -5,8 +5,8 @@
 
 (provide tty%)
 
-(require/typed "libc/unistd.rkt"
-               [get-ttyname (-> String)])
+(require "libc/unistd.rkt")
+
 (define tty%
   (class object%
     (super-new)

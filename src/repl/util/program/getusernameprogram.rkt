@@ -6,10 +6,8 @@
 (provide (all-from-out "repl-program.rkt"))
 (provide get-user-name-program)
 
-(require "../../typedef/getpwuid.rkt")
-
-(require/typed "../../libc/pwd.rkt"
-               [get-pwuid (-> Number (Instance Getpwuid%))])
+(require "../../typedef/getpwuid.rkt"
+         "../../libc/pwd.rkt")
 
 ;; Define a program the calls get-uid-func and retrieves the username with the result
 (define-syntax-rule (get-user-name-program type-name help-strings get-uid-func)

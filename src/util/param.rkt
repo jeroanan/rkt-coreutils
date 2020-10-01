@@ -1,4 +1,4 @@
-#lang typed/racket/base
+#lang racket/base
 
 ;; Copyright 2020 David Wilson
 ;; see COPYING for details
@@ -30,12 +30,11 @@
        #'(begin
            (make-typed-parameter (Listof String) name default-value)
       
-           (define (setter-name [s : (Pairof Any (Listof Any))])
+           (define (setter-name s)
              (let ([strings (map (λ (x) (format "~a" x)) s)])
                (name strings)))))]))
 
 (define-syntax-rule (make-typed-parameter type name initial-value)
   (begin
-    (: name (Parameterof type))
     (define name (make-parameter initial-value))))
            

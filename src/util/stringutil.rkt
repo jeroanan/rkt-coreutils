@@ -1,4 +1,4 @@
-#lang typed/racket/base
+#lang racket/base
 
 ;; Copyright 2020 David Wilson
 ;; See COPYING for details

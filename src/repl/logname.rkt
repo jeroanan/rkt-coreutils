@@ -5,10 +5,8 @@
 
 (provide logname%)
 
-(require "util/program/getusernameprogram.rkt")
-
-(require/typed "libc/unistd.rkt"
-               [get-uid (-> Integer)])
+(require "util/program/getusernameprogram.rkt"
+         "libc/unistd.rkt")
 
 (define help-strings (list "Print logged-in userid"
                                ""

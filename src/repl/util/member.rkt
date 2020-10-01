@@ -1,4 +1,4 @@
-#lang typed/racket/base
+#lang racket/base
 
 ; Copyright 2020 David Wilson
 ; See COPYING for licence
@@ -54,17 +54,14 @@
                     (datum->syntax #'field-name
                                    (string->symbol (format "set-~a"
                                                            (syntax->datum #'field-name))))])
-       #'(begin
-           (: field-name type)
-           (field [field-name default-value])
+       #'(begin           
+           (field [field-name default-value])           
            
-           (: getter-name (-> type))
            (define/public (getter-name) field-name)
 
-           (define/public (setter-name [x : type]) (set! field-name x))))]))
+           (define/public (setter-name x) (set! field-name x))))]))
 
 (define-syntax-rule (private-attribute field-name type default-value)
   (begin
-    (: field-name type)
     (field [field-name default-value])))
                 

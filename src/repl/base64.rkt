@@ -2,10 +2,8 @@
 
 (provide base64%)
 
-(require racket/list)
-
-(require/typed net/base64
-               [base64-encode-stream (-> Input-Port Output-Port Void)])
+(require racket/list
+         net/base64)
 
 (define base64%
   (class object%
@@ -20,12 +18,10 @@
           (process-stdin)
           (process-files files)))
 
-    (: process-files (-> (Listof String) Void))
     (define/private (process-files files)
       (for ([file-name files])
         (let* ([f (open-input-file file-name #:mode 'text)])
           (base64-encode-stream f (current-output-port)))))
 
-    (: process-stdin (-> Void))
     (define/private (process-stdin)
       (base64-encode-stream (current-input-port) (current-output-port)))))

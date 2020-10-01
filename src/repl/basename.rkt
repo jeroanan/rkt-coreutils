@@ -20,5 +20,4 @@
                                   (set! already-processed-one? #f))
                                 (attribute public boolean process-multiple? #f))
 
-(: already-processed-one? Boolean)
 (define already-processed-one? #f)

@@ -1,4 +1,4 @@
-#lang typed/racket/base
+#lang racket/base
 
 (provide simple-file-handler-program)
 
@@ -13,16 +13,15 @@
   (begin
     (require "util/version.rkt")
     (require backend-loc)
-
-    (: the-files (Parameter (Listof String)))
+    
     (define the-files (make-parameter (list)))
 
-    (define (set-the-files [s : (Pairof Any (Listof Any))])
-      (let ([#{strings : (Listof String)} (map (λ (x) (format "~a" x)) s)])
+    (define (set-the-files s)
+      (let ([strings (map (λ (x) (format "~a" x)) s)])
         (the-files strings)))
 
     (define (get-the-files)
-      (map (λ ([x : String]) (format "~a" x)) (the-files)))
+      (map (λ (x) (format "~a" x)) (the-files)))
 
     (command-line
      #:argv (current-command-line-arguments)

@@ -6,15 +6,11 @@
 (provide groups%)
 
 (require "typedef/getpwuid.rkt"
-         "util/gidutil.rkt")
+         "util/gidutil.rkt"
+         "libc/unistd.rkt"
+         "libc/pwd.rkt")
 
 (require racket/string)
-
-(require/typed "libc/unistd.rkt"
-               [get-euid (-> Integer)])
-
-(require/typed "libc/pwd.rkt"
-               [get-pwuid (-> Number (Instance Getpwuid%))])
 
 ;; Groups: Print the given user's groups
 (define groups%
@@ -28,11 +24,10 @@
     (on-execute-with-string user-name
       (let* ([un (get-username user-name)]             
              [the-groups (get-user-groups un)]             
-             [group-names (map (λ ([x : Integer]) (gid->group-name x)) the-groups)])        
+             [group-names (map (λ (x) (gid->group-name x)) the-groups)])        
         (displayln (string-join group-names))))
 
     ;; Return either the given username or, if it's blank, the current user's username
-    (: get-username (-> String String))
     (define/private (get-username user-name)
       (if (string=? "" user-name)
           (let* ([uid (get-euid)]

@@ -1,4 +1,4 @@
-#lang typed/racket/base
+#lang racket/base
 
 ; Copyright 2020 David Wilson
 ; See COPYING for details
@@ -7,7 +7,7 @@
          simple-file-handler-program
          (all-from-out "param.rkt")
          (all-from-out "version.rkt")
-         (all-from-out typed/racket/base)
+         (all-from-out racket/base)
          (rename-out [require backend-code]))
 
 (require racket/cmdline

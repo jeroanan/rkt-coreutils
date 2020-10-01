@@ -29,10 +29,8 @@
 
              extras ...
               
-             (: output-function (-> String Void))
              (define (output-function x)
                (line-handler-body x))
-
 
              (on-execute-with-strings files
                                       (begin
@@ -40,14 +38,12 @@
                                             (process-stdin)
                                             (process-files files))))
 
-             (: process-files (-> (Listof String) Void))
              (define/private (process-files files)
                (for ([file-name files])
                  (let* ([f (open-input-file file-name #:mode 'text )])
                    (for ([l (in-lines f)])
                      (output-function l)))))
 
-             (: process-stdin (-> Void))
              (define/private (process-stdin)
                (let* ([r (read-line)]
                       [rs (~a r)])

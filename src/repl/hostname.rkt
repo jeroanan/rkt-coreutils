@@ -2,8 +2,7 @@
 
 (provide hostname%)
 
-(require/typed "libc/unistd.rkt"
-               [get-hostname (-> String)])
+(require "libc/unistd.rkt")
 
 (define hostname%
   (class object%

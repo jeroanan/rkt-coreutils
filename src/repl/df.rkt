@@ -11,13 +11,8 @@
          racket/string)
 
 (require "../util/stringutil.rkt"
-         "util/human-size.rkt")
-
-(require/typed "libc/statvfs.rkt"
-               [get-statvfs  (-> String Integer)]
-               [get-blocks (-> Integer)]
-               [get-available (-> Integer)]
-               [get-fragmentsize (-> Integer)])
+         "util/human-size.rkt"
+         "libc/statvfs.rkt")
 
 ;; df - display file system diskusage
 (define df%
@@ -39,11 +34,11 @@
       (let* ([mountinfo-entries (get-mountinfo-entries)]
              [distinct-device-ids (get-distinct-device-ids mountinfo-entries)]
              [de-duped-entries (get-entries-for-device-ids mountinfo-entries distinct-device-ids)]
-             [filter-remotes (filter (λ ([x : mountinfo-entry])
+             [filter-remotes (filter (λ (x)
                                        (not (is-remote-filesystem? x))) de-duped-entries)]
-             [filter-dummies (filter (λ ([x : mountinfo-entry])
+             [filter-dummies (filter (λ (x)
                                        (not (is-dummy-filesystem? x))) filter-remotes)]
-             [filter-zero-blocksize (filter (λ ([x : mountinfo-entry])
+             [filter-zero-blocksize (filter (λ (x)
                                               (not (is-zero-block-size? x))) filter-dummies)]
              [output (map mountinfo-entry->df-output filter-zero-blocksize)])
         (set-column-widths output)
@@ -54,18 +49,14 @@
     (define mountinfo-file "/proc/self/mountinfo")
 
     ;; Given a list of device ids get one entry from mountinfo-entries for each.
-    (: get-entries-for-device-ids
-       (-> (Listof mountinfo-entry) (Listof String) (Listof mountinfo-entry)))
     (define/private (get-entries-for-device-ids mountinfo-entries device-ids)
-
-      (: get-entries-for-dev-id (-> String (Listof mountinfo-entry)))
+      
       (define (get-entries-for-dev-id device-id)
         (let ([the-entries
-               (filter (λ ([x : mountinfo-entry]) (eq? (get-device-id x) device-id))
+               (filter (λ (x) (eq? (get-device-id x) device-id))
                        mountinfo-entries)])
           the-entries))
 
-      (: iterator (-> (Listof String) (Listof mountinfo-entry) (Listof mountinfo-entry)))
       (define (iterator device-ids out-list)
         (if (empty? device-ids)
             out-list
@@ -75,14 +66,12 @@
       (iterator device-ids (list)))
     
     ;; open file specified in mountinfo-file and read lines, returning a list of mountinfo-entry
-    (: get-mountinfo-entries (-> (Listof mountinfo-entry)))
     (define/private (get-mountinfo-entries)
       (let* ([f (open-input-file mountinfo-file #:mode 'text)]
              [mount-info (port->lines f)])
         (map mountinfo-line->mountinfo-entry mount-info)))
 
     ;; Make a line from mountinfo into an instance of mountinfo-entry
-    (: mountinfo-line->mountinfo-entry (-> String mountinfo-entry))
     (define (mountinfo-line->mountinfo-entry mountinfo-line)
       (let* ([line-split (string-split mountinfo-line " ")]
              [type-onwards (get-type-onwards mountinfo-line)]
@@ -106,7 +95,6 @@
                          rw)))
 
     ;; Take a line from the mountinfo file and return a list of fields from its type onwards
-    (: get-type-onwards (-> String (Listof String)))
     (define/private (get-type-onwards mountinfo-line)
       (let ([result (string-split
                      (string-join
@@ -116,7 +104,6 @@
         result))
       
     ;; The optional fields part of the line is everything after the fifth word and before the "-".
-    (: get-optional-fields (-> (Listof String) String))
     (define (get-optional-fields line-split)
       (let* ([optionals-onward (drop line-split 5)]
              [rejoined (string-join optionals-onward " ")]
@@ -124,7 +111,6 @@
         (first resplit)))
 
     ;; Given the list of mountinfo-entries, get the unique values of the dev-id field
-    (: get-distinct-device-ids (-> (Listof mountinfo-entry) (Listof String)))
     (define/private (get-distinct-device-ids mountinfo-entries)
       (let ([device-ids (map get-device-id mountinfo-entries)])
         (remove-duplicates device-ids)))
@@ -134,7 +120,6 @@
     ;; - It is a cifs, smb3 or smbfs filesystem and its name starts with "//"
     ;; - Its type is "afs" or "auristorfs"
     ;; - Its name is "-hosts"
-    (: is-remote-filesystem? (-> mountinfo-entry Boolean))
     (define (is-remote-filesystem? mi-entry)
       (let* ([fs-name (mountinfo-entry-source mi-entry)]
              [fs-type (mountinfo-entry-type mi-entry)]
@@ -151,7 +136,6 @@
         (or contains-colon? is-share? afs-type? auristorfs-type? hosts-name?)))
 
     ;; Given a mountinfo-entry, check if it is of a dummy filesystem type.
-    (: is-dummy-filesystem? (-> mountinfo-entry Boolean))
     (define (is-dummy-filesystem? mi-entry)
       (let ([dummy-fs-types (list "autofs"
                                   "proc"
@@ -168,23 +152,20 @@
         (list? (member (mountinfo-entry-type mi-entry) dummy-fs-types))))
 
     ;; Given a mountinfo-entry, determine whether it has zero block size.
-    (: is-zero-block-size? (-> mountinfo-entry Boolean))
     (define (is-zero-block-size? mi-entry)
       (begin
         (get-statvfs (mountinfo-entry-target mi-entry))        
         (= (get-blocks) 0)))
 
     ;; Given a mountinfo-entry return the value of its dev-id field
-    (: get-device-id (-> mountinfo-entry String))
     (define (get-device-id x)
       (mountinfo-entry-dev-id x))
 
-    (: mountinfo-entry->df-output (-> mountinfo-entry df-output))
     (define (mountinfo-entry->df-output mi-entry)
       (let* ([stat (get-statvfs (mountinfo-entry-target mi-entry))]
              [block-multiplier (/ (get-fragmentsize) 1024)]
-             [1k-blocks (assert (* (get-blocks) block-multiplier) integer?)]
-             [1k-blocks-available (assert (* (get-available) block-multiplier) integer?)]
+             [1k-blocks (* (get-blocks) block-multiplier)]
+             [1k-blocks-available (* (get-available) block-multiplier)]
              [1k-blocks-used (- 1k-blocks 1k-blocks-available)]
              [percent-used (if (eq? 1k-blocks-available 0)
                                100
@@ -199,12 +180,11 @@
     (define-syntax-rule (get-col-width col-member min-width lst)
       (max min-width (get-max-list-member 
                        lst
-                       (λ ([x : df-output])
+                       (λ (x)
                          (string-length (anything->string (col-member x)))))))
 
     (define-syntax-rule (make-col-width-field name min-width)
-      (begin
-        (: name Exact-Nonnegative-Integer)
+      (begin        
         (define name min-width)))
     
     (make-col-width-field filesystem-width 14)
@@ -213,7 +193,6 @@
     (make-col-width-field 1k-blocks-available-width 9)
     (make-col-width-field percent-used-width 4)
 
-    (: set-column-widths (-> (Listof df-output) Void))
     (define (set-column-widths df-outputs)
       (set! filesystem-width (get-col-width df-output-filesystem filesystem-width df-outputs))
       (set! 1k-blocks-width (get-col-width df-output-1k-blocks 1k-blocks-width df-outputs))
@@ -223,7 +202,6 @@
             (get-col-width df-output-1k-blocks-available 1k-blocks-available-width df-outputs))
       (set! percent-used-width (get-col-width df-output-percent-used percent-used-width df-outputs)))
                     
-    (: get-header (-> String))
     (define/private (get-header)
       (let ([headers
              (list
@@ -235,7 +213,6 @@
               "Mounted on")])
         (string-join headers " ")))
 
-    (: get-row (-> df-output String))
     (define/private (get-row df-out)
       (let ([fields
              (list
@@ -252,16 +229,13 @@
               (df-output-mounted-on df-out))])
         (string-join fields " ")))
 
-    (: get-size-string (-> Integer String))
     (define/private (get-size-string 1k-blocks)
       (if human-readable
           (human-readable-byte-size (* 1k-blocks 1024))
           (number->string 1k-blocks)))
 
-    (: get-max-list-member (-> (Listof df-output) (-> df-output Index) Integer))
     (define (get-max-list-member lst number-extractor)
 
-      (: iterator (-> (Listof df-output) Integer Integer))
       (define (iterator lst current-max)        
         (if (empty? lst)
             current-max
@@ -271,20 +245,20 @@
       (iterator lst 0))))
 
 (struct mountinfo-entry
-  [(id : String)
-   (parent : String)
-   (dev-id : String)
-   (mnt-root : String)
-   (target : String)
-   (optional-fields : String)
-   (type : String)
-   (source : String)
-   (rw : String)])
+  [id
+   parent
+   dev-id
+   mnt-root
+   target
+   optional-fields
+   type
+   source
+   rw])
 
 (struct df-output
-  [(filesystem : String)   
-   (1k-blocks : Integer)
-   (1k-blocks-used : Integer)
-   (1k-blocks-available : Integer)
-   (percent-used : Integer)
-   (mounted-on : String)])
+  [filesystem
+   1k-blocks
+   1k-blocks-used
+   1k-blocks-available
+   percent-used
+   mounted-on])

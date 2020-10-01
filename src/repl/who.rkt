@@ -9,7 +9,7 @@
          "../util/stringutil.rkt"
          "util/getutmp.rkt")
 
-(require typed/racket/date
+(require racket/date
          racket/format
          racket/string
          racket/list)
@@ -32,13 +32,10 @@
     (public-boolean-attribute show-header #t)    
     
     ;; How wide various column widths in output should be
-    (: user-column-width Exact-Nonnegative-Integer)
     (define user-column-width 8)
 
-    (: line-column-width Exact-Nonnegative-Integer)
     (define line-column-width 12)
 
-    (: time-column-width Exact-Nonnegative-Integer)
     (define time-column-width 16)
     
     ;; peform the "who" program execution
@@ -56,7 +53,6 @@
     (date-display-format 'iso-8601)
 
     ;; Build the string that will be used for the header of the listing.
-    (: get-header (-> String))
     (define/private (get-header)
       (let ([name-header (left-aligned-string "NAME" user-column-width)]
             [line-header (left-aligned-string "LINE" line-column-width)]
@@ -65,7 +61,6 @@
         (~a name-header " " line-header " " time-header " " comment-header)))
 
     ;; Take an iso-8601and output an yyyy-mm-dd HH:MM timestring.
-    (: make-time-string (-> Integer String))
     (define (make-time-string seconds)
       (let* ([the-date (seconds->date seconds)]
              [date-str (date->string the-date #t)]
