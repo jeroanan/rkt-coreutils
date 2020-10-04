@@ -40,7 +40,6 @@ EXTRA_DIST += mode_t.m4
 EXTRA_DIST += msvc-inval.m4
 EXTRA_DIST += msvc-nothrow.m4
 EXTRA_DIST += multiarch.m4
-EXTRA_DIST += nproc.m4
 EXTRA_DIST += off_t.m4
 EXTRA_DIST += open-cloexec.m4
 EXTRA_DIST += open-slash.m4

@@ -195,20 +195,8 @@
    concept. */
 #undef HAVE_MSVC_INVALID_PARAMETER_HANDLER
 
-/* Define to 1 if you have the `pstat_getdynamic' function. */
-#undef HAVE_PSTAT_GETDYNAMIC
-
 /* Define if you have the <pthread.h> header and the POSIX threads API. */
 #undef HAVE_PTHREAD_API
-
-/* Define to 1 if you have the `sched_getaffinity' function. */
-#undef HAVE_SCHED_GETAFFINITY
-
-/* Define to 1 if sched_getaffinity has a glibc compatible declaration. */
-#undef HAVE_SCHED_GETAFFINITY_LIKE_GLIBC
-
-/* Define to 1 if you have the `sched_getaffinity_np' function. */
-#undef HAVE_SCHED_GETAFFINITY_NP
 
 /* Define to 1 if you have the `setdtablesize' function. */
 #undef HAVE_SETDTABLESIZE
@@ -270,12 +258,6 @@
 /* Define to 1 if you have the `symlink' function. */
 #undef HAVE_SYMLINK
 
-/* Define to 1 if you have the `sysctl' function. */
-#undef HAVE_SYSCTL
-
-/* Define to 1 if you have the `sysmp' function. */
-#undef HAVE_SYSMP
-
 /* Define to 1 if you have the <sys/bitypes.h> header file. */
 #undef HAVE_SYS_BITYPES_H
 
@@ -285,20 +267,11 @@
 /* Define to 1 if you have the <sys/param.h> header file. */
 #undef HAVE_SYS_PARAM_H
 
-/* Define to 1 if you have the <sys/pstat.h> header file. */
-#undef HAVE_SYS_PSTAT_H
-
 /* Define to 1 if you have the <sys/socket.h> header file. */
 #undef HAVE_SYS_SOCKET_H
 
 /* Define to 1 if you have the <sys/stat.h> header file. */
 #undef HAVE_SYS_STAT_H
-
-/* Define to 1 if you have the <sys/sysctl.h> header file. */
-#undef HAVE_SYS_SYSCTL_H
-
-/* Define to 1 if you have the <sys/sysmp.h> header file. */
-#undef HAVE_SYS_SYSMP_H
 
 /* Define to 1 if you have the <sys/time.h> header file. */
 #undef HAVE_SYS_TIME_H

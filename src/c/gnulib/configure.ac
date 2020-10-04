@@ -133,7 +133,6 @@ gl_source_base='gllib'
   fi
   gl_MODULE_INDICATOR([msvc-nothrow])
   gl_MULTIARCH
-  gl_NPROC
   gl_FUNC_OPEN
   if test $REPLACE_OPEN = 1; then
     AC_LIBOBJ([open])

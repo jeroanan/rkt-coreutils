@@ -512,14 +512,6 @@ EXTRA_libgnu_a_SOURCES += msvc-nothrow.c
 
 ## end   gnulib module msvc-nothrow
 
-## begin gnulib module nproc
-
-libgnu_a_SOURCES += nproc.c
-
-EXTRA_DIST += nproc.h
-
-## end   gnulib module nproc
-
 ## begin gnulib module open
 
 

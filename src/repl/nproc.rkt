@@ -5,7 +5,7 @@
 
 (provide nproc%)
 
-(require "libc/nproc.rkt")
+(require nproc)
 
 ;; nproc - Print number of processing units
 (define nproc%
