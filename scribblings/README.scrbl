@@ -15,8 +15,21 @@ Mostly this project is for my coding pleasure and more in-depth learning about:
 Hopefully people will wander along and see the wonders of programming in Racket and maybe learn something/find bits of code that will help them out.
 
 In terms of the programs in this project I am initially implementing a range of the programs that can be found in GNU Coreutils with the most basic functionality.
-This means that in the vast majority of cases, as a first go at implementing a program, the aim is for it to run as it does under my Ubuntu GNU/Linux system with either no
+This means that in the vast majority of cases, as a first go at implementing a program, the aim is for it to run as it does under my Arch GNU/Linux system with either no
 command-line parameters or the minimum that I would generally use.
+
+Of late I have been including some code from the GNU project's gnulib. This means that there is now a fair bit if C code in this project. Over time I hope to replace some of this with Racket but for now they offer some portability and relief from dealing with some of the nitty-gritty of algorithms.
+
+Currently the modules included from gnulib are:
+
+@itemlist[@item{human}
+  @item{nproc}
+  @item{xstrtol}
+  @item{fcntl}
+  @item{error}
+  @item{xbinary-io}
+  @item{quotearg}
+  @item{safe-read}]
 
 Once I have a good range of programs basically running I will come back and implement more command line options and functionalities, as well as making it all a bit more robust.
            
