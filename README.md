@@ -27,12 +27,6 @@ first go at implementing a program, the aim is for it to run as it does
 under my Arch GNU/Linux system with either no command-line parameters or
 the minimum that I would generally use.
 
-Of late I have been including some code from the GNU project’s gnulib.
-This means that there is now a fair bit if C code in this project. Over
-time I hope to replace some of this with Racket but for now they offer
-some portability and relief from dealing with some of the nitty-gritty
-of algorithms.
-
 Currently the modules included from gnulib are:
 
 * human
