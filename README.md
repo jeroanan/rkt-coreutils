@@ -27,24 +27,6 @@ first go at implementing a program, the aim is for it to run as it does
 under my Arch GNU/Linux system with either no command-line parameters or
 the minimum that I would generally use.
 
-Currently the modules included from gnulib are:
-
-* human
-
-* nproc
-
-* xstrtol
-
-* fcntl
-
-* error
-
-* xbinary-io
-
-* quotearg
-
-* safe-read
-
 Once I have a good range of programs basically running I will come back
 and implement more command line options and functionalities, as well as
 making it all a bit more robust.
