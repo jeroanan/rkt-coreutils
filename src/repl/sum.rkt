@@ -3,13 +3,9 @@
 ; Copyright 2020 David Wilson
 ; See COPYING for details
 
-(require/typed "libc/sum.rkt"
-               [get-bsd-sum (-> String (Listof (U String Integer)))]
-               [get-sysv-sum (-> String (Listof(U String Integer)))])
+(require bsd-sysv-checksum)
 
-(require "libc/sum.rkt")
-
-(require typed/racket/class)
+(require racket/class)
 
 (define help-text (list
                     "Print sum for FILE"
@@ -29,16 +25,12 @@
                                 (define/public (set-sysv-mode)
                                   (set! current-mode sysv-mode)))
 
-(: bsd-mode Symbol)
 (define bsd-mode 'BSD)
 
-(: sysv-mode Symbol)
 (define sysv-mode 'SYSV)
 
-(: current-mode Symbol)
 (define current-mode bsd-mode)
 
-(: get-sum (-> String (Listof (U Integer String))))
 (define (get-sum file)
   (if (eq? current-mode bsd-mode)
       (get-bsd-sum file)
