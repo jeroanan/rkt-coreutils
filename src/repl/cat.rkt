@@ -11,4 +11,5 @@
 
 (line-by-line-processor-program cat%
                                 help-text
-                                (λ (x) (displayln x)))
+                                (λ (x) (displayln x))
+                                null)

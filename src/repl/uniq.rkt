@@ -18,5 +18,6 @@
                                       (set! first-line? #f)
                                       (set! previous-line x)
                                       (displayln x))))
+                                null
                                 (attribute private string previous-line "")
                                 (attribute private boolean first-line? #t))

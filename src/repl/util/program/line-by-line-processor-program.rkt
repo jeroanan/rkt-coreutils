@@ -16,7 +16,7 @@
 
 (define-syntax (line-by-line-processor-program stx)    
   (syntax-case stx ()
-    [(_ type-name help-text line-handler-body extras ...)    
+    [(_ type-name help-text line-handler-body finished-body extras ...)    
    
      #'(begin
          (provide type-name)
@@ -32,6 +32,10 @@
              (define (output-function x)
                (line-handler-body x))
 
+             (define (finished)
+               (unless (null? finished-body)
+                 (finished-body)))
+
              (on-execute-with-strings files
                                       (begin
                                         (if (empty? files)
@@ -42,7 +46,8 @@
                (for ([file-name files])
                  (let* ([f (open-input-file file-name #:mode 'text )])
                    (for ([l (in-lines f)])
-                     (output-function l)))))
+                     (output-function l))
+                   (finished))))
 
              (define/private (process-stdin)
                (let* ([r (read-line)]

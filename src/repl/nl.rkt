@@ -20,4 +20,5 @@
                                         (set! counter (add1 counter))
                                         (let ([line-number (~a counter #:width 6  #:align 'right)])
                                           (displayln (format "~a\t~a" line-number x))))))
+                                null
                                 (attribute private integer counter 0))

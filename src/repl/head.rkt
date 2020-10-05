@@ -4,8 +4,7 @@
 ; See COPYING for licence details
 
 ;; Head: Print the first lines of the given files
-;; TODO: It seems that currently only the first file will be dealt with and then we exit. Need to be
-;;       able to handle multiple files.
+(provide head)
 
 (define help-text (list "Print the first lines of each provided file."
                         ""
@@ -20,8 +19,15 @@
                                 help-text
                                 (λ (x)
                                   (begin
-                                    (displayln x)
-                                    (set! counter (add1 counter))
-                                    (when (eq? counter number-of-lines) (exit 0))))
+                                    (when (< counter number-of-lines) (displayln x))
+                                    (set! counter (add1 counter))))
+                                (λ ()
+                                  (set! counter 0))
                                 (attribute public integer number-of-lines 10)
                                 (attribute private integer counter 0))
+
+(define h (new head%))
+
+(define head
+  (λ (f . fs)    
+    (send h execute (cons f fs))))
