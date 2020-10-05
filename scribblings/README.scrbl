@@ -18,17 +18,6 @@ In terms of the programs in this project I am initially implementing a range of 
 This means that in the vast majority of cases, as a first go at implementing a program, the aim is for it to run as it does under my Arch GNU/Linux system with either no
 command-line parameters or the minimum that I would generally use.
 
-Currently the modules included from gnulib are:
-
-@itemlist[@item{human}
-  @item{nproc}
-  @item{xstrtol}
-  @item{fcntl}
-  @item{error}
-  @item{xbinary-io}
-  @item{quotearg}
-  @item{safe-read}]
-
 Once I have a good range of programs basically running I will come back and implement more command line options and functionalities, as well as making it all a bit more robust.
            
 @section{Project Structure}
