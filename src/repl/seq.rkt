@@ -17,7 +17,6 @@
 
     (public-integer-attribute interval 1)
 
-    (: execute (-> Integer Integer Void))
     (define/public (execute x y)
       (do-seq x y interval))))
 
