@@ -18,7 +18,6 @@
     (on-execute-with-void
       (do-yes repeated-string))))
 
-(: do-yes (-> String Void))
 (define (do-yes s)
   (displayln s)
   (do-yes s))
