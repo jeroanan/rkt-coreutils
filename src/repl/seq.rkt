@@ -21,7 +21,6 @@
     (define/public (execute x y)
       (do-seq x y interval))))
 
-(: do-seq (-> Integer Integer Integer Void))
 (define (do-seq x y interval)
   (when (<= x y)
     (begin
