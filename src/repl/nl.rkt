@@ -11,14 +11,15 @@
                         "(help) -- display this help message"
                         "(execute FILES) -- number lines and print FILES"))
 
-(line-by-line-processor-program nl%
-                                help-text
-                                (λ (x)
-                                  (if (string=? x "")
-                                      (displayln x)
-                                      (begin
-                                        (set! counter (add1 counter))
-                                        (let ([line-number (~a counter #:width 6  #:align 'right)])
-                                          (displayln (format "~a\t~a" line-number x))))))
-                                null
-                                (attribute private integer counter 0))
+(line-by-line-processor nl process-line null)
+
+(define counter 0)
+
+(define (process-line x)
+  (if (string=? x "")
+      (displayln x)
+      (begin
+        (set! counter (add1 counter))
+        (let ([line-number (~a counter #:width 6  #:align 'right)])
+          (displayln (format "~a\t~a" line-number x))))))
+

@@ -11,10 +11,7 @@
                         "(help) -- display this help message"
                         "(execute FILES) -- concatenate and print FILES"))
 
-(define cat
-  (λ (f . fs)
-    (define files (cons f fs))
-    (process-line-by-line files process-line null)))
+(line-by-line-processor cat process-line null)
 
 (define (process-line x)
   (displayln x))

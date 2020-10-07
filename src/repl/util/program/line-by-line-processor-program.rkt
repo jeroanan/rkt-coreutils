@@ -5,6 +5,7 @@
 
 (provide (all-from-out "repl-program.rkt") 
          line-by-line-processor-program
+         line-by-line-processor
          process-line-by-line
          attribute)
 
@@ -57,6 +58,14 @@
                    (output-function rs)
                    (process-stdin)))))))]))
 
+(define-syntax-rule (line-by-line-processor name line-processor eof-processor)
+  (begin
+    (provide name)
+    (define name
+      (λ (f . fs)
+        (define files (cons f fs))
+        (process-line-by-line files line-processor eof-processor)))))
+    
 (define (process-line-by-line files line-processor-function end-of-file-function)
          (if (empty? files)
              (process-stdin line-processor-function end-of-file-function)

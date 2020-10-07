@@ -150,9 +150,7 @@
                md5sum
                md5sum%)
                
-(shell-command "../repl/nl.rkt"
-               nl
-               nl%)
+(shell-command2 "../repl/nl.rkt" nl)
                
 (shell-command "../repl/nproc.rkt"
                nproc
@@ -203,9 +201,7 @@
                tty%
                (execute-command tty))
 
-(shell-command "../repl/uniq.rkt"
-               uniq
-               uniq%)
+(shell-command2 "../repl/uniq.rkt" uniq)
 
 (shell-command "../repl/uptime.rkt"
                uptime
