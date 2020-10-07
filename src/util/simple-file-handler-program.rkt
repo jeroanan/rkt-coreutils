@@ -1,6 +1,7 @@
 #lang racket/base
 
-(provide simple-file-handler-program)
+(provide simple-file-handler-program
+         simple-file-handler-program2)
 
 ; Copyright 2020 David Wilson
 ; See COPYING for details
@@ -9,6 +10,7 @@
          racket/list
          racket/class)
 
+;; TODO: Remove this when no longer needed
 (define-syntax-rule (simple-file-handler-program backend-loc dispatch-type)
   (begin
     (require "util/version.rkt")
@@ -31,3 +33,21 @@
 
     (let ([dispatch (new dispatch-type)])
       (send dispatch execute (get-the-files)))))
+
+(define-syntax-rule (simple-file-handler-program2 backend-loc backend-func)
+  (begin
+    (require "util/version.rkt")
+    (require backend-loc)
+    
+    (define the-files (make-parameter (list)))
+
+    (command-line
+     #:argv (current-command-line-arguments)
+     #:once-each
+     [("-v" "--version") "display version information and exit" (print-version-text-and-exit)]
+     #:args filename (unless (empty? filename) (the-files filename)))
+
+    (define (do-it file)
+      (backend-func file))
+    
+    (apply backend-func (the-files))))

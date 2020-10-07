@@ -4,7 +4,7 @@
 ; See COPYING for details
 
 (provide simple-program
-         simple-file-handler-program
+         (all-from-out "simple-file-handler-program.rkt")
          (all-from-out "param.rkt")
          (all-from-out "version.rkt")
          (all-from-out racket/base)

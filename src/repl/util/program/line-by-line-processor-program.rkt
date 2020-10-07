@@ -67,7 +67,7 @@
     (let* ([f (open-input-file file-name #:mode 'text )])
       (for ([l (in-lines f)])
         (lp-function l))
-      (eof-function))))
+      (unless (null? eof-function) (eof-function)))))
 
 (define (process-stdin lp-function eof-function)
   (let* ([r (read-line)]

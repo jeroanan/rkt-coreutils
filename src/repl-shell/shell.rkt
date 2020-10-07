@@ -1,5 +1,23 @@
 #lang racket
 
+(define-syntax (shell-command2 stx)
+  (syntax-case stx ()
+    [(_ mod-path name)
+     (with-syntax ([internal-name
+                    (datum->syntax #'name
+                                   (string->symbol
+                                    (format "_~a"
+                                            (syntax->datum #'name))))])
+       #'(begin
+           (require (rename-in mod-path (name internal-name)))
+           (provide name)
+
+           (define name
+             (λ (f . fs)
+               (let* ([files (cons f fs)])
+                 (apply internal-name files))))))]))
+                 
+     
 (define-syntax (shell-command stx)
   (syntax-case stx ()
     ;; Add a shell command. Parameters:
@@ -90,9 +108,7 @@
                basename
                basename%)
 
-(shell-command "../repl/cat.rkt"
-               cat
-               cat%)
+(shell-command2 "../repl/cat.rkt" cat)
 
 (shell-command "../repl/df.rkt"
                df
@@ -103,8 +119,7 @@
                groups
                groups%)
 
-(require "../repl/head.rkt")
-(provide (all-from-out "../repl/head.rkt"))
+(shell-command2 "../repl/head.rkt" head)
 
 (shell-command "../repl/hostid.rkt"
                hostid
