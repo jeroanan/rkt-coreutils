@@ -5,6 +5,7 @@
 
 (provide (all-from-out "repl-program.rkt") 
          line-by-line-processor-program
+         process-line-by-line
          attribute)
 
 (require (for-syntax  racket/list)
@@ -55,3 +56,23 @@
                  (when (not (eof-object? r))
                    (output-function rs)
                    (process-stdin)))))))]))
+
+(define (process-line-by-line files line-processor-function end-of-file-function)
+         (if (empty? files)
+             (process-stdin line-processor-function end-of-file-function)
+             (process-files files line-processor-function end-of-file-function)))
+
+(define (process-files files lp-function eof-function)
+  (for ([file-name files])
+    (let* ([f (open-input-file file-name #:mode 'text )])
+      (for ([l (in-lines f)])
+        (lp-function l))
+      (eof-function))))
+
+(define (process-stdin lp-function eof-function)
+  (let* ([r (read-line)]
+         [rs (~a r)])
+    (when (not (eof-object? r))
+      (lp-function rs)
+      (process-stdin))
+    (eof-function)))

@@ -6,28 +6,19 @@
 ;; Head: Print the first lines of the given files
 (provide head)
 
-(define help-text (list "Print the first lines of each provided file."
-                        ""
-                        "Methods"
-                        "(execute FILES) -- display the first lines of FILES"
-                        "(help) -- Display this help message"
-                        ""
-                        "Attributes"
-                        "number-of-lines (integer)"))
-
-(line-by-line-processor-program head%
-                                help-text
-                                (λ (x)
-                                  (begin
-                                    (when (< counter number-of-lines) (displayln x))
-                                    (set! counter (add1 counter))))
-                                (λ ()
-                                  (set! counter 0))
-                                (attribute public integer number-of-lines 10)
-                                (attribute private integer counter 0))
-
-(define h (new head%))
+(define counter 0)
+(define nl 10)
 
 (define head
-  (λ (f . fs)    
-    (send h execute (cons f fs))))
+  (λ (#:n [number-of-lines 10] f . fs)
+    (begin
+      (set! nl number-of-lines)
+      (define files (cons f fs))
+      (process-line-by-line files process-line end-of-file))))
+
+(define (process-line line)
+  (when (< counter nl) (displayln line))
+  (set! counter (add1 counter)))
+
+(define (end-of-file)
+  (set! counter 0))

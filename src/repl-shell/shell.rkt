@@ -103,9 +103,8 @@
                groups
                groups%)
 
-(shell-command "../repl/head.rkt"
-               head
-               head%)
+(require "../repl/head.rkt")
+(provide (all-from-out "../repl/head.rkt"))
 
 (shell-command "../repl/hostid.rkt"
                hostid
