@@ -4,7 +4,8 @@
 ; See COPYING for details
 
 (provide (all-from-out "repl-program.rkt") 
-         line-by-line-processor)
+         line-by-line-processor
+         process-line-by-line)
 
 (require (for-syntax  racket/list)
          (for-syntax racket/base)
