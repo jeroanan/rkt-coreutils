@@ -82,7 +82,6 @@
             (define (help-func)
               (send name-obj help))))]))
 
-
 (define-syntax (execute-command stx)
   (syntax-case stx ()
     [(_ name)
@@ -104,9 +103,7 @@
                base64
                base64%)
 
-(shell-command "../repl/basename.rkt"
-               basename
-               basename%)
+(shell-command2 "../repl/basename.rkt" basename)
 
 (shell-command2 "../repl/cat.rkt" cat)
 

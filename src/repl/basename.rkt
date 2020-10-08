@@ -5,19 +5,28 @@
 
 (require racket/path)
 
+(provide basename)
+
 (define help-text (list "Strip path from the given file."
                         "(execute FILES) -- Strip path from the given file"))
 
-(file-by-file-processor-program basename%
-                                help-text
-                                #f
-                                (λ (filename ip)
-                                  (when (or (not already-processed-one?) process-multiple?)
-                                    (begin
-                                      (displayln (file-name-from-path (string->path filename)))
-                                      (set! already-processed-one? #t))))
-                                (λ ()
-                                  (set! already-processed-one? #f))
-                                (attribute public boolean process-multiple? #f))
+;;(file-by-file-processor basename file-processor finished-processing #f)
 
 (define already-processed-one? #f)
+(define process-multiple? #f)
+
+(define basename
+      (λ (#:process-multiple? [pm #f] f . fs)
+        (define files (cons f fs))
+        (set! process-multiple? pm)
+        (process-file-by-file files file-processor finished-processing #f)))
+
+(define (file-processor filename _)
+  (when (or (not already-processed-one?) process-multiple?)
+    (begin
+      (displayln (file-name-from-path (string->path filename)))
+      (set! already-processed-one? #t))))
+
+(define (finished-processing)
+        (set! already-processed-one? #f))
+

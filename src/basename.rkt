@@ -1,4 +1,4 @@
 #lang s-exp "util/frontend-program.rkt"
 
-(simple-file-handler-program "repl/basename.rkt" basename%)
+(simple-file-handler-program2 "repl/basename.rkt" basename)
 
