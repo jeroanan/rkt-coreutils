@@ -143,9 +143,7 @@
                ls% 
                (execute-command ls (list (path->string (current-directory)))))
 
-(shell-command "../repl/md5sum.rkt"
-               md5sum
-               md5sum%)
+(shell-command2 "../repl/md5sum.rkt" md5sum)
                
 (shell-command2 "../repl/nl.rkt" nl)
                
@@ -154,9 +152,7 @@
                nproc%
                (execute-command nproc))
 
-(shell-command "../repl/realpath.rkt"
-               realpath
-               realpath%)
+(shell-command2 "../repl/realpath.rkt" realpath)
                
 (shell-command "../repl/sha1sum.rkt"
                sha1sum
@@ -186,13 +182,12 @@
                stat
                stat%)
 
-(shell-command "../repl/sum.rkt"
-               sum
-               sum%)
+(shell-command2 "../repl/sum.rkt" sum)
 
 (shell-command "../repl/tac.rkt"
                tac
                tac%)
+
 (shell-command "../repl/tty.rkt"
                tty
                tty%

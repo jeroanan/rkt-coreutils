@@ -1,3 +1,3 @@
 #lang s-exp "util/frontend-program.rkt"
 
-(simple-file-handler-program "repl/uniq.rkt" uniq%)
+(simple-file-handler-program2 "repl/uniq.rkt" uniq)

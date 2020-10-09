@@ -10,8 +10,6 @@
 (define help-text (list "Strip path from the given file."
                         "(execute FILES) -- Strip path from the given file"))
 
-;;(file-by-file-processor basename file-processor finished-processing #f)
-
 (define already-processed-one? #f)
 (define process-multiple? #f)
 
