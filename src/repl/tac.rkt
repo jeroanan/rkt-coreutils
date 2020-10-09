@@ -8,11 +8,7 @@
 (define help-text (list "Concatenate files and print on standard output in reverse."
                         "(execute FILES) -- Concatenate and print FILES in reverse"))
 
-(file-by-file-processor-program tac%
-                                help-text
-                                #t
-                                file-handler
-                                null)
+(file-by-file-processor tac file-handler null #t)
 
 (define (file-handler filename stream)
   (let* ([file-contents (port->lines stream)]

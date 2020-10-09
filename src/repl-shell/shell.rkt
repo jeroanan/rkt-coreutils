@@ -174,9 +174,7 @@
                sha512sum
                sha512sum%)
                
-(shell-command "../repl/sort.rkt"
-               sort
-               sort%)
+(shell-command2 "../repl/sort.rkt" sort)
 
 (shell-command "../repl/stat.rkt"
                stat
@@ -184,9 +182,7 @@
 
 (shell-command2 "../repl/sum.rkt" sum)
 
-(shell-command "../repl/tac.rkt"
-               tac
-               tac%)
+(shell-command2 "../repl/tac.rkt" tac)
 
 (shell-command "../repl/tty.rkt"
                tty

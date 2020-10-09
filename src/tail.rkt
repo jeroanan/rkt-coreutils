@@ -1,3 +1,3 @@
 #lang s-exp "util/frontend-program.rkt"
 
-(simple-file-handler-program "repl/tail.rkt" tail%)
+(simple-file-handler-program2 "repl/tail.rkt" tail)

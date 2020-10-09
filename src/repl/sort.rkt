@@ -11,11 +11,7 @@
 
 (define contents (list))
 
-(file-by-file-processor-program sort%
-                                help-text
-                                #t
-                                on-process-file
-                                on-finished-processing-files)
+(file-by-file-processor sort on-process-file on-finished-processing-files #t)
 
 ;; Process a file. Add its contents to the contents field.
 (define (on-process-file filename stream)

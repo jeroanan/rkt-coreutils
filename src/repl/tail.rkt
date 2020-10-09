@@ -9,11 +9,7 @@
 (define help-text (list "Output the end of files."
                         "(execute FILES) -- Display the last lines of FILES"))
 
-(file-by-file-processor-program tail%
-                                help-text
-                                #t
-                                file-handler
-                                null)
+(file-by-file-processor tail file-handler null #t)
 
 (define (file-handler filename stream)
   (let* ([file-contents (port->lines stream)]
