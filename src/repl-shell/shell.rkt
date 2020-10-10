@@ -99,18 +99,10 @@
                                              (syntax->datum #'name))))])
                  #'name-obj)]))
 
-(shell-command "../repl/base64.rkt"
-               base64
-               base64%)
-
+(shell-command2 "../repl/base64.rkt" base64)
 (shell-command2 "../repl/basename.rkt" basename)
-
 (shell-command2 "../repl/cat.rkt" cat)
-
-(shell-command "../repl/df.rkt"
-               df
-               df%
-               (execute-command df))
+(shell-command2 "../repl/df.rkt" df)
 
 (shell-command "../repl/groups.rkt"
                groups

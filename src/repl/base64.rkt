@@ -1,27 +1,9 @@
-#lang s-exp "util/program/repl-program.rkt"
-
-(provide base64%)
+#lang s-exp "util/program/file-by-file-processor-program.rkt"
 
 (require racket/list
          net/base64)
 
-(define base64%
-  (class object%
-    (super-new)
+(file-by-file-processor base64 process-file null #t)
 
-    (help-function 
-      "Output base64-encoded representation of FILES."
-      (list "(execute FILES) -- Display the base64-encoded representation of FILES"))
-
-    (on-execute-with-strings files
-      (if (empty? files)
-          (process-stdin)
-          (process-files files)))
-
-    (define/private (process-files files)
-      (for ([file-name files])
-        (let* ([f (open-input-file file-name #:mode 'text)])
-          (base64-encode-stream f (current-output-port)))))
-
-    (define/private (process-stdin)
-      (base64-encode-stream (current-input-port) (current-output-port)))))
+(define (process-file filename ip)
+  (base64-encode-stream ip (current-output-port)))

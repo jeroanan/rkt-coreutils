@@ -13,8 +13,9 @@
   [("-H" "--human-readable") "print sizes as human-readable numbers" (human-readable #t)]
   [("-v" "--version") "display version information and exit" (print-version-text-and-exit)])
 
-(let ([d (new df%)])
+#;(let ([d (new df%)])
   (send d set-human-readable (human-readable))
   (send d execute))
       
+(df #:human-readable human-readable)
 ;;(simple-program "repl/df.rkt" df%)
