@@ -4,7 +4,8 @@
 ;; see COPYING for details
 
 ;; hostname.rkt: Command-line front-end for repl/hostname.rkt
-
-(simple-program "repl/hostname.rkt" hostname%)
+(require "repl/hostname.rkt")
+(hostname)
+#;(simple-program "repl/hostname.rkt" hostname%)
 
 

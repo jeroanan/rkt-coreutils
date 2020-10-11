@@ -5,5 +5,6 @@
 
 ;; hostid.rkt: Command-line front-end for repl/hostid.rkt
 
-(simple-program "repl/hostid.rkt" hostid%)
+(require "repl/hostid.rkt")
+(hostid)
 

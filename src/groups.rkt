@@ -17,5 +17,4 @@
   #:once-each
   #:args username (unless (empty? username) (the-username (anything->string (first username)))))
 
-(let ([g (new groups%)])
-  (send g execute (anything->string (the-username))))
+(groups the-username)

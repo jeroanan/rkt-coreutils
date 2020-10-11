@@ -1,3 +1,4 @@
 #lang s-exp "util/frontend-program.rkt"
 
-(simple-program "repl/uptime.rkt" uptime%)
+(require "repl/uptime.rkt")
+(uptime)

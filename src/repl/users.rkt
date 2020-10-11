@@ -3,13 +3,20 @@
 ;; Copyright 2020 David Wilson
 ;; See COPYING for details
 
-(provide users%)
+(provide users)
 
 (require racket/string
          racket/struct)
 
 (require "util/getutmp.rkt")
 
+(define users
+  (λ ()
+    (define utmp (get-user-process-utmp-entries))
+    (define the-users (map (λ (x) (whoentry-user x)) utmp))
+    (displayln (string-join the-users " "))))
+
+    
 ;; users% -- emulate the functionality of the coreutils "users" command
 ;; type "man users" at a shell prompt for documentation on the original
 ;; program.

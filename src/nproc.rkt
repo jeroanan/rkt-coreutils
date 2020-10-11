@@ -4,8 +4,8 @@
 ;; see COPYING for details
 
 ;; nproc.rkt: Command-line front-end for repl/nproc.rkt
-
-(simple-program "repl/nproc.rkt" nproc%)
+(require "repl/nproc.rkt")
+(nproc)
 
 
 

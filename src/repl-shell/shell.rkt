@@ -103,27 +103,11 @@
 (shell-command2 "../repl/basename.rkt" basename)
 (shell-command2 "../repl/cat.rkt" cat)
 (shell-command2 "../repl/df.rkt" df)
-
-(shell-command "../repl/groups.rkt"
-               groups
-               groups%)
-
+(shell-command2 "../repl/groups.rkt" groups)
 (shell-command2 "../repl/head.rkt" head)
-
-(shell-command "../repl/hostid.rkt"
-               hostid
-               hostid%
-               (execute-command hostid))
-
-(shell-command "../repl/hostname.rkt"
-               hostname
-               hostname%
-               (execute-command hostname))
-
-(shell-command "../repl/id.rkt"
-               id
-               id%
-               (execute-command id))
+(shell-command2 "../repl/hostid.rkt" hostid)
+(shell-command2 "../repl/hostname.rkt" hostname)
+(shell-command2 "../repl/id.rkt" id)
 
 (shell-command "../repl/logname.rkt"
                logname
@@ -136,7 +120,6 @@
                (execute-command ls (list (path->string (current-directory)))))
 
 (shell-command2 "../repl/md5sum.rkt" md5sum)
-               
 (shell-command2 "../repl/nl.rkt" nl)
                
 (shell-command "../repl/nproc.rkt"
@@ -173,20 +156,10 @@
                stat%)
 
 (shell-command2 "../repl/sum.rkt" sum)
-
 (shell-command2 "../repl/tac.rkt" tac)
-
-(shell-command "../repl/tty.rkt"
-               tty
-               tty%
-               (execute-command tty))
-
+(shell-command2 "../repl/tty.rkt" tty)
 (shell-command2 "../repl/uniq.rkt" uniq)
-
-(shell-command "../repl/uptime.rkt"
-               uptime
-               uptime%
-               (execute-command uptime))
+(shell-command2 "../repl/uptime.rkt" uptime)
 
 (shell-command "../repl/users.rkt"
                users
