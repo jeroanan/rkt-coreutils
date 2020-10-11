@@ -156,11 +156,7 @@
 (shell-command2 "../repl/uniq.rkt" uniq)
 (shell-command2 "../repl/uptime.rkt" uptime)
 (shell-command2 "../repl/users.rkt" users)
-
-(shell-command "../repl/who.rkt"
-               who 
-               who% 
-               (execute-command who))
+(shell-command2 "../repl/who.rkt" who)
 
 (shell-command "../repl/whoami.rkt"
                whoami
