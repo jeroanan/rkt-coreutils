@@ -3,22 +3,16 @@
 ; Copyright 2020 David Wilson
 ; See COPYING for details
 
-(provide seq%)
+(provide seq)
 
-(require typed/racket/class)
-
-(define seq%
-  (class object%
-    (super-new)
-
-    (help-function "Prints out a sequence of numbers"
+(define seq
+  (λ (x y #:interval [i 1])
+    (do-seq x y i)))
+    
+    #;(help-function "Prints out a sequence of numbers"
                    (list "(exec) (int, int) -- Print out sequence between two numbers")
-                   (list "interval (int) -- Set the interval between numbers in the sequence"))
-
-    (public-integer-attribute interval 1)
-
-    (define/public (execute x y)
-      (do-seq x y interval))))
+                   (list "interval (int) -- Set the interval between numbers in the sequence"))    
+;(require typed/racket/class)
 
 (define (do-seq x y interval)
   (when (<= x y)
