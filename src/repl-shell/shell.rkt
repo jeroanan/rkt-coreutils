@@ -121,12 +121,7 @@
 
 (shell-command2 "../repl/md5sum.rkt" md5sum)
 (shell-command2 "../repl/nl.rkt" nl)
-               
-(shell-command "../repl/nproc.rkt"
-               nproc
-               nproc%
-               (execute-command nproc))
-
+(shell-command2 "../repl/nproc.rkt" nproc)
 (shell-command2 "../repl/realpath.rkt" realpath)
                
 (shell-command "../repl/sha1sum.rkt"
@@ -160,11 +155,7 @@
 (shell-command2 "../repl/tty.rkt" tty)
 (shell-command2 "../repl/uniq.rkt" uniq)
 (shell-command2 "../repl/uptime.rkt" uptime)
-
-(shell-command "../repl/users.rkt"
-               users
-               users%
-               (execute-command users))
+(shell-command2 "../repl/users.rkt" users)
 
 (shell-command "../repl/who.rkt"
                who 
