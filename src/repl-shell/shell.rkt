@@ -163,8 +163,5 @@
                whoami%
                (execute-command whoami))
 
-(shell-command "../repl/yes.rkt"
-               yes
-               yes%
-               (execute-command yes))
+(shell-commnd "../yes.rkt" yes)
 
