@@ -119,10 +119,7 @@
 (shell-command2 "../repl/nl.rkt" nl)
 (shell-command2 "../repl/nproc.rkt" nproc)
 (shell-command2 "../repl/realpath.rkt" realpath)
-               
-(shell-command "../repl/sha1sum.rkt"
-               sha1sum
-               sha1sum%)
+(shell-command2 "../repl/sha1sum.rkt" sha1sum)
                
 (shell-command "../repl/sha224sum.rkt"
                sha224sum
