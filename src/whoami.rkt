@@ -1,3 +1,6 @@
 #lang s-exp "util/frontend-program.rkt"
 
-(simple-program "repl/whoami.rkt" whoami%)
+(require "repl/whoami.rkt")
+(whoami)
+
+;(simple-program "repl/whoami.rkt" whoami%)

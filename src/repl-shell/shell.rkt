@@ -108,11 +108,7 @@
 (shell-command2 "../repl/hostid.rkt" hostid)
 (shell-command2 "../repl/hostname.rkt" hostname)
 (shell-command2 "../repl/id.rkt" id)
-
-(shell-command "../repl/logname.rkt"
-               logname
-               logname%
-               (execute-command logname))
+(shell-command2 "../repl/logname.rkt" logname)
 
 (shell-command "../repl/ls.rkt"
                ls 
@@ -157,11 +153,6 @@
 (shell-command2 "../repl/uptime.rkt" uptime)
 (shell-command2 "../repl/users.rkt" users)
 (shell-command2 "../repl/who.rkt" who)
-
-(shell-command "../repl/whoami.rkt"
-               whoami
-               whoami%
-               (execute-command whoami))
-
-(shell-commnd "../yes.rkt" yes)
+(shell-command2 "../repl/whoami.rkt" whoami)
+(shell-command2 "../repl/yes.rkt" yes)
 

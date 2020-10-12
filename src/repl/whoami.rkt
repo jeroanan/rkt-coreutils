@@ -3,7 +3,7 @@
 ; Copyright 2020 David Wilson
 ; See COPYING for details
 
-(provide whoami%)
+(provide whoami)
 
 (require "libc/unistd.rkt")
 
@@ -13,4 +13,4 @@
                                "(help) -- display this help message"
                                "(execute) -- display the effective userid"))
 
-(get-user-name-program whoami% help-strings get-euid)
+(get-user-name-program2 whoami get-euid)
