@@ -120,22 +120,10 @@
 (shell-command2 "../repl/nproc.rkt" nproc)
 (shell-command2 "../repl/realpath.rkt" realpath)
 (shell-command2 "../repl/sha1sum.rkt" sha1sum)
-               
-(shell-command "../repl/sha224sum.rkt"
-               sha224sum
-               sha224sum%)
-               
-(shell-command "../repl/sha256sum.rkt"
-               sha256sum
-               sha256sum%)
-               
-(shell-command "../repl/sha384sum.rkt"
-               sha384sum
-               sha384sum%)
-               
-(shell-command "../repl/sha512sum.rkt"
-               sha512sum
-               sha512sum%)
+(shell-command2 "../repl/sha224sum.rkt" sha224sum)
+(shell-command2 "../repl/sha256sum.rkt" sha256sum)
+(shell-command2 "../repl/sha384sum.rkt" sha384sum)
+(shell-command2 "../repl/sha512sum.rkt" sha512sum)
                
 (shell-command2 "../repl/sort.rkt" sort)
 
