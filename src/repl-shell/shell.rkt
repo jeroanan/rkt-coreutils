@@ -124,13 +124,8 @@
 (shell-command2 "../repl/sha256sum.rkt" sha256sum)
 (shell-command2 "../repl/sha384sum.rkt" sha384sum)
 (shell-command2 "../repl/sha512sum.rkt" sha512sum)
-               
 (shell-command2 "../repl/sort.rkt" sort)
-
-(shell-command "../repl/stat.rkt"
-               stat
-               stat%)
-
+(shell-command2 "../repl/stat.rkt" stat)
 (shell-command2 "../repl/sum.rkt" sum)
 (shell-command2 "../repl/tac.rkt" tac)
 (shell-command2 "../repl/tty.rkt" tty)

@@ -29,4 +29,5 @@
   [("-v" "--version") "display version information and exit" (print-version-text-and-exit)]
   #:args filename (unless (empty? filename) (set-the-files filename)))
 
-(send (new stat%) execute (get-the-files))
+;;(send (new stat%) execute (get-the-files))
+(stat (get-the-files))
