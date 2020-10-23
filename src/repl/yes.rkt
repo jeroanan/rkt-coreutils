@@ -3,21 +3,13 @@
 ; Copyright 2020 David Wilson
 ; See COPYING for details
 
-(provide yes%)
-
-(define yes%
-  (class object%
-    (super-new)
-
-    (help-function "Print the given string until stopped"
+(provide yes)
+   #; (help-function "Print the given string until stopped"
                    (list "(execute STRING) -- Print STRING until stopped")
                    (list "repeated-string (string) -- The string to print"))
 
-    (public-string-attribute repeated-string "y")
+(define yes
+  (λ (#:repeated-string [rs "y"])
+    (displayln rs)
+    (yes #:repeated-string rs)))
 
-    (on-execute-with-void
-      (do-yes repeated-string))))
-
-(define (do-yes s)
-  (displayln s)
-  (do-yes s))

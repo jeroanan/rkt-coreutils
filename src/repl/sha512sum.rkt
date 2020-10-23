@@ -1,3 +1,3 @@
 #lang s-exp "util/program/shaprogram.rkt"
 
-(sha-program "SHA512" sha512sum% sha512)
+(sha-program2 sha512sum sha512)

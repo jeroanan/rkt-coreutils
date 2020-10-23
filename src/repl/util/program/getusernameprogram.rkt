@@ -4,20 +4,15 @@
 ; See COPYING for details
 
 (provide (all-from-out "repl-program.rkt"))
-(provide get-user-name-program)
+(provide get-user-name-program2)
 
 (require "../../typedef/getpwuid.rkt"
          "../../libc/pwd.rkt")
 
-;; Define a program the calls get-uid-func and retrieves the username with the result
-(define-syntax-rule (get-user-name-program type-name help-strings get-uid-func)
-  (define type-name
-  (class object%
-    (super-new)
-
-    (help-function help-strings)
-    
-    (on-execute-with-void 
-      (let* ([uid (get-uid-func)]
-             [getpwuid (get-pwuid uid)])
-        (displayln (send getpwuid get-username)))))))
+(define-syntax-rule (get-user-name-program2 name get-uid-func)
+  (begin
+    (provide name)
+    (define (name)
+      (define uid (get-uid-func))
+      (define getpwuid (get-pwuid uid))
+      (displayln (send getpwuid get-username)))))

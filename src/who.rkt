@@ -16,6 +16,4 @@
   [("-H" "--heading") "print line of column headings" (show-heading #t)]
   [("-v" "--version") "display version information and exit" (print-version-text-and-exit)])
 
-(let ([w (new who%)])
-  (send w set-show-header (show-heading))
-  (send w execute))
+(who #:show-header (show-heading))

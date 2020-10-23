@@ -108,11 +108,7 @@
 (shell-command2 "../repl/hostid.rkt" hostid)
 (shell-command2 "../repl/hostname.rkt" hostname)
 (shell-command2 "../repl/id.rkt" id)
-
-(shell-command "../repl/logname.rkt"
-               logname
-               logname%
-               (execute-command logname))
+(shell-command2 "../repl/logname.rkt" logname)
 
 (shell-command "../repl/ls.rkt"
                ls 
@@ -121,63 +117,22 @@
 
 (shell-command2 "../repl/md5sum.rkt" md5sum)
 (shell-command2 "../repl/nl.rkt" nl)
-               
-(shell-command "../repl/nproc.rkt"
-               nproc
-               nproc%
-               (execute-command nproc))
-
+(shell-command2 "../repl/nproc.rkt" nproc)
 (shell-command2 "../repl/realpath.rkt" realpath)
-               
-(shell-command "../repl/sha1sum.rkt"
-               sha1sum
-               sha1sum%)
-               
-(shell-command "../repl/sha224sum.rkt"
-               sha224sum
-               sha224sum%)
-               
-(shell-command "../repl/sha256sum.rkt"
-               sha256sum
-               sha256sum%)
-               
-(shell-command "../repl/sha384sum.rkt"
-               sha384sum
-               sha384sum%)
-               
-(shell-command "../repl/sha512sum.rkt"
-               sha512sum
-               sha512sum%)
-               
+(shell-command2 "../repl/sha1sum.rkt" sha1sum)
+(shell-command2 "../repl/sha224sum.rkt" sha224sum)
+(shell-command2 "../repl/sha256sum.rkt" sha256sum)
+(shell-command2 "../repl/sha384sum.rkt" sha384sum)
+(shell-command2 "../repl/sha512sum.rkt" sha512sum)
 (shell-command2 "../repl/sort.rkt" sort)
-
-(shell-command "../repl/stat.rkt"
-               stat
-               stat%)
-
+(shell-command2 "../repl/stat.rkt" stat)
 (shell-command2 "../repl/sum.rkt" sum)
 (shell-command2 "../repl/tac.rkt" tac)
 (shell-command2 "../repl/tty.rkt" tty)
 (shell-command2 "../repl/uniq.rkt" uniq)
 (shell-command2 "../repl/uptime.rkt" uptime)
-
-(shell-command "../repl/users.rkt"
-               users
-               users%
-               (execute-command users))
-
-(shell-command "../repl/who.rkt"
-               who 
-               who% 
-               (execute-command who))
-
-(shell-command "../repl/whoami.rkt"
-               whoami
-               whoami%
-               (execute-command whoami))
-
-(shell-command "../repl/yes.rkt"
-               yes
-               yes%
-               (execute-command yes))
+(shell-command2 "../repl/users.rkt" users)
+(shell-command2 "../repl/who.rkt" who)
+(shell-command2 "../repl/whoami.rkt" whoami)
+(shell-command2 "../repl/yes.rkt" yes)
 

@@ -3,7 +3,7 @@
 ; Copyright 2020 David Wilson
 ; See COPYING for details
 
-(provide logname%)
+(provide logname)
 
 (require "util/program/getusernameprogram.rkt"
          "libc/unistd.rkt")
@@ -14,4 +14,4 @@
                                "(help) -- display this help message"
                                "(execute) -- display logged-in userid"))
 
-(get-user-name-program logname% help-strings get-uid)
+(get-user-name-program2 logname get-uid)

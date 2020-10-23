@@ -3,7 +3,7 @@
 ;; Copyright 2020 David Wilson
 ;; See COPYING for details
 
-(provide who%)
+(provide who)
 
 (require "typedef/getutmp.rkt"
          "../util/stringutil.rkt"
@@ -14,46 +14,26 @@
          racket/string
          racket/list)
 
-;; who% -- emulate the functionality of the coreutils "who" command.
-;; type "man who" at a shell prompt for documentation on the original
-;; program.
-(define who%
-  (class object%
-    (super-new)
-   
-    (help-function
-      "Print information about users that are currently logged in."
-      (list 
-           "(help) -- Display this help message"
-           "(execute) -- Print information about users that are currently logged in.")
-      (list "show-header (bool) -- Whether or not to print header line"))
+(define user-column-width 8)
+(define line-column-width 12)
+(define time-column-width 16)
 
-    ;; Whether to show headings above the listing
-    (public-boolean-attribute show-header #t)    
-    
-    ;; How wide various column widths in output should be
-    (define user-column-width 8)
+(define who
+  (λ (#:show-header [sh #t])
+    (let ([entries (get-user-process-utmp-entries)])
+      (when sh (displayln (get-header)))
+      (for ([e entries])
+        (let* ([output-fields (list (left-aligned-string (whoentry-user e) user-column-width)
+                                    (left-aligned-string (whoentry-line e) line-column-width)
+                                    (make-time-string (whoentry-time e))
+                                    (~a "(" (whoentry-host e) ")"))]
+               [output (string-join output-fields " ")])
+          (displayln output))))))
 
-    (define line-column-width 12)
-
-    (define time-column-width 16)
-    
-    ;; peform the "who" program execution
-    (on-execute-with-void
-      (let ([entries (get-user-process-utmp-entries)])
-        (when show-header (displayln (get-header)))
-        (for ([e entries])
-          (let* ([output-fields (list (left-aligned-string (whoentry-user e) user-column-width)
-                                      (left-aligned-string (whoentry-line e) line-column-width)
-                                      (make-time-string (whoentry-time e))
-                                      (~a "(" (whoentry-host e) ")"))]
-                 [output (string-join output-fields " ")])
-            (displayln output)))))     
-    
     (date-display-format 'iso-8601)
 
     ;; Build the string that will be used for the header of the listing.
-    (define/private (get-header)
+    (define (get-header)
       (let ([name-header (left-aligned-string "NAME" user-column-width)]
             [line-header (left-aligned-string "LINE" line-column-width)]
             [time-header (left-aligned-string "TIME" time-column-width)]
@@ -69,4 +49,5 @@
              [date-out (first date-time)]
              [time-out (~a (first time-split) ":" (second time-split))])        
              
-      (~a date-out " " time-out)))))
+      (~a date-out " " time-out)))
+
