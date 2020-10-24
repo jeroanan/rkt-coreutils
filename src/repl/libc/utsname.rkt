@@ -4,6 +4,7 @@
 ; See COPYING for details.
 
 (provide uname
+         uname-machine
          uname-sysname
          (struct-out utsname))
 
@@ -27,6 +28,9 @@
                      -> o)))
 (define (uname)
   (_uname))
+
+(define (uname-machine)
+  (bytes->string (utsname-machine (uname))))
 
 (define (uname-sysname)
   (bytes->string (utsname-sysname (uname))))
