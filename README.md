@@ -36,7 +36,7 @@ making it all a bit more robust.
 Here is a list of the utils included in GNU coreutils, with ones that
 have been touched upon already by this project in **bold**.
 
-* [arch](https://www.gnu.org/software/coreutils/manual/html_node/arch-invocation.html)
+* **[arch](https://www.gnu.org/software/coreutils/manual/html_node/arch-invocation.html)**
 
 * **[base64](https://www.gnu.org/software/coreutils/manual/html_node/base64-invocation.html)**
 
@@ -54,7 +54,7 @@ have been touched upon already by this project in **bold**.
 
 * [chroot](https://www.gnu.org/software/coreutils/manual/html_node/chroot-invocation.html)
 
-* [cksum](https://www.gnu.org/software/coreutils/manual/html_node/cksum-invocation.html)
+* **[cksum](https://www.gnu.org/software/coreutils/manual/html_node/cksum-invocation.html)**
 
 * [comm](https://www.gnu.org/software/coreutils/manual/html_node/comm-invocation.html)
 

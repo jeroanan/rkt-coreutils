@@ -24,7 +24,7 @@ Once I have a good range of programs basically running I will come back and impl
 
 Here is a list of the utils included in GNU coreutils, with ones that have been touched upon already by this project in @bold{bold}.
 
-@itemlist[@item{@hyperlink["https://www.gnu.org/software/coreutils/manual/html_node/arch-invocation.html"]{arch}}
+@itemlist[@item{@bold{@hyperlink["https://www.gnu.org/software/coreutils/manual/html_node/arch-invocation.html"]{arch}}}
   @item{@bold{@hyperlink["https://www.gnu.org/software/coreutils/manual/html_node/base64-invocation.html"]{base64}}}
   @item{@bold{@hyperlink["https://www.gnu.org/software/coreutils/manual/html_node/basename-invocation.html"]{basename}}}
   @item{@bold{@hyperlink["https://www.gnu.org/software/coreutils/manual/html_node/cat-invocation.html"]{cat}}}
@@ -33,7 +33,7 @@ Here is a list of the utils included in GNU coreutils, with ones that have been 
   @item{@hyperlink["https://www.gnu.org/software/coreutils/manual/html_node/chmod-invocation.html"]{chmod}}
   @item{@hyperlink["https://www.gnu.org/software/coreutils/manual/html_node/chown-invocation.html"]{chown}}
   @item{@hyperlink["https://www.gnu.org/software/coreutils/manual/html_node/chroot-invocation.html"]{chroot}}
-  @item{@hyperlink["https://www.gnu.org/software/coreutils/manual/html_node/cksum-invocation.html"]{cksum}}
+  @item{@bold{@hyperlink["https://www.gnu.org/software/coreutils/manual/html_node/cksum-invocation.html"]{cksum}}}
   @item{@hyperlink["https://www.gnu.org/software/coreutils/manual/html_node/comm-invocation.html"]{comm}}
   @item{@hyperlink["https://www.gnu.org/software/coreutils/manual/html_node/cp-invocation.html"]{cp}}
   @item{@hyperlink["https://www.gnu.org/software/coreutils/manual/html_node/csplit-invocation.html"]{csplit}}
