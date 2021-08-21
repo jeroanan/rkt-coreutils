@@ -1,6 +1,6 @@
-#lang s-exp "util/program/repl-program.rkt"
+#lang racket/base 
 
-; Copyright 2020 David Wilson
+; Copyright 2020,2021 David Wilson
 ; See COPYING for details
 
 (provide id)
@@ -8,11 +8,14 @@
 (require "typedef/getpwuid.rkt"
          "util/gidutil.rkt")
 
-(require racket/string)
+(require racket/string
+         racket/class)
 
 (require "libc/unistd.rkt"
          "libc/pwd.rkt")
 
+;;; id: Provide Equivalent to GNU coreutils id command,
+;;; See coreutil's manpage on id for details
 (define id
   (λ ()
     (define uid (get-euid))
@@ -33,7 +36,7 @@
   (let ([formatted-entries (map format-group gids)])
     (string-join formatted-entries ",")))
 
-;; Take a groupid and format it with its name.
+;;; Take a groupid and format it with its name.
 (define (format-group gid)
   (let ([group-name (gid->group-name gid)])
     (format "~a(~a)" gid group-name)))
