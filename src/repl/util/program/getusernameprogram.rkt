@@ -1,6 +1,6 @@
 #lang s-exp "repl-program.rkt"
 
-; Copyright 2020 David Wilson
+; Copyright 2020,2021 David Wilson
 ; See COPYING for details
 
 (provide (all-from-out "repl-program.rkt"))
@@ -15,4 +15,4 @@
     (define (name)
       (define uid (get-uid-func))
       (define getpwuid (get-pwuid uid))
-      (displayln (send getpwuid get-username)))))
+      (send getpwuid get-username))))
