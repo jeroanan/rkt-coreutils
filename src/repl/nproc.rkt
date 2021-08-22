@@ -1,4 +1,4 @@
-#lang racket/base ;s-exp "util/program/repl-program.rkt"
+#lang racket/base 
 
 ; Copyright 2020, 2021 David Wilson
 ; See COPYING for details
@@ -9,4 +9,4 @@
 
 (define nproc
   (λ ()
-    (displayln (get-number-of-processors))))
+    (get-number-of-processors)))
